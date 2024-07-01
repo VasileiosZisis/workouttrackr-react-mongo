@@ -15,8 +15,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(notFound);
-app.use(errorHandler);
+
 app.use('/api/logs', logRoutes);
 
 if (process.env.NODE_ENV === 'production') {
@@ -32,5 +31,8 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running...');
   });
 }
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`listening ${port}`));
