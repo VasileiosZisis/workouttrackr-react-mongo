@@ -7,8 +7,8 @@ export const logsApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: LOGS_URL,
       }),
-      keepUnusedDataFor: 5,
       providesTags: ['Logs'],
+      keepUnusedDataFor: 5,
     }),
     getLogDetails: builder.query({
       query: (_id) => ({

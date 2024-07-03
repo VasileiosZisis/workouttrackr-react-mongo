@@ -1,6 +1,17 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Log from '../models/logs.js';
 
+const createLog = asyncHandler(async (req, res) => {
+  const log = new Log(req.body);
+  const createdLog = await log.save();
+  if (createdLog) {
+    res.status(201).json(createdLog);
+  } else {
+    res.status(404);
+    throw new Error('Failed to create the log');
+  }
+});
+
 const getLogs = asyncHandler(async (req, res) => {
   const logs = await Log.find({});
   res.json(logs);
@@ -13,17 +24,6 @@ const getLogById = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error('Log not found');
-  }
-});
-
-const createLog = asyncHandler(async (req, res) => {
-  const log = new Log(req.body);
-  const createdLog = await log.save();
-  if (createdLog) {
-    res.status(201).json(createdLog);
-  } else {
-    res.status(404);
-    throw new Error('Failed to create the log');
   }
 });
 
