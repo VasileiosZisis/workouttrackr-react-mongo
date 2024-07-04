@@ -17,8 +17,18 @@ const getLogs = asyncHandler(async (req, res) => {
   res.json(logs);
 });
 
-const getLogById = asyncHandler(async (req, res) => {
-  const log = await Log.findById(req.params.id);
+// const getLogById = asyncHandler(async (req, res) => {
+//   const log = await Log.findById(req.params.id);
+//   if (log) {
+//     return res.json(log);
+//   } else {
+//     res.status(404);
+//     throw new Error('Log not found');
+//   }
+// });
+
+const getLogBySlug = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
   if (log) {
     return res.json(log);
   } else {
@@ -36,6 +46,7 @@ const updateLog = asyncHandler(async (req, res) => {
     }
   );
   if (log) {
+    console.log(req.body);
     res.status(200).json(log);
   } else {
     res.status(404);
@@ -53,4 +64,4 @@ const deleteLog = asyncHandler(async (req, res) => {
   }
 });
 
-export { getLogs, getLogById, createLog, updateLog, deleteLog };
+export { getLogs, getLogBySlug, createLog, updateLog, deleteLog };

@@ -11,8 +11,8 @@ export const logsApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     getLogDetails: builder.query({
-      query: (_id) => ({
-        url: `${LOGS_URL}/${_id}`,
+      query: (slugLog) => ({
+        url: `${LOGS_URL}/${slugLog}`,
       }),
       keepUnusedDataFor: 5,
     }),
@@ -24,8 +24,20 @@ export const logsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Logs'],
     }),
+    updateLog: builder.mutation({
+      query: (data) => ({
+        url: `${LOGS_URL}/${data.slugLog}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Logs'],
+    }),
   }),
 });
 
-export const { useGetLogsQuery, useGetLogDetailsQuery, useCreateLogMutation } =
-  logsApiSlice;
+export const {
+  useGetLogsQuery,
+  useGetLogDetailsQuery,
+  useCreateLogMutation,
+  useUpdateLogMutation,
+} = logsApiSlice;

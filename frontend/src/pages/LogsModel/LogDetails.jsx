@@ -2,8 +2,8 @@ import { useGetLogDetailsQuery } from '../../../slices/logsApiSlice'
 import { useParams } from 'react-router-dom'
 
 const LogDetails = () => {
-  const { id } = useParams()
-  const { data, isLoading, error } = useGetLogDetailsQuery(id)
+  const { slugLog } = useParams()
+  const { data, isLoading, error } = useGetLogDetailsQuery(slugLog)
 
   return (
     <>

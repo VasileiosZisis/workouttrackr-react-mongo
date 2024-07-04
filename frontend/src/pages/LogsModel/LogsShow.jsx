@@ -15,7 +15,7 @@ const LogsShow = () => {
           {data.length > 0 &&
             data.map(log => (
               <p key={log._id} className=''>
-                <Link className='' to={`/log/${log._id}`}>
+                <Link className='' to={`/logs/${log.slugLog}`}>
                   {log.title}
                 </Link>
               </p>
