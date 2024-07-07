@@ -17,18 +17,19 @@ const getLogs = asyncHandler(async (req, res) => {
   res.json(logs);
 });
 
-// const getLogById = asyncHandler(async (req, res) => {
-//   const log = await Log.findById(req.params.id);
-//   if (log) {
-//     return res.json(log);
-//   } else {
-//     res.status(404);
-//     throw new Error('Log not found');
-//   }
-// });
-
 const getLogBySlug = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (log) {
+    return res.json(log);
+  } else {
+    res.status(404);
+    throw new Error('Log not found');
+  }
+});
+
+const getLogById = asyncHandler(async (req, res) => {
+  console.log(req.params);
+  const log = await Log.findById(req.params.id);
   if (log) {
     return res.json(log);
   } else {
@@ -45,9 +46,29 @@ const updateLog = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  if (log) {
-    console.log(req.body);
-    res.status(200).json(log);
+  const updatedLog = await log.save();
+  console.log(updatedLog);
+  if (updatedLog) {
+    res.status(200).json(updatedLog);
+  } else {
+    res.status(404);
+    throw new Error('Log not found');
+  }
+});
+
+const updateLogId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const log = await Log.findByIdAndUpdate(
+    id,
+    { ...req.body },
+    {
+      new: true,
+    }
+  );
+  const updatedLog = await log.save();
+  console.log(updatedLog);
+  if (updatedLog) {
+    res.status(200).json(updatedLog);
   } else {
     res.status(404);
     throw new Error('Log not found');
@@ -55,7 +76,7 @@ const updateLog = asyncHandler(async (req, res) => {
 });
 
 const deleteLog = asyncHandler(async (req, res) => {
-  const log = await Log.findById(req.params.id);
+  const log = await Log.findOneAndDelete({ slugLog: req.params.slugLog });
   if (log) {
     res.status(200).json({ message: 'Log deleted' });
   } else {
@@ -64,4 +85,12 @@ const deleteLog = asyncHandler(async (req, res) => {
   }
 });
 
-export { getLogs, getLogBySlug, createLog, updateLog, deleteLog };
+export {
+  getLogs,
+  getLogBySlug,
+  createLog,
+  updateLog,
+  deleteLog,
+  getLogById,
+  updateLogId,
+};

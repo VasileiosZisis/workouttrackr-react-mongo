@@ -1,28 +1,26 @@
 import {
-  useUpdateLogMutation,
-  useGetLogDetailsQuery
+  useUpdateLogIdMutation,
+  useGetLogIdQuery
 } from '../../../slices/logsApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 const LogsEdit = () => {
-  const { slugLog } = useParams()
-  const {
-    data: logData,
-    isLoading,
-    error,
-    refetch
-  } = useGetLogDetailsQuery(slugLog)
-  const [updateLog, { isLoading: loadingUpdate }] = useUpdateLogMutation()
+  const { id } = useParams()
+
+  const { data: logData, isLoading, error, refetch } = useGetLogIdQuery(id)
+
+  const [updateLog, { isLoading: loadingUpdate }] = useUpdateLogIdMutation()
+
   const navigate = useNavigate()
+
   useEffect(() => {
     if (logData) {
       setValue('title', logData.title)
-      setValue('slugLog', logData.slugLog)
-      setValue('id', logData._id)
     }
   }, [logData])
+
   const {
     register,
     setValue,
@@ -34,10 +32,11 @@ const LogsEdit = () => {
     console.log(data)
     try {
       const res = await updateLog({
-        ...data
+        ...data,
+        _id: id
       }).unwrap()
       console.log(res)
-      navigate(`/logs/${slugLog}`)
+      navigate(`/logs`)
       refetch()
     } catch (err) {
       console.log(err)
@@ -57,11 +56,6 @@ const LogsEdit = () => {
             Title
           </label>
           <input type='text' {...register('title')} />
-          <p>{errors.title?.message}</p>
-          <label htmlFor='slugLog' name='slugLog'>
-            slugLog
-          </label>
-          <input type='text' {...register('slugLog')} />
           <p>{errors.title?.message}</p>
           <button type='submit'>Submit</button>
         </form>

@@ -5,10 +5,12 @@ import {
   getLogBySlug,
   createLog,
   updateLog,
-  deleteLog,
+  getLogById,
+  updateLogId,
 } from '../controllers/logController.js';
 
 router.route('/').get(getLogs).post(createLog);
-router.route('/:slugLog').get(getLogBySlug).put(updateLog).delete(deleteLog);
+router.route('/:slugLog').get(getLogBySlug).put(updateLog);
+router.route('/edit/:id').get(getLogById).put(updateLogId);
 
 export default router;
