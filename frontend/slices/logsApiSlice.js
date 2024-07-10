@@ -3,6 +3,14 @@ import { apiSlice } from './apiSlice';
 
 export const logsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    createLog: builder.mutation({
+      query: (data) => ({
+        url: LOGS_URL,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Logs'],
+    }),
     getLogs: builder.query({
       query: () => ({
         url: LOGS_URL,
@@ -31,19 +39,10 @@ export const logsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Logs'],
     }),
-    createLog: builder.mutation({
-      query: (data) => ({
-        url: LOGS_URL,
-        method: 'POST',
-        body: data,
-      }),
-      invalidatesTags: ['Logs'],
-    }),
-    updateLog: builder.mutation({
-      query: (data) => ({
-        url: `${LOGS_URL}/${data.slugLog}`,
-        method: 'PUT',
-        body: data,
+    deleteLog: builder.mutation({
+      query: (slugLog) => ({
+        url: `${LOGS_URL}/${slugLog}`,
+        method: 'delete',
       }),
       invalidatesTags: ['Logs'],
     }),
@@ -55,6 +54,6 @@ export const {
   useGetLogSlugQuery,
   useGetLogIdQuery,
   useCreateLogMutation,
-  useUpdateLogMutation,
   useUpdateLogIdMutation,
+  useDeleteLogMutation,
 } = logsApiSlice;

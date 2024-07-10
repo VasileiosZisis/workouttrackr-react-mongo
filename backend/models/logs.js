@@ -1,4 +1,4 @@
-// const Exercise = require('./exercise');
+import Exercise from './exercises.js';
 // const Trsession = require('./trsession');
 import mongoose from 'mongoose';
 import slug from 'mongoose-slug-updater';
@@ -16,25 +16,25 @@ const LogSchema = new Schema(
     //   type: Schema.Types.ObjectId,
     //   ref: 'User',
     // },
-    // exercises: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Exercise',
-    //   },
-    // ],
+    exercises: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Exercise',
+      },
+    ],
   },
   { timestamps: true }
 );
 
-// LogSchema.post('findOneAndDelete', async function (doc) {
-//   if (doc) {
-//     await Exercise.deleteMany({
-//       _id: {
-//         $in: doc.exercises,
-//       },
-//     });
-//   }
-// });
+LogSchema.post('findOneAndDelete', async function (doc) {
+  if (doc) {
+    await Exercise.deleteMany({
+      _id: {
+        $in: doc.exercises,
+      },
+    });
+  }
+});
 
 // LogSchema.virtual('Trsessions', {
 //   ref: 'Trsession',

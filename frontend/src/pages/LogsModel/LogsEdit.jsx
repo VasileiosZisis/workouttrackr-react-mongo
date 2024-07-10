@@ -43,24 +43,19 @@ const LogsEdit = () => {
     }
   }
 
+  if (loadingUpdate) return <p>loading</p>
+  if (isLoading) return <p>loading</p>
+  if (error) return <div>{error?.data?.message || error.error}</div>
+
   return (
-    <>
-      {loadingUpdate && <p>loading</p>}
-      {isLoading ? (
-        <p>loading</p>
-      ) : error ? (
-        <div>{error?.data?.message || error.error}</div>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='title' name='title'>
-            Title
-          </label>
-          <input type='text' {...register('title')} />
-          <p>{errors.title?.message}</p>
-          <button type='submit'>Submit</button>
-        </form>
-      )}
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label htmlFor='title' name='title'>
+        Title
+      </label>
+      <input type='text' {...register('title')} />
+      <p>{errors.title?.message}</p>
+      <button type='submit'>Submit</button>
+    </form>
   )
 }
 

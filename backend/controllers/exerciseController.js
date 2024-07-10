@@ -1,29 +1,34 @@
 import asyncHandler from '../middleware/asyncHandler.js';
+import Exercise from '../models/exercises.js';
 import Log from '../models/logs.js';
 
-const createLog = asyncHandler(async (req, res) => {
-  const log = new Log(req.body);
-  const createdLog = await log.save();
-  if (createdLog) {
-    res.status(201).json(createdLog);
+const createExercise = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  const exercise = new Exercise(req.body);
+  log.exercises.push(exercise);
+  const createdExercise = await Promise.all([exercise.save(), log.save()]);
+  if (createdExercise) {
+    res.status(201).json(createdExercise);
   } else {
     res.status(404);
-    throw new Error('Failed to create the log');
+    throw new Error('Failed to create the exercise');
   }
 });
 
-const getLogs = asyncHandler(async (req, res) => {
-  const logs = await Log.find({});
-  res.json(logs);
+const getExercises = asyncHandler(async (req, res) => {
+  const exercises = await Exercise.find({});
+  res.json(exercises);
 });
 
-const getLogBySlug = asyncHandler(async (req, res) => {
-  const log = await Log.findOne({ slugLog: req.params.slugLog });
-  if (log) {
-    return res.json(log);
+const getExerciseBySlug = asyncHandler(async (req, res) => {
+  const exercise = await Exercise.findOne({
+    slugExercise: req.params.slugExercise,
+  });
+  if (exercise) {
+    return res.json(exercise);
   } else {
     res.status(404);
-    throw new Error('Log not found');
+    throw new Error('Exercise not found');
   }
 });
 
@@ -65,4 +70,4 @@ const deleteLog = asyncHandler(async (req, res) => {
   }
 });
 
-export { getLogs, getLogBySlug, createLog, deleteLog, getLogById, updateLogId };
+export { createExercise, getExercises, getExerciseBySlug };

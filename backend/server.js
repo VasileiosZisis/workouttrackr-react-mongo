@@ -6,6 +6,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 dotenv.config();
 import connectDB from './config/db.js';
 import logRoutes from './routes/logRoutes.js';
+import exerciseRoutes from './routes/exerciseRoutes.js';
 
 const port = process.env.PORT;
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/logs', logRoutes);
+app.use('/api/exercises', exerciseRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
