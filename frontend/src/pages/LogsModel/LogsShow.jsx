@@ -8,16 +8,19 @@ const LogsShow = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
-    <div className=''>
-      {data.length > 0 &&
-        data.map(log => (
-          <p key={log._id} className=''>
-            <Link className='' to={`/logs/${log.slugLog}`}>
-              {log.title}
-            </Link>
-          </p>
-        ))}
-    </div>
+    <>
+      <Link to={'/logs/create-new-log'}>Go to Create New Log</Link>
+      <div className=''>
+        {data.length > 0 &&
+          data.map(log => (
+            <p key={log._id} className=''>
+              <Link className='' to={`/logs/${log.slugLog}`}>
+                {log.title}
+              </Link>
+            </p>
+          ))}
+      </div>
+    </>
   )
 }
 

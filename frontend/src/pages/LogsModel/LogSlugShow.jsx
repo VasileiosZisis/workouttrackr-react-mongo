@@ -3,10 +3,13 @@ import {
   useDeleteLogMutation
 } from '../../../slices/logsApiSlice'
 import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const LogSlugShow = () => {
+  const navigate = useNavigate()
+
   const { slugLog } = useParams()
+
   const { data, isLoading, error } = useGetLogSlugQuery(slugLog)
 
   const [deleteLog, { isLoading: loadingDelete }] = useDeleteLogMutation()
@@ -25,12 +28,19 @@ const LogSlugShow = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
   if (loadingDelete) return <p>loading</p>
 
+  const submitHandler = e => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
+      <button onClick={submitHandler}>Go Back</button>
       <h1>LogSlugShow</h1>
-      <div className=''>{data.title}</div>
+      <h2 className=''>{data.title}</h2>
       <Link to={`/logs/edit/${data._id}`}>Edit</Link>
       <button onClick={() => deleteHandler(slugLog)}>Delete</button>
+      <Link to={`/logs/${slugLog}/new-exercise`}>Go to Create Exercise</Link>
     </>
   )
 }

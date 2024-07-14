@@ -47,15 +47,23 @@ const LogsEdit = () => {
   if (isLoading) return <p>loading</p>
   if (error) return <div>{error?.data?.message || error.error}</div>
 
+  const submitHandler = e => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor='title' name='title'>
-        Title
-      </label>
-      <input type='text' {...register('title')} />
-      <p>{errors.title?.message}</p>
-      <button type='submit'>Submit</button>
-    </form>
+    <>
+      <button onClick={submitHandler}>Go Back</button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor='title' name='title'>
+          Title
+        </label>
+        <input type='text' {...register('title')} />
+        <p>{errors.title?.message}</p>
+        <button type='submit'>Submit</button>
+      </form>
+    </>
   )
 }
 

@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/logs', logRoutes);
-app.use('/api/exercises', exerciseRoutes);
+app.use('/api/logs/:slugLog/exercises', exerciseRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();

@@ -13,7 +13,7 @@ const createLog = asyncHandler(async (req, res) => {
 });
 
 const getLogs = asyncHandler(async (req, res) => {
-  const logs = await Log.find({});
+  const logs = await Log.find({}).sort({ updatedAt: -1, createdAt: -1 });
   res.json(logs);
 });
 

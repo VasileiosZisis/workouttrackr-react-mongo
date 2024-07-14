@@ -1,7 +1,10 @@
 import { useForm } from 'react-hook-form'
 import { useCreateLogMutation } from '../../../slices/logsApiSlice'
+import { Link, useNavigate } from 'react-router-dom'
 
 const LogCreate = () => {
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -18,15 +21,23 @@ const LogCreate = () => {
     }
   }
 
+  const submitHandler = e => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor='title' name='title'>
-        Title
-      </label>
-      <input type='text' {...register('title')} />
-      <p>{errors.title?.message}</p>
-      <button type='submit'>Submit</button>
-    </form>
+    <>
+      <button onClick={submitHandler}>Go Back</button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor='title' name='title'>
+          Title
+        </label>
+        <input type='text' {...register('title')} />
+        <p>{errors.title?.message}</p>
+        <button type='submit'>Submit</button>
+      </form>
+    </>
   )
 }
 
