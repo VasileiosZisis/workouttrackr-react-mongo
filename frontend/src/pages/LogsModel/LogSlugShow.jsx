@@ -41,6 +41,16 @@ const LogSlugShow = () => {
       <Link to={`/logs/edit/${data._id}`}>Edit</Link>
       <button onClick={() => deleteHandler(slugLog)}>Delete</button>
       <Link to={`/logs/${slugLog}/new-exercise`}>Go to Create Exercise</Link>
+      <div className=''>
+        {data.logAggregate.length > 0 &&
+          data.logAggregate.map(item => (
+            <p key={item._id} className=''>
+              {/* <Link className='' to={`/logs/${log.slugLog}`}> */}
+              {item.exercises.slugExercise}
+              {/* </Link> */}
+            </p>
+          ))}
+      </div>
     </>
   )
 }
