@@ -1,17 +1,21 @@
 import {
-  useUpdateLogIdMutation,
-  useGetLogIdQuery
-} from '../../../slices/logsApiSlice'
+  useGetExerciseIdQuery,
+  useUpdateExerciseIdMutation
+} from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
-const LogsEdit = () => {
-  const { id } = useParams()
+const ExerciseEdit = () => {
+  const { slugLog, exerciseId } = useParams()
 
-  const { data, isLoading, error, refetch } = useGetLogIdQuery(id)
+  const { data, isLoading, error, refetch } = useGetExerciseIdQuery({
+    slugLog,
+    exerciseId
+  })
 
-  const [updateLog, { isLoading: loadingUpdate }] = useUpdateLogIdMutation()
+  const [updateExerciseId, { isLoading: loadingUpdate }] =
+    useUpdateExerciseIdMutation()
 
   const navigate = useNavigate()
 
@@ -28,13 +32,13 @@ const LogsEdit = () => {
     formState: { errors }
   } = useForm()
 
-  const onSubmit = async data => {
+  const onSubmit = async dataForm => {
     try {
-      await updateLog({
-        ...data,
-        _id: id
+      await updateExerciseId({
+        slugLog,
+        data: { ...dataForm, _id: exerciseId }
       }).unwrap()
-      navigate(`/logs`)
+      navigate(`/logs/${slugLog}`)
       refetch()
     } catch (err) {
       console.log(err)
@@ -65,4 +69,4 @@ const LogsEdit = () => {
   )
 }
 
-export default LogsEdit
+export default ExerciseEdit

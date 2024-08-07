@@ -15,6 +15,8 @@ import LogSlugShow from './pages/LogsModel/LogSlugShow.jsx'
 import LogEdit from './pages/LogsModel/LogEdit.jsx'
 import LogCreate from './pages/LogsModel/LogCreate.jsx'
 import ExerciseCreate from './pages/ExercisesModel/ExerciseCreate.jsx'
+import ExerciseSlugShow from './pages/ExercisesModel/ExerciseSlugShow.jsx'
+import ExerciseEdit from './pages/ExercisesModel/ExerciseEdit.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -24,8 +26,19 @@ const router = createBrowserRouter(
       <Route path='/logs' element={<LogsShow />} />
       <Route path='/logs/create-new-log' element={<LogCreate />} />
       <Route path='/logs/:slugLog' element={<LogSlugShow />} />
-      <Route path='/logs/:slugLog/new-exercise' element={<ExerciseCreate />} />
       <Route path='/logs/edit/:id' element={<LogEdit />} />
+      <Route
+        path='/logs/:slugLog/create-new-exercise'
+        element={<ExerciseCreate />}
+      />
+      <Route
+        path='/logs/:slugLog/:slugExercise'
+        element={<ExerciseSlugShow />}
+      />
+      <Route
+        path='/logs/:slugLog/edit/:exerciseId'
+        element={<ExerciseEdit />}
+      />
     </Route>
   )
 )

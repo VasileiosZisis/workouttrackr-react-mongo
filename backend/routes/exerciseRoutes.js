@@ -1,9 +1,15 @@
 import express from 'express';
 const router = express.Router({ mergeParams: true });
-import { createExercise } from '../controllers/exerciseController.js';
+import {
+  createExercise,
+  getExerciseBySlug,
+  getExerciseById,
+  updateExerciseId,
+  deleteExercise,
+} from '../controllers/exerciseController.js';
 
 router.route('/').post(createExercise);
-// router.route('/:slugLog').get(getLogBySlug).delete(deleteLog);
-// router.route('/edit/:id').get(getLogById).put(updateLogId);
+router.route('/:slugExercise').get(getExerciseBySlug).delete(deleteExercise);
+router.route('/edit/:exerciseId').get(getExerciseById).put(updateExerciseId);
 
 export default router;

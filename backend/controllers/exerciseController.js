@@ -15,59 +15,91 @@ const createExercise = asyncHandler(async (req, res) => {
   }
 });
 
-const getExercises = asyncHandler(async (req, res) => {
-  const exercises = await Exercise.find({});
-  res.json(exercises);
-});
-
 const getExerciseBySlug = asyncHandler(async (req, res) => {
-  const exercise = await Exercise.findOne({
-    slugExercise: req.params.slugExercise,
-  });
-  if (exercise) {
-    return res.json(exercise);
-  } else {
-    res.status(404);
-    throw new Error('Exercise not found');
-  }
-});
-
-const getLogById = asyncHandler(async (req, res) => {
-  const log = await Log.findById(req.params.id);
-  if (log) {
-    return res.json(log);
-  } else {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
     res.status(404);
     throw new Error('Log not found');
-  }
-});
-
-const updateLogId = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const log = await Log.findByIdAndUpdate(
-    id,
-    { ...req.body },
-    {
-      new: true,
+  } else {
+    const exercise = await Exercise.findOne({
+      slugExercise: req.params.slugExercise,
+    });
+    if (exercise) {
+      return res.json(exercise);
+    } else {
+      res.status(404);
+      throw new Error('Exercise not found');
     }
-  );
-  const updatedLog = await log.save();
-  if (updatedLog) {
-    res.status(200).json(updatedLog);
-  } else {
-    res.status(404);
-    throw new Error('Log not found');
   }
 });
 
-const deleteLog = asyncHandler(async (req, res) => {
-  const log = await Log.findOneAndDelete({ slugLog: req.params.slugLog });
-  if (log) {
-    res.status(200).json({ message: 'Log deleted' });
-  } else {
+const getExerciseById = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
     res.status(404);
     throw new Error('Log not found');
+  } else {
+    const exercise = await Exercise.findById(req.params.exerciseId);
+    if (exercise) {
+      return res.json(exercise);
+    } else {
+      res.status(404);
+      throw new Error('Exercise not found');
+    }
   }
 });
 
-export { createExercise, getExercises, getExerciseBySlug };
+const updateExerciseId = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  } else {
+    const exercise = await Exercise.findByIdAndUpdate(
+      { _id: req.params.exerciseId },
+      { ...req.body },
+      {
+        new: true,
+      }
+    );
+    const updatedExercise = await exercise.save();
+    if (updatedExercise) {
+      res.status(200).json(updatedExercise);
+    } else {
+      res.status(404);
+      throw new Error('Exercise not found');
+    }
+  }
+});
+
+const deleteExercise = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  } else {
+    const exercise = await Exercise.findOne({
+      slugExercise: req.params.slugExercise,
+    });
+    if (exercise) {
+      await Log.findByIdAndUpdate(log._id, {
+        $pull: {
+          exercises: exercise._id,
+        },
+      });
+      await Exercise.findByIdAndDelete(exercise._id);
+      res.json({ message: 'Exercise deleted' });
+    } else {
+      res.status(404);
+      throw new Error('Exercise not found');
+    }
+  }
+});
+
+export {
+  createExercise,
+  getExerciseBySlug,
+  getExerciseById,
+  updateExerciseId,
+  deleteExercise,
+};

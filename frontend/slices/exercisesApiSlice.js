@@ -11,7 +11,41 @@ export const exercisesApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Exercises'],
     }),
+    getExerciseSlug: builder.query({
+      query: ({ slugLog, slugExercise }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}`,
+      }),
+      providesTags: ['Exercises'],
+      keepUnusedDataFor: 5,
+    }),
+    getExerciseId: builder.query({
+      query: ({ slugLog, exerciseId }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/edit/${exerciseId}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+    updateExerciseId: builder.mutation({
+      query: ({ slugLog, data }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/edit/${data._id}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Exercises'],
+    }),
+    deleteExercise: builder.mutation({
+      query: ({ slugLog, slugExercise }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}`,
+        method: 'delete',
+      }),
+      invalidatesTags: ['Exercises'],
+    }),
   }),
 });
 
-export const { useCreateExerciseMutation } = exercisesApiSlice;
+export const {
+  useCreateExerciseMutation,
+  useGetExerciseSlugQuery,
+  useGetExerciseIdQuery,
+  useUpdateExerciseIdMutation,
+  useDeleteExerciseMutation,
+} = exercisesApiSlice;

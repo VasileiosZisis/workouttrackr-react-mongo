@@ -37,17 +37,22 @@ const LogSlugShow = () => {
     <>
       <button onClick={submitHandler}>Go Back</button>
       <h1>LogSlugShow</h1>
-      <h2 className=''>{data.title}</h2>
-      <Link to={`/logs/edit/${data._id}`}>Edit</Link>
+      <h2 className=''>{data.log.title}</h2>
+      <Link to={`/logs/edit/${data.log._id}`}>Edit</Link>
       <button onClick={() => deleteHandler(slugLog)}>Delete</button>
-      <Link to={`/logs/${slugLog}/new-exercise`}>Go to Create Exercise</Link>
+      <Link to={`/logs/${slugLog}/create-new-exercise`}>
+        Go to Create Exercise
+      </Link>
       <div className=''>
         {data.logAggregate.length > 0 &&
           data.logAggregate.map(item => (
             <p key={item._id} className=''>
-              {/* <Link className='' to={`/logs/${log.slugLog}`}> */}
-              {item.exercises.slugExercise}
-              {/* </Link> */}
+              <Link
+                className=''
+                to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
+              >
+                {item.exercises.title}
+              </Link>
             </p>
           ))}
       </div>
