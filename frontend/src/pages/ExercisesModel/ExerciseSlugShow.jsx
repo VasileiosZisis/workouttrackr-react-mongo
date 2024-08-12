@@ -1,4 +1,7 @@
-import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
+import {
+  useGetExerciseSlugQuery,
+  useDeleteExerciseMutation
+} from '../../../slices/exercisesApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 
@@ -12,13 +15,29 @@ const ExerciseSlugShow = () => {
     slugExercise
   })
 
-  if (isLoading) return <p>loading</p>
-  if (error) return <div>{error?.data?.message || error.error}</div>
+  const [deleteExercise, { isLoading: loadingDelete }] =
+    useDeleteExerciseMutation()
+
+  const deleteHandler = async () => {
+    console.log(slugLog)
+    if (window.confirm('Are you sure?')) {
+      try {
+        await deleteExercise({ slugLog, slugExercise })
+        navigate(`/logs/${slugLog}`)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
 
   const submitHandler = e => {
     e.preventDefault()
     navigate(-1)
   }
+
+  if (isLoading) return <p>loading</p>
+  if (error) return <div>{error?.data?.message || error.error}</div>
+  if (loadingDelete) return <p>loading</p>
 
   return (
     <>
@@ -26,6 +45,7 @@ const ExerciseSlugShow = () => {
       <h1>ExerciseSlugShow</h1>
       <h2 className=''>{data.title}</h2>
       <Link to={`/logs/${slugLog}/edit/${data._id}`}>Edit</Link>
+      <button onClick={() => deleteHandler(slugExercise)}>Delete</button>
       {/* <Link to={`/logs/${slugLog}/create-new-exercise`}>
         Go to Create Exercise
       </Link>

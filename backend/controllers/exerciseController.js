@@ -73,6 +73,7 @@ const updateExerciseId = asyncHandler(async (req, res) => {
 });
 
 const deleteExercise = asyncHandler(async (req, res) => {
+  console.log(req.params);
   const log = await Log.findOne({ slugLog: req.params.slugLog });
   if (!log) {
     res.status(404);

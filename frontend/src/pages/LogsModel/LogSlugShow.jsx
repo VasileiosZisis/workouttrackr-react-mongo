@@ -14,7 +14,7 @@ const LogSlugShow = () => {
 
   const [deleteLog, { isLoading: loadingDelete }] = useDeleteLogMutation()
 
-  const deleteHandler = async id => {
+  const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
       try {
         await deleteLog(slugLog)
@@ -24,14 +24,14 @@ const LogSlugShow = () => {
     }
   }
 
+  const submitHandler = e => {
+    e.preventDefault()
+    navigate('/logs')
+  }
+
   if (isLoading) return <p>loading</p>
   if (error) return <div>{error?.data?.message || error.error}</div>
   if (loadingDelete) return <p>loading</p>
-
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
 
   return (
     <>
