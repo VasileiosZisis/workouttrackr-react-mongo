@@ -7,6 +7,7 @@ dotenv.config();
 import connectDB from './config/db.js';
 import logRoutes from './routes/logRoutes.js';
 import exerciseRoutes from './routes/exerciseRoutes.js';
+import wlsessionRoutes from './routes/wlsessionRoutes.js';
 
 const port = process.env.PORT;
 
@@ -19,6 +20,10 @@ app.use(express.json());
 
 app.use('/api/logs', logRoutes);
 app.use('/api/logs/:slugLog/exercises', exerciseRoutes);
+app.use(
+  '/api/logs/:slugLog/exercises/:slugExercise/wlsessions',
+  wlsessionRoutes
+);
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();

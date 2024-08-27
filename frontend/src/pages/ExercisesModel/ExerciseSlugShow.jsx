@@ -32,7 +32,7 @@ const ExerciseSlugShow = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(-1)
+    navigate(`/logs/${slugLog}`)
   }
 
   if (isLoading) return <p>loading</p>
@@ -46,19 +46,22 @@ const ExerciseSlugShow = () => {
       <h2 className=''>{data.title}</h2>
       <Link to={`/logs/${slugLog}/edit/${data._id}`}>Edit</Link>
       <button onClick={() => deleteHandler(slugExercise)}>Delete</button>
-      {/* <Link to={`/logs/${slugLog}/create-new-exercise`}>
-        Go to Create Exercise
+      <Link to={`/logs/${slugLog}/${slugExercise}/create-new-session`}>
+        Go to Create Session
       </Link>
       <div className=''>
-        {data.logAggregate.length > 0 &&
-          data.logAggregate.map(item => (
+        {data.exerciseAggregate.length > 0 &&
+          data.exerciseAggregate.map(item => (
             <p key={item._id} className=''>
-              <Link className='' to={`/logs/${log.slugLog}`}>
-              {item.exercises.slugExercise}
+              <Link
+                className=''
+                to={`/logs/${slugLog}/${slugExercise}/${item.wlsessions.slugSession}`}
+              >
+                {new Date(item.wlsessions.createdDate).toLocaleDateString()}
               </Link>
             </p>
           ))}
-      </div> */}
+      </div>
     </>
   )
 }

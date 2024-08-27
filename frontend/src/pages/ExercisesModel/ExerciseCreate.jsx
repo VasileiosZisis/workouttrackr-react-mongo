@@ -9,8 +9,7 @@ const ExerciseCreate = () => {
   const {
     data: logData,
     isLoading: getLogLoading,
-    error,
-    refetch
+    error
   } = useGetLogSlugQuery(slugLog)
 
   const {
@@ -23,8 +22,8 @@ const ExerciseCreate = () => {
 
   const onSubmit = async data => {
     try {
-      const res = await createExercise({ ...data, slugLog: slugLog }).unwrap()
-      refetch()
+      await createExercise({ ...data, slugLog: slugLog }).unwrap()
+      navigate(`/logs/${slugLog}`)
     } catch (err) {
       console.log(err)
     }
@@ -32,16 +31,16 @@ const ExerciseCreate = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(-1)
+    navigate(`/logs/${slugLog}`)
   }
 
   if (getLogLoading) return <p>loading</p>
+  if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <>
       <h1>Create Exercise</h1>
       <h2>{logData.title}</h2>
-      {error && <div>{error?.data?.message || error.error}</div>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='title' name='title'>
           Title

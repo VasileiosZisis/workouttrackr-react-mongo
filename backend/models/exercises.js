@@ -1,4 +1,4 @@
-// const Trsession = require('./trsession');
+import Wlsession from './wlsessions.js';
 import mongoose from 'mongoose';
 import slug from 'mongoose-slug-updater';
 const { Schema, model } = mongoose;
@@ -23,19 +23,19 @@ const exerciseSchema = new Schema(
   { timestamps: true }
 );
 
-// exerciseSchema.virtual('Trsessions', {
-//   ref: 'Trsession',
-//   localField: '_id',
-//   foreignField: 'exercise',
-// });
+exerciseSchema.virtual('wlsessions', {
+  ref: 'Wlsession',
+  localField: '_id',
+  foreignField: 'exercise',
+});
 
-// exerciseSchema.post('findOneAndDelete', async function (doc) {
-//   if (doc) {
-//     await Trsession.deleteMany({
-//       exercise: doc._id,
-//     });
-//   }
-// });
+exerciseSchema.post('findOneAndDelete', async function (doc) {
+  if (doc) {
+    await Wlsession.deleteMany({
+      exercise: doc._id,
+    });
+  }
+});
 
 const Exercise = model('Exercise', exerciseSchema);
 

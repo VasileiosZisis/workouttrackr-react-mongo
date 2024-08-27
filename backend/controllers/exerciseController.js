@@ -24,8 +24,31 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
     const exercise = await Exercise.findOne({
       slugExercise: req.params.slugExercise,
     });
+    const exerciseAggregate = await Exercise.aggregate([
+      { $match: { _id: exercise._id } },
+      {
+        $lookup: {
+          from: 'wlsessions',
+          localField: '_id',
+          foreignField: 'exercise',
+          as: 'wlsessions',
+        },
+      },
+      {
+        $unwind: '$wlsessions',
+      },
+      {
+        $sort: { 'wlsessions._id': -1 },
+      },
+      // {
+      //   $skip: limit * page - limit,
+      // },
+      // {
+      //   $limit: limit,
+      // },
+    ]);
     if (exercise) {
-      return res.json(exercise);
+      return res.json({ exercise, exerciseAggregate });
     } else {
       res.status(404);
       throw new Error('Exercise not found');
