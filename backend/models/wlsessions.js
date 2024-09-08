@@ -18,22 +18,22 @@ const wlsessionSchema = new Schema(
       unique: true,
       permanent: true,
     },
-    // set: [
-    //   new Schema({
-    //     repetitions: Number,
-    //     kilograms: Number,
-    //     isHard: {
-    //       type: Boolean,
-    //       default: false,
-    //     },
-    //     volume: {
-    //       type: Number,
-    //       default: function () {
-    //         return (this.repetitions * this.kilograms).toFixed(2);
-    //       },
-    //     },
-    //   }),
-    // ],
+    set: [
+      new Schema({
+        repetitions: Number,
+        kilograms: Number,
+        // isHard: {
+        //   type: Boolean,
+        //   default: false,
+        // },
+        // volume: {
+        //   type: Number,
+        //   default: function () {
+        //     return (this.repetitions * this.kilograms).toFixed(2);
+        //   },
+        // },
+      }),
+    ],
     // totalVolume: {
     //   type: Number,
     //   default: function () {

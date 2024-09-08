@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { useCreateWlsessionMutation } from '../../../slices/wlsessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -13,11 +13,24 @@ const WlsessionCreate = () => {
     error: exerciseError
   } = useGetExerciseSlugQuery({ slugLog, slugExercise })
 
+  const defaultDate = new Date().toISOString().slice(0, 10)
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors }
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      createdDate: defaultDate,
+      set: [{ repetitions: '', kilograms: '' }]
+    }
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'set'
+  })
 
   const [createWlsession, { isLoading }] = useCreateWlsessionMutation()
 
@@ -54,6 +67,39 @@ const WlsessionCreate = () => {
         </label>
         <input type='date' {...register('createdDate')} />
         <p>{errors.createdDate?.message}</p>
+        <label>Set</label>
+        <ul>
+          {fields.map((item, index) => {
+            return (
+              <li key={item.id}>
+                <label htmlFor='repetitions' name='repetitions'>
+                  repetitions
+                </label>
+                <input
+                  type='number'
+                  {...register(`set.${index}.repetitions`)}
+                />
+                <p>{errors.set?.[i].repetitions?.message}</p>
+                <label htmlFor='kilograms' name='kilograms'>
+                  kilograms
+                </label>
+                <input type='number' {...register(`set.${index}.kilograms`)} />
+                <p>{errors.set?.[i].kilograms?.message}</p>
+              </li>
+            )
+          })}
+        </ul>
+        <button
+          type='button'
+          onClick={() => {
+            append({ repetitions: '', kilograms: '' })
+          }}
+        >
+          append
+        </button>
+        <button type='button' onClick={() => remove(1)}>
+          remove at
+        </button>
         <button type='submit'>Submit</button>
       </form>
       <button onClick={submitHandler}>Go Back</button>
