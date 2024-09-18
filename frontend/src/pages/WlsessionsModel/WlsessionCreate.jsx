@@ -35,14 +35,13 @@ const WlsessionCreate = () => {
   const [createWlsession, { isLoading }] = useCreateWlsessionMutation()
 
   const onSubmit = async data => {
-    console.log(data)
     try {
       const res = await createWlsession({
         ...data,
         slugLog: slugLog,
         slugExercise: slugExercise
       }).unwrap()
-      console.log(res)
+      navigate(`/logs/${slugLog}/${slugExercise}`)
     } catch (err) {
       console.log(err)
     }
@@ -85,6 +84,10 @@ const WlsessionCreate = () => {
                 </label>
                 <input type='number' {...register(`set.${index}.kilograms`)} />
                 <p>{errors.set?.[i].kilograms?.message}</p>
+                <label htmlFor='isHard' name='isHard'>
+                  isHard
+                </label>
+                <input type='checkbox' {...register(`set.${index}.isHard`)} />
               </li>
             )
           })}

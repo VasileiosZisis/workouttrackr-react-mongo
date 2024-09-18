@@ -20,4 +20,30 @@ const createWlsession = asyncHandler(async (req, res) => {
   }
 });
 
-export { createWlsession };
+const getWlsessionBySlug = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  } else {
+    const exercise = await Exercise.findOne({
+      slugExercise: req.params.slugExercise,
+    });
+    if (!exercise) {
+      res.status(404);
+      throw new Error('Exercise not found');
+    } else {
+      const wlsession = await Wlsession.findOne({
+        slugSession: req.params.slugSession,
+      });
+      if (wlsession) {
+        return res.json({ wlsession });
+      } else {
+        res.status(404);
+        throw new Error('Session not found');
+      }
+    }
+  }
+});
+
+export { createWlsession, getWlsessionBySlug };

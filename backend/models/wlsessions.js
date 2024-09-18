@@ -22,10 +22,10 @@ const wlsessionSchema = new Schema(
       new Schema({
         repetitions: Number,
         kilograms: Number,
-        // isHard: {
-        //   type: Boolean,
-        //   default: false,
-        // },
+        isHard: {
+          type: Boolean,
+          default: false,
+        },
         // volume: {
         //   type: Number,
         //   default: function () {
