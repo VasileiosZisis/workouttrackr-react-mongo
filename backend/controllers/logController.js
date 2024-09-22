@@ -76,7 +76,7 @@ const updateLogId = asyncHandler(async (req, res) => {
     res.status(200).json(updatedLog);
   } else {
     res.status(404);
-    throw new Error('Log not found');
+    throw new Error('Log update failed');
   }
 });
 
@@ -86,7 +86,7 @@ const deleteLog = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Log deleted' });
   } else {
     res.status(404);
-    throw new Error('Log not found');
+    throw new Error('Log deletion failed');
   }
 });
 

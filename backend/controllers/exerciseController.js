@@ -90,7 +90,7 @@ const updateExerciseId = asyncHandler(async (req, res) => {
       res.status(200).json(updatedExercise);
     } else {
       res.status(404);
-      throw new Error('Exercise not found');
+      throw new Error('Exercise update failed');
     }
   }
 });
@@ -115,7 +115,7 @@ const deleteExercise = asyncHandler(async (req, res) => {
       res.json({ message: 'Exercise deleted' });
     } else {
       res.status(404);
-      throw new Error('Exercise not found');
+      throw new Error('Exercise deletion failed');
     }
   }
 });

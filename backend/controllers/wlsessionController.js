@@ -46,4 +46,64 @@ const getWlsessionBySlug = asyncHandler(async (req, res) => {
   }
 });
 
-export { createWlsession, getWlsessionBySlug };
+const getWlsessionById = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  } else {
+    const exercise = await Exercise.findOne({
+      slugExercise: req.params.slugExercise,
+    });
+    if (!exercise) {
+      res.status(404);
+      throw new Error('Exercise not found');
+    } else {
+      const wlsession = await Wlsession.findById(req.params.wlsessionId);
+      if (wlsession) {
+        return res.json(wlsession);
+      } else {
+        res.status(404);
+        throw new Error('Session not found');
+      }
+    }
+  }
+});
+
+const updateWlsessionById = asyncHandler(async (req, res) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  } else {
+    const exercise = await Exercise.findOne({
+      slugExercise: req.params.slugExercise,
+    });
+    if (!exercise) {
+      res.status(404);
+      throw new Error('Exercise not found');
+    } else {
+      const wlsession = await Wlsession.findByIdAndUpdate(
+        { _id: req.params.wlsessionId },
+        { ...req.body },
+        {
+          new: true,
+        }
+      );
+      const updatedWlsession = await wlsession.save();
+      if (updatedWlsession) {
+        res.status(200).json(updatedWlsession);
+      } else {
+        res.status(404);
+        throw new Error('Session update failed');
+      }
+    }
+  }
+});
+
+export {
+  createWlsession,
+  getWlsessionBySlug,
+  getWlsessionById,
+  updateWlsessionById,
+};

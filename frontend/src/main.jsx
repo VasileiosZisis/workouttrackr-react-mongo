@@ -19,6 +19,7 @@ import ExerciseSlugShow from './pages/ExercisesModel/ExerciseSlugShow.jsx'
 import ExerciseEdit from './pages/ExercisesModel/ExerciseEdit.jsx'
 import WlsessionCreate from './pages/WlsessionsModel/WlsessionCreate.jsx'
 import WlsessionShow from './pages/WlsessionsModel/WlsessionShow.jsx'
+import WlsessionEdit from './pages/WlsessionsModel/WlsessionEdit.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -48,6 +49,10 @@ const router = createBrowserRouter(
       <Route
         path='/logs/:slugLog/:slugExercise/:slugSession'
         element={<WlsessionShow />}
+      />
+      <Route
+        path='/logs/:slugLog/:slugExercise/edit/:wlsessionId'
+        element={<WlsessionEdit />}
       />
     </Route>
   )

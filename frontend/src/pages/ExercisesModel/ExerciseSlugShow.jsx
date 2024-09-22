@@ -44,7 +44,7 @@ const ExerciseSlugShow = () => {
       <button onClick={submitHandler}>Go Back</button>
       <h1>ExcerciseSlugShow</h1>
       <h2 className=''>{`${data.exercise.title}`}</h2>
-      <Link to={`/logs/${slugLog}/edit/${data._id}`}>Edit</Link>
+      <Link to={`/logs/${slugLog}/edit/${data.exercise._id}`}>Edit</Link>
       <button onClick={() => deleteHandler(slugExercise)}>Delete</button>
       <Link to={`/logs/${slugLog}/${slugExercise}/create-new-session`}>
         Go to Create Session

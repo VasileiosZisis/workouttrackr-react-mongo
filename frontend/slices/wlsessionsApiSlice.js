@@ -18,8 +18,26 @@ export const wlsessionsApiSlice = apiSlice.injectEndpoints({
       providesTags: [`Wlsessions`],
       keepUnusedDataFor: 5,
     }),
+    getWlsessionById: builder.query({
+      query: ({ slugLog, slugExercise, wlsessionId }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}/wlsessions/edit/${wlsessionId}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+    updateWlsessionId: builder.mutation({
+      query: ({ slugLog, slugExercise, data }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}/wlsessions/edit/${data._id}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Wlsessions'],
+    }),
   }),
 });
 
-export const { useCreateWlsessionMutation, useGetWlsessionSlugQuery } =
-  wlsessionsApiSlice;
+export const {
+  useCreateWlsessionMutation,
+  useGetWlsessionSlugQuery,
+  useGetWlsessionByIdQuery,
+  useUpdateWlsessionIdMutation,
+} = wlsessionsApiSlice;

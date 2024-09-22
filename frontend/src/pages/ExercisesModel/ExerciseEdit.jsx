@@ -19,18 +19,18 @@ const ExerciseEdit = () => {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (data) {
-      setValue('title', data.title)
-    }
-  }, [data])
-
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors }
   } = useForm()
+
+  useEffect(() => {
+    if (data) {
+      setValue('title', data.title)
+    }
+  }, [data])
 
   const onSubmit = async dataForm => {
     try {
