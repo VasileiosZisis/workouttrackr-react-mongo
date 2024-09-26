@@ -22,23 +22,22 @@ const WlsessionEdit = () => {
 
   const {
     register,
+    reset,
     setValue,
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm({
-    defaultValues: {
-      set: [{ repetitions: '', kilograms: '' }]
-    }
-  })
+  } = useForm()
+
+  useEffect(() => {
+    reset(data)
+  }, [data])
 
   useEffect(() => {
     if (data) {
-      console.log(data.set.map(s => s.repetitions))
       setValue(
         'createdDate',
         new Date(data.createdDate).toISOString().slice(0, 10)
-        // setValue(`set.${index}.repetitions`, data.set.repetitions)
       )
     }
   }, [data])
@@ -50,11 +49,12 @@ const WlsessionEdit = () => {
 
   const onSubmit = async dataForm => {
     try {
-      await updateWlsessionId({
+      const c = await updateWlsessionId({
         slugLog,
         slugExercise,
         data: { ...dataForm, _id: wlsessionId }
       }).unwrap()
+      console.log(c)
       //   navigate(`/logs/${slugLog}`)
       refetch()
     } catch (err) {
@@ -70,8 +70,6 @@ const WlsessionEdit = () => {
   if (loadingUpdate) return <p>loading</p>
   if (isLoading) return <p>loading</p>
   if (error) return <div>{error?.data?.message || error.error}</div>
-
-  //   console.log(data)
 
   return (
     <>
@@ -93,23 +91,32 @@ const WlsessionEdit = () => {
                 <input
                   type='number'
                   {...register(`set.${index}.repetitions`)}
-                  defaultValue={field.repetitions}
                 />
                 <p>{errors.set?.[i].repetitions?.message}</p>
-                {/* <label htmlFor='kilograms' name='kilograms'>
+                <label htmlFor='kilograms' name='kilograms'>
                   kilograms
                 </label>
                 <input type='number' {...register(`set.${index}.kilograms`)} />
-                
-                <p>{errors.set?.[i].kilograms?.message}</p> */}
-                {/* <label htmlFor='isHard' name='isHard'>
+                <p>{errors.set?.[i].kilograms?.message}</p>
+                <label htmlFor='isHard' name='isHard'>
                   isHard
                 </label>
-                <input type='checkbox' {...register(`set.${index}.isHard`)} /> */}
+                <input type='checkbox' {...register(`set.${index}.isHard`)} />
               </li>
             )
           })}
         </ul>
+        <button
+          type='button'
+          onClick={() => {
+            append({ repetitions: '', kilograms: '' })
+          }}
+        >
+          append
+        </button>
+        <button type='button' onClick={() => remove(1)}>
+          remove at
+        </button>
         <button type='submit'>Submit</button>
       </form>
     </>
