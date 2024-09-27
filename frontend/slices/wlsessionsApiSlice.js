@@ -32,6 +32,13 @@ export const wlsessionsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Wlsessions'],
     }),
+    deleteWlsession: builder.mutation({
+      query: ({ slugLog, slugExercise, slugSession }) => ({
+        url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}/wlsessions/${slugSession}`,
+        method: 'delete',
+      }),
+      invalidatesTags: ['Wlsessions'],
+    }),
   }),
 });
 
@@ -40,4 +47,5 @@ export const {
   useGetWlsessionSlugQuery,
   useGetWlsessionByIdQuery,
   useUpdateWlsessionIdMutation,
+  useDeleteWlsessionMutation,
 } = wlsessionsApiSlice;

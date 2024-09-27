@@ -19,7 +19,6 @@ const ExerciseSlugShow = () => {
     useDeleteExerciseMutation()
 
   const deleteHandler = async () => {
-    console.log(slugLog)
     if (window.confirm('Are you sure?')) {
       try {
         await deleteExercise({ slugLog, slugExercise })

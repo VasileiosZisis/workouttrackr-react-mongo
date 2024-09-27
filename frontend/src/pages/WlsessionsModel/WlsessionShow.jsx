@@ -1,4 +1,7 @@
-import { useGetWlsessionSlugQuery } from '../../../slices/wlsessionsApiSlice'
+import {
+  useGetWlsessionSlugQuery,
+  useDeleteWlsessionMutation
+} from '../../../slices/wlsessionsApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 
@@ -13,14 +16,28 @@ const WlsessionShow = () => {
     slugSession
   })
 
+  const [deleteWlsession, { isLoading: loadingDelete }] =
+    useDeleteWlsessionMutation()
+
+  const deleteHandler = async () => {
+    if (window.confirm('Are you sure?')) {
+      try {
+        await deleteWlsession({ slugLog, slugExercise, slugSession })
+        navigate(`/logs/${slugLog}/${slugExercise}`)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
   const submitHandler = e => {
     e.preventDefault()
-    navigate(`/logs/${slugLog}`)
+    navigate(`/logs/${slugLog}/${slugExercise}`)
   }
 
   if (isLoading) return <p>loading</p>
   if (error) return <div>{error?.data?.message || error.error}</div>
-  // if (loadingDelete) return <p>loading</p>
+  if (loadingDelete) return <p>loading</p>
 
   return (
     <>
@@ -32,6 +49,7 @@ const WlsessionShow = () => {
       <Link to={`/logs/${slugLog}/${slugExercise}/edit/${data.wlsession._id}`}>
         Edit
       </Link>
+      <button onClick={() => deleteHandler(slugSession)}>Delete</button>
       <table className=''>
         <tbody>
           <tr>

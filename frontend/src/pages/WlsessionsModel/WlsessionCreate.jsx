@@ -88,6 +88,9 @@ const WlsessionCreate = () => {
                   isHard
                 </label>
                 <input type='checkbox' {...register(`set.${index}.isHard`)} />
+                <button type='button' onClick={() => remove(index)}>
+                  remove at
+                </button>
               </li>
             )
           })}
@@ -99,9 +102,6 @@ const WlsessionCreate = () => {
           }}
         >
           append
-        </button>
-        <button type='button' onClick={() => remove(1)}>
-          remove at
         </button>
         <button type='submit'>Submit</button>
       </form>

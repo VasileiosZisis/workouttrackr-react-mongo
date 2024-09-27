@@ -30,15 +30,12 @@ const WlsessionEdit = () => {
   } = useForm()
 
   useEffect(() => {
-    reset(data)
-  }, [data])
-
-  useEffect(() => {
     if (data) {
       setValue(
         'createdDate',
         new Date(data.createdDate).toISOString().slice(0, 10)
       )
+      reset(data)
     }
   }, [data])
 
@@ -49,13 +46,12 @@ const WlsessionEdit = () => {
 
   const onSubmit = async dataForm => {
     try {
-      const c = await updateWlsessionId({
+      await updateWlsessionId({
         slugLog,
         slugExercise,
         data: { ...dataForm, _id: wlsessionId }
       }).unwrap()
-      console.log(c)
-      //   navigate(`/logs/${slugLog}`)
+      navigate(`/logs/${slugLog}/${slugExercise}`)
       refetch()
     } catch (err) {
       console.log(err)
@@ -64,7 +60,7 @@ const WlsessionEdit = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(-1)
+    navigate(`/logs/${slugLog}/${slugExercise}`)
   }
 
   if (loadingUpdate) return <p>loading</p>
@@ -102,6 +98,9 @@ const WlsessionEdit = () => {
                   isHard
                 </label>
                 <input type='checkbox' {...register(`set.${index}.isHard`)} />
+                <button type='button' onClick={() => remove(index)}>
+                  remove at
+                </button>
               </li>
             )
           })}
@@ -113,9 +112,6 @@ const WlsessionEdit = () => {
           }}
         >
           append
-        </button>
-        <button type='button' onClick={() => remove(1)}>
-          remove at
         </button>
         <button type='submit'>Submit</button>
       </form>
