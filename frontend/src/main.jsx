@@ -20,12 +20,14 @@ import ExerciseEdit from './pages/ExercisesModel/ExerciseEdit.jsx'
 import WlsessionCreate from './pages/WlsessionsModel/WlsessionCreate.jsx'
 import WlsessionShow from './pages/WlsessionsModel/WlsessionShow.jsx'
 import WlsessionEdit from './pages/WlsessionsModel/WlsessionEdit.jsx'
+import Login from './pages/UsersModel/Login.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index path='/' element={<HomePage />} />
+      <Route path='/login' element={<Login />} />
       <Route path='/logs' element={<LogsShow />} />
       <Route path='/logs/create-new-log' element={<LogCreate />} />
       <Route path='/logs/:slugLog' element={<LogSlugShow />} />

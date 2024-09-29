@@ -5,6 +5,7 @@ const HomePage = () => {
     <div>
       <h1>Homepage</h1>
       <Link to={'/logs'}>Go to Logs</Link>
+      <Link to={'/login'}>Go to login</Link>
     </div>
   )
 }

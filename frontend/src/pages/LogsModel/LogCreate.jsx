@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useCreateLogMutation } from '../../../slices/logsApiSlice'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const LogCreate = () => {
   const navigate = useNavigate()
@@ -23,8 +23,10 @@ const LogCreate = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(-1)
+    navigate('/logs')
   }
+
+  if (isLoading) return <p>loading</p>
 
   return (
     <>

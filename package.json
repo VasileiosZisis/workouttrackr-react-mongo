@@ -8,12 +8,17 @@
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm install --force && npm install --prefix frontend && npm run build --prefix frontend",
+    "data:import": "node backend/data/seeder.js"
   },
   "author": "vasilis zisis",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "mongoose-slug-updater": "^3.3.0"
   },
