@@ -21,6 +21,7 @@ import WlsessionCreate from './pages/WlsessionsModel/WlsessionCreate.jsx'
 import WlsessionShow from './pages/WlsessionsModel/WlsessionShow.jsx'
 import WlsessionEdit from './pages/WlsessionsModel/WlsessionEdit.jsx'
 import Login from './pages/UsersModel/Login.jsx'
+import Register from './pages/UsersModel/Register.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
     <Route path='/' element={<App />}>
       <Route index path='/' element={<HomePage />} />
       <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
       <Route path='/logs' element={<LogsShow />} />
       <Route path='/logs/create-new-log' element={<LogCreate />} />
       <Route path='/logs/:slugLog' element={<LogSlugShow />} />

@@ -1,24 +1,24 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { useRegisterMutation } from '../../../slices/usersApiSlice'
 import { setCredentials } from '../../../slices/authSlice'
-import { useLoginMutation } from '../../../slices/usersApiSlice'
 
-const Login = () => {
+const Register = () => {
   const dispatch = useDispatch()
-  const [login, { isLoading }] = useLoginMutation()
+  const [register, { isLoading }] = useRegisterMutation()
   const navigate = useNavigate()
-
   const {
-    register,
+    register: regForm,
     handleSubmit,
     formState: { errors }
   } = useForm()
 
-  const onSubmit = async data => {
+  const onFormSubmit = async data => {
     try {
-      const res = await login(data).unwrap()
+      const res = await register(data).unwrap()
       dispatch(setCredentials(res))
+      navigate('/')
     } catch (err) {
       console.log(err)
     }
@@ -34,26 +34,28 @@ const Login = () => {
   return (
     <>
       <button onClick={submitHandler}>Go Back</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onFormSubmit)}>
         <label htmlFor='username' name='username'>
           username
         </label>
-        <input type='text' {...register('username')} />
+        <input type='text' {...regForm('username')} />
         <p>{errors.username?.message}</p>
         <label htmlFor='email' name='email'>
-          email
+          Email
         </label>
-        <input type='email' {...register('email')} />
+        <input type='email' {...regForm('email')} />
         <p>{errors.email?.message}</p>
         <label htmlFor='password' name='password'>
-          password
+          Password
         </label>
-        <input type='password' {...register('password')} />
+        <input type='password' {...regForm('password')} />
         <p>{errors.password?.message}</p>
-        <button type='submit'>Submit</button>
+        <button className='btn-submit' type='submit'>
+          Submit
+        </button>
       </form>
     </>
   )
 }
 
-export default Login
+export default Register
