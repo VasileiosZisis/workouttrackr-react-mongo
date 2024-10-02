@@ -5,6 +5,7 @@ import Log from '../models/logs.js';
 const createExercise = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
   const exercise = new Exercise(req.body);
+  exercise.author = req.user._id;
   log.exercises.push(exercise);
   const createdExercise = await Promise.all([exercise.save(), log.save()]);
   if (createdExercise) {
@@ -40,12 +41,6 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       {
         $sort: { 'wlsessions._id': -1 },
       },
-      // {
-      //   $skip: limit * page - limit,
-      // },
-      // {
-      //   $limit: limit,
-      // },
     ]);
     if (exercise) {
       return res.json({ exercise, exerciseAggregate });

@@ -16,6 +16,7 @@ const LogCreate = () => {
   const onSubmit = async data => {
     try {
       await createLog(data).unwrap()
+      navigate('/logs')
     } catch (err) {
       console.log(err)
     }

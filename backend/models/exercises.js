@@ -11,10 +11,10 @@ const exerciseSchema = new Schema(
       unique: true,
     },
     slugExercise: { type: String, slug: 'title', unique: true },
-    // author: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'User',
-    // },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
   {
     toJSON: { virtuals: true },

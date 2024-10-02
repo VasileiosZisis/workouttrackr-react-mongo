@@ -18,6 +18,7 @@ const LogSlugShow = () => {
     if (window.confirm('Are you sure?')) {
       try {
         await deleteLog(slugLog)
+        navigate('/logs')
       } catch (err) {
         console.log(err)
       }

@@ -3,6 +3,7 @@ import Log from '../models/logs.js';
 
 const createLog = asyncHandler(async (req, res) => {
   const log = new Log(req.body);
+  log.author = req.user._id;
   const createdLog = await log.save();
   if (createdLog) {
     res.status(201).json(createdLog);

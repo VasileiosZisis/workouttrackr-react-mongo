@@ -26,12 +26,12 @@ const wlsessionSchema = new Schema(
           type: Boolean,
           default: false,
         },
-        // volume: {
-        //   type: Number,
-        //   default: function () {
-        //     return (this.repetitions * this.kilograms).toFixed(2);
-        //   },
-        // },
+        volume: {
+          type: Number,
+          default: function () {
+            return (this.repetitions * this.kilograms).toFixed(2);
+          },
+        },
       }),
     ],
     // totalVolume: {
@@ -45,18 +45,18 @@ const wlsessionSchema = new Schema(
     //     }
     //   },
     // },
-    exercise: {
-      type: Schema.Types.ObjectId,
-      ref: 'Exercise',
-    },
-    log: {
-      type: Schema.Types.ObjectId,
-      ref: 'Log',
-    },
-    // author: {
+    // exercise: {
     //   type: Schema.Types.ObjectId,
-    //   ref: 'User',
+    //   ref: 'Exercise',
     // },
+    // log: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Log',
+    // },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
   {
     toJSON: { virtuals: true },

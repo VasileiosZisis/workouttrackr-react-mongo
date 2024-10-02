@@ -8,9 +8,16 @@ import {
   updateLogId,
   deleteLog,
 } from '../controllers/logController.js';
+import { registered } from '../middleware/loginMiddleware.js';
 
-router.route('/').get(getLogs).post(createLog);
-router.route('/:slugLog').get(getLogBySlug).delete(deleteLog);
-router.route('/edit/:id').get(getLogById).put(updateLogId);
+router.route('/').get(registered, getLogs).post(registered, createLog);
+router
+  .route('/:slugLog')
+  .get(registered, getLogBySlug)
+  .delete(registered, deleteLog);
+router
+  .route('/edit/:id')
+  .get(registered, getLogById)
+  .put(registered, updateLogId);
 
 export default router;

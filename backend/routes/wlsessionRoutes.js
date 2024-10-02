@@ -7,12 +7,16 @@ import {
   updateWlsessionById,
   deleteWlsession,
 } from '../controllers/wlsessionController.js';
+import { registered } from '../middleware/loginMiddleware.js';
 
-router.route('/').post(createWlsession);
-router.route('/:slugSession').get(getWlsessionBySlug).delete(deleteWlsession);
+router.route('/').post(registered, createWlsession);
+router
+  .route('/:slugSession')
+  .get(registered, getWlsessionBySlug)
+  .delete(registered, deleteWlsession);
 router
   .route('/edit/:wlsessionId')
-  .get(getWlsessionById)
-  .put(updateWlsessionById);
+  .get(registered, getWlsessionById)
+  .put(registered, updateWlsessionById);
 
 export default router;
