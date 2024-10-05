@@ -1,5 +1,5 @@
 import Exercise from './exercises.js';
-// import Wlsession from './wlsessions.js';
+import Wlsession from './wlsessions.js';
 import mongoose from 'mongoose';
 import slug from 'mongoose-slug-updater';
 const { Schema, model } = mongoose;
@@ -10,6 +10,7 @@ const LogSchema = new Schema(
     title: {
       type: String,
       unique: true,
+      required: true,
     },
     slugLog: { type: String, slug: 'title', unique: true },
     author: {
@@ -36,19 +37,19 @@ LogSchema.post('findOneAndDelete', async function (doc) {
   }
 });
 
-// LogSchema.virtual('Wlsessions', {
-//   ref: 'Wlsession',
-//   localField: '_id',
-//   foreignField: 'log',
-// });
+LogSchema.virtual('Wlsessions', {
+  ref: 'Wlsession',
+  localField: '_id',
+  foreignField: 'log',
+});
 
-// LogSchema.post('findOneAndDelete', async function (doc) {
-//   if (doc) {
-//     await Wlsession.deleteMany({
-//       log: doc._id,
-//     });
-//   }
-// });
+LogSchema.post('findOneAndDelete', async function (doc) {
+  if (doc) {
+    await Wlsession.deleteMany({
+      log: doc._id,
+    });
+  }
+});
 
 const Log = model('Log', LogSchema);
 

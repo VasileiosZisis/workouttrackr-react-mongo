@@ -27,17 +27,21 @@ const WlsessionEdit = () => {
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      createdDate: ''
+    }
+  })
 
   useEffect(() => {
     if (data) {
+      reset(data)
       setValue(
         'createdDate',
         new Date(data.createdDate).toISOString().slice(0, 10)
       )
-      reset(data)
     }
-  }, [data])
+  }, [data, reset, setValue])
 
   const { fields, append, remove } = useFieldArray({
     control,

@@ -52,7 +52,7 @@ const ExerciseSlugShow = () => {
         {data.exerciseAggregate.length > 0 &&
           data.exerciseAggregate.map(item => (
             <Link
-              key={item._id}
+              key={item.wlsessions._id}
               className=''
               to={`/logs/${slugLog}/${slugExercise}/${item.wlsessions.slugSession}`}
             >

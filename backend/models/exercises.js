@@ -9,8 +9,10 @@ const exerciseSchema = new Schema(
     title: {
       type: String,
       unique: true,
+      required: true,
     },
     slugExercise: { type: String, slug: 'title', unique: true },
+    session: { type: String, required: true },
     author: {
       type: Schema.Types.ObjectId,
       ref: 'User',

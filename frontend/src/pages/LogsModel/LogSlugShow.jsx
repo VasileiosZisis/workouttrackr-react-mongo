@@ -47,14 +47,13 @@ const LogSlugShow = () => {
       <div className=''>
         {data.logAggregate.length > 0 &&
           data.logAggregate.map(item => (
-            <p key={item._id} className=''>
-              <Link
-                className=''
-                to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
-              >
-                {item.exercises.title}
-              </Link>
-            </p>
+            <Link
+              key={item.exercises._id}
+              className=''
+              to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
+            >
+              {item.exercises.title}
+            </Link>
           ))}
       </div>
     </>

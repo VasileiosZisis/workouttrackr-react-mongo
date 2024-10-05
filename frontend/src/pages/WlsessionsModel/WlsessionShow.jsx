@@ -63,7 +63,7 @@ const WlsessionShow = () => {
               <td>{index + 1}</td>
               <th>{set.repetitions}</th>
               <th>{set.kilograms}</th>
-              {/* <th><%= set.volume %></th> */}
+              <th>{set.volume}</th>
             </tr>
           ))}
         </tbody>

@@ -47,6 +47,16 @@ const ExerciseCreate = () => {
         </label>
         <input type='text' {...register('title')} />
         <p>{errors.title?.message}</p>
+        <h3>session</h3>
+        <input type='checkbox' {...register('session')} />
+        <label htmlFor='wlsession' name='wlsession'>
+          reps * kgs = vol
+        </label>
+        <input type='checkbox' {...register('session')} />
+        <label htmlFor='aesession' name='aesession'>
+          dist, pace, time
+        </label>
+        <p>{errors.session?.message}</p>
         <button type='submit'>Submit</button>
       </form>
       <button onClick={submitHandler}>Go Back</button>
