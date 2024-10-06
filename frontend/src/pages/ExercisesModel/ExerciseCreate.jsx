@@ -22,7 +22,8 @@ const ExerciseCreate = () => {
 
   const onSubmit = async data => {
     try {
-      await createExercise({ ...data, slugLog: slugLog }).unwrap()
+      const res = await createExercise({ ...data, slugLog: slugLog }).unwrap()
+      console.log(res)
       navigate(`/logs/${slugLog}`)
     } catch (err) {
       console.log(err)
@@ -48,12 +49,12 @@ const ExerciseCreate = () => {
         <input type='text' {...register('title')} />
         <p>{errors.title?.message}</p>
         <h3>session</h3>
-        <input type='checkbox' {...register('session')} />
-        <label htmlFor='wlsession' name='wlsession'>
+        <input type='radio' {...register('session')} value='wlsession' />
+        <label htmlFor='wlsession' name='session'>
           reps * kgs = vol
         </label>
-        <input type='checkbox' {...register('session')} />
-        <label htmlFor='aesession' name='aesession'>
+        <input type='radio' {...register('session')} value='pasession' />
+        <label htmlFor='pasession' name='session'>
           dist, pace, time
         </label>
         <p>{errors.session?.message}</p>

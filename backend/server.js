@@ -9,6 +9,7 @@ import connectDB from './config/db.js';
 import logRoutes from './routes/logRoutes.js';
 import exerciseRoutes from './routes/exerciseRoutes.js';
 import wlsessionRoutes from './routes/wlsessionRoutes.js';
+import pasessionRoutes from './routes/pasessionRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
 const port = process.env.PORT;
@@ -26,6 +27,10 @@ app.use('/api/logs/:slugLog/exercises', exerciseRoutes);
 app.use(
   '/api/logs/:slugLog/exercises/:slugExercise/wlsessions',
   wlsessionRoutes
+);
+app.use(
+  '/api/logs/:slugLog/exercises/:slugExercise/pasessions',
+  pasessionRoutes
 );
 app.use('/api/users', userRoutes);
 

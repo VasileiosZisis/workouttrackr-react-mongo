@@ -4,8 +4,8 @@ const { Schema, model } = mongoose;
 mongoose.plugin(slug);
 
 const setSchema = new Schema({
-  repetitions: { type: Number, required: true, required: true },
-  kilograms: { type: Number, required: true, required: true },
+  repetitions: { type: Number, required: true },
+  kilograms: { type: Number, required: true },
   volume: {
     type: Number,
     default: function () {
@@ -14,8 +14,8 @@ const setSchema = new Schema({
   },
 });
 
-setSchema.pre('save', function (next) {
-  this.volume = (this.repetitions * this.kilograms).toFixed(2);
+setSchema.pre('save', async function (next) {
+  this.volume = await (this.repetitions * this.kilograms).toFixed(2);
   next();
 });
 
@@ -24,7 +24,6 @@ const wlsessionSchema = new Schema(
     createdDate: {
       type: Date,
       default: Date.now,
-      required: true,
     },
     createdDateSlug: {
       type: String,

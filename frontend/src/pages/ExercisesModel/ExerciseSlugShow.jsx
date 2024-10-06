@@ -2,8 +2,7 @@ import {
   useGetExerciseSlugQuery,
   useDeleteExerciseMutation
 } from '../../../slices/exercisesApiSlice'
-import { Link } from 'react-router-dom'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 
 const ExerciseSlugShow = () => {
   const navigate = useNavigate()
@@ -45,27 +44,29 @@ const ExerciseSlugShow = () => {
       <h2 className=''>{`${data.exercise.title}`}</h2>
       <Link to={`/logs/${slugLog}/edit/${data.exercise._id}`}>Edit</Link>
       <button onClick={() => deleteHandler(slugExercise)}>Delete</button>
-      <Link to={`/logs/${slugLog}/${slugExercise}/create-new-session`}>
-        Go to Create Session
-      </Link>
-      <div className=''>
-        {data.exerciseAggregate.length > 0 &&
-          data.exerciseAggregate.map(item => (
-            <Link
-              key={item.wlsessions._id}
-              className=''
-              to={`/logs/${slugLog}/${slugExercise}/${item.wlsessions.slugSession}`}
-            >
-              <table className=''>
-                <tbody>
-                  <tr>
-                    <th colSpan='4' scope='col'>
-                      {new Date(
-                        item.wlsessions.createdDate
-                      ).toLocaleDateString()}
-                    </th>
-                  </tr>
-                  {/* <tr>
+
+      {data.exercise.session === 'wlsession' ? (
+        <div className=''>
+          <Link to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}>
+            Go to Create Session
+          </Link>
+          {data.exerciseAggregate.length > 0 &&
+            data.exerciseAggregate.map(item => (
+              <Link
+                key={item.wlsessions._id}
+                className=''
+                to={`/logs/${slugLog}/${slugExercise}/${item.wlsessions.slugSession}`}
+              >
+                <table className=''>
+                  <tbody>
+                    <tr>
+                      <th colSpan='4' scope='col'>
+                        {new Date(
+                          item.wlsessions.createdDate
+                        ).toLocaleDateString()}
+                      </th>
+                    </tr>
+                    {/* <tr>
                         <td colSpan="3" scope="col">
                             Total Volume
                         </td>
@@ -76,36 +77,37 @@ const ExerciseSlugShow = () => {
                             <%= exerciseItem.trsessions.totalVolume %>
                         </th>
                     </tr> */}
-                  <tr>
-                    <th></th>
-                  </tr>
-                  <tr>
-                    <td>Set</td>
-                    <td>reps</td>
-                    <td>kgs</td>
-                    <td>volume</td>
-                  </tr>
-                  {/* {for (let [index, set] of exerciseItem.trsessions.weights.entries())
                     <tr>
-                        <td><%= index + 1 %></td>
-                        <th><%= set.repetitions %></th>
-                        <th><%= set.kilograms %></th>
-                        <th><%= set.volume %></th>
+                      <th></th>
                     </tr>
-                    } */}
-                  {item.wlsessions.set.map((set, index) => (
-                    <tr key={set._id}>
-                      <td>{index + 1}</td>
-                      <th>{set.repetitions}</th>
-                      <th>{set.kilograms}</th>
-                      {/* <th><%= set.volume %></th> */}
+                    <tr>
+                      <td>Set</td>
+                      <td>reps</td>
+                      <td>kgs</td>
+                      <td>volume</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Link>
-          ))}
-      </div>
+                    {item.wlsessions.set.map((set, index) => (
+                      <tr key={set._id}>
+                        <td>{index + 1}</td>
+                        <th>{set.repetitions}</th>
+                        <th>{set.kilograms}</th>
+                        <th>{set.volume}</th>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </Link>
+            ))}
+        </div>
+      ) : data.exercise.session === 'pasession' ? (
+        <>
+          <Link to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}>
+            Go to Create Session
+          </Link>
+        </>
+      ) : (
+        <>no</>
+      )}
     </>
   )
 }
