@@ -59,11 +59,21 @@ const PasessionCreate = () => {
         </label>
         <input type='date' {...register('createdDate')} />
         <p>{errors.createdDate?.message}</p>
-        <label htmlFor='time' name='time'>
-          time
+        <label htmlFor='hours' name='hours'>
+          hours
         </label>
-        <input type='number' {...register('time')} />
-        <p>{errors.time?.message}</p>
+        <input type='number' {...register('time.hours')} />
+        <p>{errors.hours?.message}</p>
+        <label htmlFor='minutes' name='minutes'>
+          minutes
+        </label>
+        <input type='number' {...register('time.minutes')} />
+        <p>{errors.minutes?.message}</p>
+        <label htmlFor='seconds' name='seconds'>
+          seconds
+        </label>
+        <input type='number' {...register('time.seconds')} />
+        <p>{errors.seconds?.message}</p>
         <label htmlFor='distance' name='distance'>
           distance
         </label>

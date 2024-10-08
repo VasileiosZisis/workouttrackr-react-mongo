@@ -3,22 +3,6 @@ import slug from 'mongoose-slug-updater';
 const { Schema, model } = mongoose;
 mongoose.plugin(slug);
 
-// const paceSchema = new Schema({
-//   time: { type: Number, required: true },
-//   distance: { type: Number, required: true },
-//   result: {
-//     type: Number,
-//     default: function () {
-//       return (this.time / this.distance).toFixed(2);
-//     },
-//   },
-// });
-
-// paceSchema.pre('save', async function (next) {
-//   this.result = await (this.time / this.distance).toFixed(2);
-//   next();
-// });
-
 const pasessionSchema = new Schema(
   {
     createdDate: {
@@ -34,12 +18,28 @@ const pasessionSchema = new Schema(
       unique: true,
       permanent: true,
     },
-    time: { type: Number, required: true },
-    distance: { type: Number, required: true },
+    time: {
+      hours: {
+        type: Number,
+        default: function () {
+          return this * 60;
+        },
+      },
+      minutes: {
+        type: Number,
+      },
+      seconds: {
+        type: Number,
+        default: function () {
+          return this / 60;
+        },
+      },
+    },
+    distance: { type: Number },
     pace: {
       type: Number,
       default: function () {
-        return (this.time / this.distance).toFixed(2);
+        return this.time.totalMinutes / this.distance;
       },
     },
     exercise: {
@@ -62,9 +62,12 @@ const pasessionSchema = new Schema(
   { timestamps: true }
 );
 
+pasessionSchema.virtual('time.totalMinutes').get(function () {
+  return this.time.hours + this.time.minutes + this.time.seconds;
+});
+
 pasessionSchema.pre('save', async function () {
   this.createdDateSlug = await this.createdDate.toISOString().slice(0, 10);
-  this.pace = await (this.time / this.distance).toFixed(2);
 });
 
 const Pasession = model('Pasession', pasessionSchema);
