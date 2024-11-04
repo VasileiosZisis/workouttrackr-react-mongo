@@ -1,0 +1,90 @@
+.model > * {
+  margin-top: 1rem;
+}
+
+.model__button-goback {
+  display: inline-block;
+  font-size: 0.8rem;
+  background-color: var(--icterine);
+  color: var(--night);
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  margin-inline: 0.25rem;
+}
+
+.title-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.title-container__title {
+  text-align: center;
+  grid-column: span 2 / span 2;
+  color: var(--textWhite);
+}
+
+.title-container__link-container {
+  justify-self: end;
+}
+
+.title-container__link,
+.title-container__button {
+  grid-row-start: 2;
+  font-size: 0.8rem;
+  background-color: var(--icterine);
+  color: var(--night);
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  margin-inline: 0.25rem;
+}
+
+.model__contents {
+  max-width: 500px;
+  display: grid;
+}
+
+.model__subtitle {
+  color: var(--textWhite);
+  font-size: 1.75rem;
+}
+
+.model__list {
+  width: inherit;
+}
+
+.model__item {
+  padding-block: 0.2rem;
+}
+
+.model__link {
+  background-color: var(--jet);
+  border-radius: 2px;
+  color: var(--textWhite);
+  display: inline-block;
+  width: 100%;
+  padding: 0.3rem 0.3rem 0.3rem 0.6rem;
+}
+
+.model__link:where(:hover, :focus-visible),
+.title-container__link:where(:hover, :focus-visible),
+.title-container__button:where(:hover, :focus-visible),
+.model__button-goback:where(:hover, :focus-visible) {
+  background-color: var(--eerie-black);
+  color: var(--icterine);
+}
+
+.model__button {
+  margin-top: 1rem;
+  background-color: var(--icterine);
+  color: var(--night);
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  display: inline-block;
+  text-align: center;
+}
+
+.model__button:where(:hover, :focus-visible) {
+  background-color: var(--jet);
+  color: var(--textWhite);
+}

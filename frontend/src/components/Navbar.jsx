@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useLogoutMutation } from '../../slices/usersApiSlice'
 import { logout } from '../../slices/authSlice'
-// import './Navbar.css'
+import './Navbar.css'
 
 const Navbar = () => {
   const { userInfo } = useSelector(state => state.auth)
@@ -24,73 +24,55 @@ const Navbar = () => {
     }
   }
 
-  const [toggleOpen, setToggleOpen] = useState(false)
-
-  const handleOpen = e => {
-    setToggleOpen(!toggleOpen)
-    if (!toggleOpen) {
-      e.currentTarget.setAttribute('aria-expanded', 'true')
-    } else {
-      e.currentTarget.setAttribute('aria-expanded', 'false')
-    }
-  }
-  const toggle = () => setToggleOpen(!toggleOpen)
-
   return (
     <header>
-      <nav>
-        <div className='nav-img-div'>
-          <button
-            onClick={e => handleOpen(e)}
-            aria-expanded='false'
-            className={`hamburger ${toggleOpen ? 'active' : ''}`}
-          >
-            <span className='bar' aria-hidden='true'></span>
-            <span className='bar' aria-hidden='true'></span>
-            <span className='bar' aria-hidden='true'></span>
-            <span className='screen-reader-text'>Menu</span>
-          </button>
-        </div>
-        <div>
-          <ul className={`nav-ul ${toggleOpen ? 'show' : ''}`}>
-            <li className='nav-li'>
-              <NavLink className='navlink' to='/about' onClick={toggle}>
-                ABOUT
-              </NavLink>
-            </li>
-          </ul>
-          <ul>
-            {userInfo ? (
-              <>
-                <li>
-                  <b>{userInfo.username}</b>
+      <nav className='navbar'>
+        <ul className='navbar__list'>
+          <li className='navbar__item'>
+            <NavLink className='navbar__link' to='/'>
+              Home
+            </NavLink>
+          </li>
+          <li className='navbar__item'>
+            <NavLink className='navbar__link' to='/contact'>
+              Contact
+            </NavLink>
+          </li>
+        </ul>
+        <ul className='navbar__list'>
+          {userInfo ? (
+            <>
+              <li className='navbar__item'>
+                <NavLink className='navbar__link' to='/profile'>
+                  {userInfo.username}
+                </NavLink>
+              </li>
+              {userInfo.isAdmin && (
+                <li className='navbar__item'>
+                  <NavLink className='navbar__link' to='/'>
+                    admin link
+                  </NavLink>
                 </li>
-                <li>
-                  <Link to='/profile'>profile</Link>
-                </li>
-                {userInfo.isAdmin && (
-                  <>
-                    <li>
-                      <Link to='/new'>create blog</Link>
-                    </li>
-                  </>
-                )}
-                <li className='logout' onClick={logoutHandler}>
-                  logout
-                </li>
-              </>
-            ) : (
-              <>
-                {/* <li>
-              <Link to='/register'>register</Link>
-            </li> */}
-                <li>
-                  <Link to='/login'>login</Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
+              )}
+              <li className='navbar__item' onClick={logoutHandler}>
+                <button className='navbar__button'>logout</button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className='navbar__item'>
+                <NavLink className='navbar__link' to='/register'>
+                  register
+                </NavLink>
+              </li>
+              <li className='navbar__item'>
+                <NavLink className='navbar__link' to='/login'>
+                  login
+                </NavLink>
+              </li>
+            </>
+          )}
+        </ul>
       </nav>
     </header>
   )

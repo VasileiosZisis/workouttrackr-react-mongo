@@ -4,6 +4,7 @@ import {
 } from '../../../slices/logsApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
+import '../ModelShow.css'
 
 const LogSlugShow = () => {
   const navigate = useNavigate()
@@ -35,28 +36,52 @@ const LogSlugShow = () => {
   if (loadingDelete) return <p>loading</p>
 
   return (
-    <>
-      <button onClick={submitHandler}>Go Back</button>
-      <h1>LogSlugShow</h1>
-      <h2 className=''>{data.log.title}</h2>
-      <Link to={`/logs/edit/${data.log._id}`}>Edit</Link>
-      <button onClick={() => deleteHandler(slugLog)}>Delete</button>
-      <Link to={`/logs/${slugLog}/create-new-exercise`}>
-        Go to Create Exercise
-      </Link>
-      <div className=''>
-        {data.logAggregate.length > 0 &&
-          data.logAggregate.map(item => (
-            <Link
-              key={item.exercises._id}
-              className=''
-              to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
-            >
-              {item.exercises.title}
-            </Link>
-          ))}
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go back
+      </button>
+      <div className='title-container'>
+        <h1 className='title-container__title'>{data.log.title}</h1>
+        <div className='title-container__link-container'>
+          <Link
+            className='title-container__link'
+            to={`/logs/edit/${data.log._id}`}
+          >
+            Edit
+          </Link>
+        </div>
+        <div className='title-container__button-container'>
+          <button
+            className='title-container__button'
+            onClick={() => deleteHandler(slugLog)}
+          >
+            Delete
+          </button>
+        </div>
       </div>
-    </>
+      <h2 className='model__subtitle'>Exercises</h2>
+      <div className='model__contents'>
+        <ul className='model__list'>
+          {data.logAggregate.length > 0 &&
+            data.logAggregate.map(item => (
+              <li key={item.exercises._id} className='model__item'>
+                <Link
+                  className='model__link'
+                  to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
+                >
+                  {item.exercises.title}
+                </Link>
+              </li>
+            ))}
+        </ul>
+        <Link
+          className='model__button'
+          to={`/logs/${slugLog}/create-new-exercise`}
+        >
+          Create new
+        </Link>
+      </div>
+    </main>
   )
 }
 

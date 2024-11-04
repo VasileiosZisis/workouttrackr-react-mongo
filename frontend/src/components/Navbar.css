@@ -1,0 +1,60 @@
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--eerie-black);
+  min-height: 3rem;
+}
+
+.navbar__list {
+  display: flex;
+  flex-direction: row;
+  height: inherit;
+  padding-inline: 1rem;
+}
+
+.navbar__link,
+.navbar__button {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--textWhite);
+  padding: 0.5rem;
+}
+
+.navbar__button {
+  font-size: 1.25rem;
+  background-color: var(--eerie-black);
+}
+
+.navbar__item:where(:hover, :focus-visible),
+.navbar__button:where(:hover, :focus-visible) {
+  background-color: var(--jet);
+}
+
+.navbar__link.active {
+  background-color: var(--jet);
+}
+
+/* MOBILE */
+
+/* 600px */
+@media only screen and (max-width: 37.5em) {
+  .navbar__link,
+  .navbar__button {
+    font-size: 1rem;
+  }
+}
+
+/* 400px */
+@media only screen and (max-width: 25em) {
+  .navbar {
+    justify-content: center;
+  }
+
+  .navbar__link,
+  .navbar__button {
+    font-size: 1rem;
+  }
+}

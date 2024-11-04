@@ -3,6 +3,7 @@ import {
   useDeleteExerciseMutation
 } from '../../../slices/exercisesApiSlice'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import '../ModelShow.css'
 
 const ExerciseSlugShow = () => {
   const navigate = useNavigate()
@@ -38,18 +39,32 @@ const ExerciseSlugShow = () => {
   if (loadingDelete) return <p>loading</p>
 
   return (
-    <>
-      <button onClick={submitHandler}>Go Back</button>
-      <h1>ExcerciseSlugShow</h1>
-      <h2 className=''>{`${data.exercise.title}`}</h2>
-      <Link to={`/logs/${slugLog}/edit/${data.exercise._id}`}>Edit</Link>
-      <button onClick={() => deleteHandler(slugExercise)}>Delete</button>
-
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <div className='title-container'>
+        <h1 className='title-container__title'>{`${data.exercise.title}`}</h1>
+        <div className='title-container__link-container'>
+          <Link
+            className='title-container__link'
+            to={`/logs/${slugLog}/edit/${data.exercise._id}`}
+          >
+            Edit
+          </Link>
+        </div>
+        <div className='title-container__button-container'>
+          <button
+            className='title-container__button'
+            onClick={() => deleteHandler(slugExercise)}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <h2 className='model__subtitle'>Sessions</h2>
       {data.exercise.session === 'wlsession' ? (
         <div className=''>
-          <Link to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}>
-            Go to Create Session
-          </Link>
           {data.exerciseAggregate.length > 0 &&
             data.exerciseAggregate.map(item => (
               <Link
@@ -98,6 +113,9 @@ const ExerciseSlugShow = () => {
                 </table>
               </Link>
             ))}
+          <Link to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}>
+            Go to Create Session
+          </Link>
         </div>
       ) : data.exercise.session === 'pasession' ? (
         <>
@@ -108,7 +126,7 @@ const ExerciseSlugShow = () => {
       ) : (
         <>no</>
       )}
-    </>
+    </main>
   )
 }
 
