@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form'
 import { useCreateExerciseMutation } from '../../../slices/exercisesApiSlice'
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
+import '../ModelMain.css'
+import '../ModelForms.css'
 
 const ExerciseCreate = () => {
   const navigate = useNavigate()
@@ -39,29 +41,52 @@ const ExerciseCreate = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
-    <>
-      <h1>Create Exercise</h1>
-      <h2>{logData.title}</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <div className='title-container'>
+        <h2 className='title-container__title'>New Exercise</h2>
+      </div>
+      <form className='form' onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='title' name='title'>
           Title
         </label>
-        <input type='text' {...register('title')} />
+        <input
+          className='form__input-text'
+          type='text'
+          {...register('title')}
+        />
         <p>{errors.title?.message}</p>
-        <h3>session</h3>
-        <input type='radio' {...register('session')} value='wlsession' />
-        <label htmlFor='wlsession' name='session'>
-          reps * kgs = vol
-        </label>
-        <input type='radio' {...register('session')} value='pasession' />
-        <label htmlFor='pasession' name='session'>
-          dist, pace, time
-        </label>
-        <p>{errors.session?.message}</p>
-        <button type='submit'>Submit</button>
+        <h4>Metrics</h4>
+        <div className='form__radio-container'>
+          <div>
+            <input type='radio' {...register('session')} value='wlsession' />
+            <label
+              className='form__label-radio'
+              htmlFor='wlsession'
+              name='session'
+            >
+              reps * kgs = vol
+            </label>
+          </div>
+          <div>
+            <input type='radio' {...register('session')} value='pasession' />
+            <label
+              className='form__label-radio'
+              htmlFor='pasession'
+              name='session'
+            >
+              dist, pace, time
+            </label>
+          </div>
+          <p>{errors.session?.message}</p>
+        </div>
+        <button className='form__button-submit' type='submit'>
+          Submit
+        </button>
       </form>
-      <button onClick={submitHandler}>Go Back</button>
-    </>
+    </main>
   )
 }
 

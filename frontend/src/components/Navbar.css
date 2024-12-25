@@ -4,7 +4,8 @@
   flex-direction: row;
   justify-content: space-between;
   background-color: var(--eerie-black);
-  min-height: 3rem;
+  min-height: 2.8rem;
+  font-size: 1.1rem;
 }
 
 .navbar__list {
@@ -24,17 +25,19 @@
 }
 
 .navbar__button {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   background-color: var(--eerie-black);
 }
 
 .navbar__item:where(:hover, :focus-visible),
 .navbar__button:where(:hover, :focus-visible) {
   background-color: var(--jet);
+  color: var(--icterine);
 }
 
 .navbar__link.active {
   background-color: var(--jet);
+  color: var(--icterine);
 }
 
 /* MOBILE */

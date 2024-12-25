@@ -21,6 +21,8 @@ import WlsessionCreate from './pages/WlsessionsModel/WlsessionCreate.jsx'
 import WlsessionShow from './pages/WlsessionsModel/WlsessionShow.jsx'
 import WlsessionEdit from './pages/WlsessionsModel/WlsessionEdit.jsx'
 import PasessionCreate from './pages/PasessionsModel/PasessionsCreate.jsx'
+import PasessionShow from './pages/PasessionsModel/PassesionShow.jsx'
+import PasessionEdit from './pages/PasessionsModel/PasessionEdit.jsx'
 import Login from './pages/UsersModel/Login.jsx'
 import Register from './pages/UsersModel/Register.jsx'
 import './index.css'
@@ -52,16 +54,24 @@ const router = createBrowserRouter(
         element={<WlsessionCreate />}
       />
       <Route
-        path='/logs/:slugLog/:slugExercise/:slugSession'
+        path='/logs/:slugLog/:slugExercise/wl/:slugSession'
         element={<WlsessionShow />}
       />
       <Route
-        path='/logs/:slugLog/:slugExercise/edit/:wlsessionId'
+        path='/logs/:slugLog/:slugExercise/wl/edit/:wlsessionId'
         element={<WlsessionEdit />}
       />
       <Route
         path='/logs/:slugLog/:slugExercise/pa/create-new-session'
         element={<PasessionCreate />}
+      />
+      <Route
+        path='/logs/:slugLog/:slugExercise/pa/:slugSession'
+        element={<PasessionShow />}
+      />
+      <Route
+        path='/logs/:slugLog/:slugExercise/pa/edit/:pasessionId'
+        element={<PasessionEdit />}
       />
     </Route>
   )

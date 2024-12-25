@@ -40,7 +40,7 @@ const getPasessionBySlug = asyncHandler(async (req, res) => {
         return res.json({ pasession });
       } else {
         res.status(404);
-        throw new Error('Session not found');
+        throw new Error('Session(PA) not found');
       }
     }
   }

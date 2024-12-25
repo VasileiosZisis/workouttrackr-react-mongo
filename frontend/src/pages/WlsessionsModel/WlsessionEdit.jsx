@@ -5,6 +5,8 @@ import {
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
+import '../ModelMain.css'
+import '../ModelForms.css'
 
 const WlsessionEdit = () => {
   const navigate = useNavigate()
@@ -72,54 +74,87 @@ const WlsessionEdit = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
-    <>
-      <button onClick={submitHandler}>Go Back</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <div className='title-container'>
+        <h2 className='title-container__title'>Edit Session</h2>
+      </div>
+      <form className='form' onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='createdDate' name='createdDate'>
-          createdDate
+          Date
         </label>
-        <input type='date' {...register('createdDate')} />
+        <input
+          className='form__input-date'
+          type='date'
+          {...register('createdDate')}
+        />
         <p>{errors.createdDate?.message}</p>
-        <label>Set</label>
         <ul>
           {fields.map((field, index) => {
             return (
-              <li key={field.id}>
-                <label htmlFor='repetitions' name='repetitions'>
-                  repetitions
-                </label>
-                <input
-                  type='number'
-                  {...register(`set.${index}.repetitions`)}
-                />
-                <p>{errors.set?.[i].repetitions?.message}</p>
-                <label htmlFor='kilograms' name='kilograms'>
-                  kilograms
-                </label>
-                <input type='number' {...register(`set.${index}.kilograms`)} />
-                <p>{errors.set?.[i].kilograms?.message}</p>
-                <label htmlFor='isHard' name='isHard'>
-                  isHard
-                </label>
-                <input type='checkbox' {...register(`set.${index}.isHard`)} />
-                <button type='button' onClick={() => remove(index)}>
-                  remove at
-                </button>
+              <li className='form__item' key={field.id}>
+                <h4>Set {index + 1}</h4>
+                <div className='form__item-pair'>
+                  <label htmlFor='isHard' name='isHard'>
+                    Hard
+                  </label>
+                  <input
+                    className='form__input-checkbox'
+                    type='checkbox'
+                    {...register(`set.${index}.isHard`)}
+                  />
+                </div>
+                <div className='form__item-pair'>
+                  <label htmlFor='repetitions' name='repetitions'>
+                    Repetitions
+                  </label>
+                  <input
+                    className='form__input-number'
+                    type='number'
+                    {...register(`set.${index}.repetitions`)}
+                  />
+                  <p>{errors.set?.[i].repetitions?.message}</p>
+                </div>
+                <div className='form__item-pair'>
+                  <label htmlFor='kilograms' name='kilograms'>
+                    Kilograms
+                  </label>
+                  <input
+                    className='form__input-number'
+                    type='number'
+                    {...register(`set.${index}.kilograms`)}
+                  />
+                  <p>{errors.set?.[i].kilograms?.message}</p>
+                </div>
               </li>
             )
           })}
         </ul>
-        <button
-          type='button'
-          onClick={() => {
-            append({ repetitions: '', kilograms: '' })
-          }}
-        >
-          append
+        <div className='form__button-container'>
+          <button
+            className='form__button-delSet'
+            type='button'
+            onClick={() => remove(1)}
+          >
+            Delete
+          </button>
+          <button
+            className='form__button-add'
+            type='button'
+            onClick={() => {
+              append({ repetitions: '', kilograms: '' })
+            }}
+          >
+            Add Set
+          </button>
+        </div>
+        <button className='form__button-submit' type='submit'>
+          Submit
         </button>
-        <button type='submit'>Submit</button>
       </form>
-    </>
+    </main>
   )
 }
 

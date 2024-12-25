@@ -5,6 +5,8 @@ import {
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import '../ModelMain.css'
+import '../ModelForms.css'
 
 const ExerciseEdit = () => {
   const { slugLog, exerciseId } = useParams()
@@ -55,17 +57,28 @@ const ExerciseEdit = () => {
   }
 
   return (
-    <>
-      <button onClick={submitHandler}>Go Back</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <div className='title-container'>
+        <h2 className='title-container__title'>Edit Exercise</h2>
+      </div>
+      <form className='form' onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='title' name='title'>
           Title
         </label>
-        <input type='text' {...register('title')} />
+        <input
+          className='form__input-text'
+          type='text'
+          {...register('title')}
+        />
         <p>{errors.title?.message}</p>
-        <button type='submit'>Submit</button>
+        <button className='form__button-submit' type='submit'>
+          Submit
+        </button>
       </form>
-    </>
+    </main>
   )
 }
 

@@ -42,8 +42,25 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
         $sort: { 'wlsessions._id': -1 },
       },
     ]);
+    const exerciseAggregatePa = await Exercise.aggregate([
+      { $match: { _id: exercise._id } },
+      {
+        $lookup: {
+          from: 'pasessions',
+          localField: '_id',
+          foreignField: 'exercise',
+          as: 'pasessions',
+        },
+      },
+      {
+        $unwind: '$pasessions',
+      },
+      {
+        $sort: { 'pasessions._id': -1 },
+      },
+    ]);
     if (exercise) {
-      return res.json({ exercise, exerciseAggregate });
+      return res.json({ exercise, exerciseAggregate, exerciseAggregatePa });
     } else {
       res.status(404);
       throw new Error('Exercise not found');

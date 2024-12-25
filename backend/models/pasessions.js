@@ -39,7 +39,13 @@ const pasessionSchema = new Schema(
     pace: {
       type: Number,
       default: function () {
-        return this.time.totalMinutes / this.distance;
+        return (this.time.totalMinutes / this.distance).toFixed(3);
+      },
+    },
+    speed: {
+      type: Number,
+      default: function () {
+        return (this.distance / this.time.totalMinutes).toFixed(3);
       },
     },
     exercise: {

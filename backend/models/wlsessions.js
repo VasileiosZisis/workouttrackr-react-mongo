@@ -4,8 +4,9 @@ const { Schema, model } = mongoose;
 mongoose.plugin(slug);
 
 const setSchema = new Schema({
-  repetitions: { type: Number, required: true },
-  kilograms: { type: Number, required: true },
+  repetitions: { type: Number },
+  kilograms: { type: Number },
+  isHard: { type: Boolean, default: false },
   volume: {
     type: Number,
     default: function () {
@@ -27,6 +28,47 @@ const wlsessionSchema = new Schema(
     },
     createdDateSlug: {
       type: String,
+    },
+    totalVolume: {
+      type: Number,
+      default: function () {
+        const result = this.set.map((a) => a.volume);
+        if (result.length) {
+          return result.reduce((acc, cur) => acc + cur, 0);
+        } else {
+          return (result = 0);
+        }
+      },
+    },
+    junkVolume: {
+      type: Number,
+      default: function () {
+        const result = this.set.map((x) => {
+          if (x.isHard === false) {
+            return x.volume;
+          } else return 0;
+        });
+        if (result.length) {
+          return result.reduce((acc, cur) => acc + cur, 0);
+        } else {
+          return (result = 0);
+        }
+      },
+    },
+    workingVolume: {
+      type: Number,
+      default: function () {
+        const result = this.set.map((v) => {
+          if (v.isHard === true) {
+            return v.volume;
+          } else return 0;
+        });
+        if (result.length) {
+          return result.reduce((acc, cur) => acc + cur, 0);
+        } else {
+          return (result = 0);
+        }
+      },
     },
     slugSession: {
       type: String,

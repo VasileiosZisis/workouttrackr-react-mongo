@@ -3,7 +3,7 @@ import {
   useDeleteExerciseMutation
 } from '../../../slices/exercisesApiSlice'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import '../ModelShow.css'
+import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {
   const navigate = useNavigate()
@@ -64,67 +64,157 @@ const ExerciseSlugShow = () => {
       </div>
       <h2 className='model__subtitle'>Sessions</h2>
       {data.exercise.session === 'wlsession' ? (
-        <div className=''>
-          {data.exerciseAggregate.length > 0 &&
-            data.exerciseAggregate.map(item => (
-              <Link
-                key={item.wlsessions._id}
-                className=''
-                to={`/logs/${slugLog}/${slugExercise}/${item.wlsessions.slugSession}`}
-              >
-                <table className=''>
-                  <tbody>
-                    <tr>
-                      <th colSpan='4' scope='col'>
-                        {new Date(
-                          item.wlsessions.createdDate
-                        ).toLocaleDateString()}
-                      </th>
-                    </tr>
-                    {/* <tr>
-                        <td colSpan="3" scope="col">
+        <div className='sessions'>
+          <ul className='sessions__list'>
+            {data.exerciseAggregate.length > 0 &&
+              data.exerciseAggregate.map(item => (
+                <li className='sessions__item' key={item.wlsessions._id}>
+                  <Link
+                    className='sessions__link'
+                    to={`/logs/${slugLog}/${slugExercise}/wl/${item.wlsessions.slugSession}`}
+                  >
+                    <table className='sessions__table'>
+                      <tbody>
+                        <tr>
+                          <th colSpan='5' scope='col'>
+                            {new Date(
+                              item.wlsessions.createdDate
+                            ).toLocaleDateString()}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <td colSpan='3' scope='col'>
                             Total Volume
-                        </td>
-                        <!-- const result = exerciseItem.trsessions.weights.map((a) => a.volume); 
-                         const totalVolume = result.reduce((acc, cur) => acc + cur, 0);  -->
-                        <th colSpan="1" scope="col" class="totalVolume"
-                            data-totalvolume='<%= exerciseItem.trsessions.totalVolume %>'>
-                            <%= exerciseItem.trsessions.totalVolume %>
-                        </th>
-                    </tr> */}
-                    <tr>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <td>Set</td>
-                      <td>reps</td>
-                      <td>kgs</td>
-                      <td>volume</td>
-                    </tr>
-                    {item.wlsessions.set.map((set, index) => (
-                      <tr key={set._id}>
-                        <td>{index + 1}</td>
-                        <th>{set.repetitions}</th>
-                        <th>{set.kilograms}</th>
-                        <th>{set.volume}</th>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Link>
-            ))}
-          <Link to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}>
-            Go to Create Session
+                          </td>
+                          <th colSpan='2' scope='col'>
+                            {item.wlsessions.totalVolume}
+                          </th>
+                        </tr>
+                        <tr>
+                          <td colSpan='3' scope='col'>
+                            Junk Volume
+                          </td>
+                          <th colSpan='2' scope='col'>
+                            {item.wlsessions.junkVolume}
+                          </th>
+                        </tr>
+                        <tr>
+                          <td colSpan='3' scope='col'>
+                            Working Volume
+                          </td>
+                          <th colSpan='2' scope='col'>
+                            {item.wlsessions.workingVolume}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <td>Set</td>
+                          <td>Reps</td>
+                          <td>KGs</td>
+                          <td>Hard</td>
+                          <td>volume</td>
+                        </tr>
+                        {item.wlsessions.set.map((set, index) => (
+                          <tr key={set._id}>
+                            <td>{index + 1}</td>
+                            <th>{set.repetitions}</th>
+                            <th>{set.kilograms}</th>
+                            <th>
+                              {set.isHard ? (
+                                <span>true</span>
+                              ) : (
+                                <span>false</span>
+                              )}
+                            </th>
+                            <th>{set.volume}</th>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          <Link
+            className='model__button'
+            to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
+          >
+            Create New
           </Link>
         </div>
       ) : data.exercise.session === 'pasession' ? (
-        <>
-          <Link to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}>
-            Go to Create Session
+        <div className='sessions'>
+          <ul className='sessions__list'>
+            {data.exerciseAggregatePa.length > 0 &&
+              data.exerciseAggregatePa.map(item => (
+                <li className='sessions__item' key={item.pasessions._id}>
+                  <Link
+                    className='sessions__link'
+                    to={`/logs/${slugLog}/${slugExercise}/pa/${item.pasessions.slugSession}`}
+                  >
+                    <table className='sessions__table'>
+                      <tbody>
+                        <tr>
+                          <th colSpan='5' scope='col'>
+                            {new Date(
+                              item.pasessions.createdDate
+                            ).toLocaleDateString()}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <td colSpan='2' scope='col'>
+                            Pace
+                          </td>
+                          <th colSpan='2' scope='col'>
+                            {item.pasessions.pace}
+                          </th>
+                        </tr>
+                        <tr>
+                          <td colSpan='2' scope='col'>
+                            Speed
+                          </td>
+                          <th colSpan='2' scope='col'>
+                            {item.pasessions.speed}
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <td>Hours</td>
+                          <td>Minutes</td>
+                          <td>Seconds</td>
+                          <td>Distance</td>
+                        </tr>
+                        <tr>
+                          <th>{item.pasessions.time.hours}</th>
+                          <th>{item.pasessions.time.minutes}</th>
+                          <th>{item.pasessions.time.seconds}</th>
+                          <th>{item.pasessions.distance}</th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          <Link
+            className='model__button'
+            to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
+          >
+            Create New
           </Link>
-        </>
+        </div>
       ) : (
-        <>no</>
+        <h1>NOTHING</h1>
       )}
     </main>
   )

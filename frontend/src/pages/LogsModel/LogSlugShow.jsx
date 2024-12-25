@@ -4,7 +4,7 @@ import {
 } from '../../../slices/logsApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
-import '../ModelShow.css'
+import '../ModelMain.css'
 
 const LogSlugShow = () => {
   const navigate = useNavigate()

@@ -1,6 +1,6 @@
 import { useGetLogsQuery } from '../../../slices/logsApiSlice'
 import { Link } from 'react-router-dom'
-import '../ModelShow.css'
+import '../ModelMain.css'
 
 const LogsShow = () => {
   const { data, isLoading, error } = useGetLogsQuery()

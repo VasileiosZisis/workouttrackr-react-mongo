@@ -1,48 +1,59 @@
+import {
+  useGetPasessionByIdQuery,
+  useUpdatePasessionIdMutation
+} from '../../../slices/pasessionsApiSlice'
+import { useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useCreatePasessionMutation } from '../../../slices/pasessionsApiSlice'
-import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
-import { useNavigate, useParams } from 'react-router-dom'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
-const PasessionCreate = () => {
+const PasessionEdit = () => {
   const navigate = useNavigate()
-  const { slugLog, slugExercise } = useParams()
 
-  const {
-    data,
-    isLoading: exerciseLoading,
-    error: exerciseError
-  } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+  const { slugLog, slugExercise, pasessionId } = useParams()
 
-  const defaultDate = new Date().toISOString().slice(0, 10)
+  const { data, isLoading, error, refetch } = useGetPasessionByIdQuery({
+    slugLog,
+    slugExercise,
+    pasessionId
+  })
+
+  const [updatePasessionId, { isLoading: loadingUpdate }] =
+    useUpdatePasessionIdMutation()
 
   const {
     register,
+    reset,
+    setValue,
     handleSubmit,
+    control,
     formState: { errors }
   } = useForm({
     defaultValues: {
-      createdDate: defaultDate,
-      distance: 0,
-      time: {
-        hours: 0,
-        minutes: 0,
-        seconds: 0
-      }
+      createdDate: ''
     }
   })
 
-  const [createPasession, { isLoading }] = useCreatePasessionMutation()
+  useEffect(() => {
+    if (data) {
+      reset(data)
+      setValue(
+        'createdDate',
+        new Date(data.createdDate).toISOString().slice(0, 10)
+      )
+    }
+  }, [data, reset, setValue])
 
-  const onSubmit = async data => {
+  const onSubmit = async dataForm => {
     try {
-      const res = await createPasession({
-        ...data,
-        slugLog: slugLog,
-        slugExercise: slugExercise
+      await updatePasessionId({
+        slugLog,
+        slugExercise,
+        data: { ...dataForm, _id: pasessionId }
       }).unwrap()
       navigate(`/logs/${slugLog}/${slugExercise}`)
+      refetch()
     } catch (err) {
       console.log(err)
     }
@@ -53,9 +64,9 @@ const PasessionCreate = () => {
     navigate(`/logs/${slugLog}/${slugExercise}`)
   }
 
-  if (exerciseLoading) return <p>loading</p>
-  if (exerciseError)
-    return <div>{exerciseError?.data?.message || exerciseError.error}</div>
+  if (loadingUpdate) return <p>loading</p>
+  if (isLoading) return <p>loading</p>
+  if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
@@ -124,4 +135,4 @@ const PasessionCreate = () => {
   )
 }
 
-export default PasessionCreate
+export default PasessionEdit

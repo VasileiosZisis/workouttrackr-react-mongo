@@ -40,7 +40,7 @@ const getWlsessionBySlug = asyncHandler(async (req, res) => {
         return res.json({ wlsession });
       } else {
         res.status(404);
-        throw new Error('Session not found');
+        throw new Error('Session(WL) not found');
       }
     }
   }
