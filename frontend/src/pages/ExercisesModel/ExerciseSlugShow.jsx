@@ -174,7 +174,10 @@ const ExerciseSlugShow = () => {
                             Pace
                           </td>
                           <th colSpan='2' scope='col'>
-                            {item.pasessions.pace}
+                            {item.pasessions.paceSeconds > 10
+                              ? `${item.pasessions.paceMinutes}:${item.pasessions.paceSeconds} `
+                              : `${item.pasessions.paceMinutes}:0${item.pasessions.paceSeconds} `}
+                            <span className='sessions__span'>min/km</span>
                           </th>
                         </tr>
                         <tr>
@@ -182,7 +185,8 @@ const ExerciseSlugShow = () => {
                             Speed
                           </td>
                           <th colSpan='2' scope='col'>
-                            {item.pasessions.speed}
+                            {item.pasessions.speed}{' '}
+                            <span className='sessions__span'>km/min</span>
                           </th>
                         </tr>
                         <tr>

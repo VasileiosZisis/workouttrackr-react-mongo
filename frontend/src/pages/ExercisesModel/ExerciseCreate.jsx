@@ -25,7 +25,6 @@ const ExerciseCreate = () => {
   const onSubmit = async data => {
     try {
       const res = await createExercise({ ...data, slugLog: slugLog }).unwrap()
-      console.log(res)
       navigate(`/logs/${slugLog}`)
     } catch (err) {
       console.log(err)

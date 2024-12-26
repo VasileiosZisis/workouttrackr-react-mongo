@@ -21,18 +21,12 @@ const pasessionSchema = new Schema(
     time: {
       hours: {
         type: Number,
-        default: function () {
-          return this * 60;
-        },
       },
       minutes: {
         type: Number,
       },
       seconds: {
         type: Number,
-        default: function () {
-          return this / 60;
-        },
       },
     },
     distance: { type: Number },
@@ -40,6 +34,18 @@ const pasessionSchema = new Schema(
       type: Number,
       default: function () {
         return (this.time.totalMinutes / this.distance).toFixed(3);
+      },
+    },
+    paceMinutes: {
+      type: Number,
+      default: function () {
+        return Math.floor(this.pace);
+      },
+    },
+    paceSeconds: {
+      type: Number,
+      default: function () {
+        return Math.round((this.pace - this.paceMinutes) * 60);
       },
     },
     speed: {
@@ -69,11 +75,16 @@ const pasessionSchema = new Schema(
 );
 
 pasessionSchema.virtual('time.totalMinutes').get(function () {
-  return this.time.hours + this.time.minutes + this.time.seconds;
+  return this.time.hours * 60 + this.time.minutes + this.time.seconds / 60;
 });
 
 pasessionSchema.pre('save', async function () {
   this.createdDateSlug = await this.createdDate.toISOString().slice(0, 10);
+
+  this.pace = await (this.time.totalMinutes / this.distance).toFixed(3);
+  this.paceMinutes = await Math.floor(this.pace);
+  this.paceSeconds = await Math.round((this.pace - this.paceMinutes) * 60);
+  this.speed = await (this.distance / this.time.totalMinutes).toFixed(3);
 });
 
 const Pasession = model('Pasession', pasessionSchema);

@@ -93,8 +93,31 @@ const wlsessionSchema = new Schema(
   { timestamps: true }
 );
 
-wlsessionSchema.pre('save', async function () {
+wlsessionSchema.methods.calculateVolumes = function () {
+  let totalVolume = 0;
+  let junkVolume = 0;
+  let workingVolume = 0;
+
+  this.set.forEach((e) => {
+    totalVolume += e.volume;
+    if (e.isHard) {
+      workingVolume += e.volume;
+    } else {
+      junkVolume += e.volume;
+    }
+  });
+
+  this.totalVolume = totalVolume;
+  this.junkVolume = junkVolume;
+  this.workingVolume = workingVolume;
+};
+
+wlsessionSchema.pre('save', async function (next) {
   this.createdDateSlug = await this.createdDate.toISOString().slice(0, 10);
+
+  this.calculateVolumes();
+
+  next();
 });
 
 const Wlsession = model('Wlsession', wlsessionSchema);
