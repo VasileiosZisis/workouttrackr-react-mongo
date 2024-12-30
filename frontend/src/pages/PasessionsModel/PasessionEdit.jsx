@@ -5,6 +5,8 @@ import {
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import Joi from 'joi'
+import { joiResolver } from '@hookform/resolvers/joi'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -22,14 +24,43 @@ const PasessionEdit = () => {
   const [updatePasessionId, { isLoading: loadingUpdate }] =
     useUpdatePasessionIdMutation()
 
+  const schema = Joi.object({
+    createdDate: Joi.date()
+      .required()
+      .messages({ 'date.base': 'Must be a valid date' }),
+    time: Joi.object({
+      hours: Joi.number().min(0).required().messages({
+        'any.required': 'This field is required',
+        'number.base': 'Hours must be a number',
+        'number.min': 'Hours must be at least 0'
+      }),
+      minutes: Joi.number().min(0).required().messages({
+        'any.required': 'This field is required',
+        'number.base': 'Minutes must be a number',
+        'number.min': 'Minutes must be at least 0'
+      }),
+      seconds: Joi.number().min(0).required().messages({
+        'any.required': 'This field is required',
+        'number.base': 'Seconds must be a number',
+        'number.min': 'Seconds must be at least 0'
+      })
+    }),
+    distance: Joi.number().min(0).required().messages({
+      'any.required': 'This field is required',
+      'number.base': 'Distance must be a number',
+      'number.min': 'Distance must be at least 0'
+    })
+  })
+
   const {
     register,
     reset,
     setValue,
     handleSubmit,
-    control,
+    // control,
     formState: { errors }
   } = useForm({
+    resolver: joiResolver(schema),
     defaultValues: {
       createdDate: ''
     }
@@ -85,7 +116,7 @@ const PasessionEdit = () => {
           type='date'
           {...register('createdDate')}
         />
-        <p>{errors.createdDate?.message}</p>
+        <p className='form__error-text'>{errors?.createdDate?.message}</p>
         <div className='form__item-pair'>
           <label htmlFor='hours' name='hours'>
             Hours
@@ -95,7 +126,7 @@ const PasessionEdit = () => {
             type='number'
             {...register('time.hours')}
           />
-          <p>{errors.hours?.message}</p>
+          <p className='form__error-text'>{errors?.time?.hours?.message}</p>
           <label htmlFor='minutes' name='minutes'>
             Minutes
           </label>
@@ -104,7 +135,7 @@ const PasessionEdit = () => {
             type='number'
             {...register('time.minutes')}
           />
-          <p>{errors.minutes?.message}</p>
+          <p className='form__error-text'>{errors?.time?.minutes?.message}</p>
           <label htmlFor='seconds' name='seconds'>
             Seconds
           </label>
@@ -114,7 +145,7 @@ const PasessionEdit = () => {
             type='number'
             {...register('time.seconds')}
           />
-          <p>{errors.seconds?.message}</p>
+          <p className='form__error-text'>{errors?.time?.seconds?.message}</p>
         </div>
         <div className='form__item-pair'>
           <label htmlFor='distance' name='distance'>
@@ -125,7 +156,7 @@ const PasessionEdit = () => {
             type='number'
             {...register('distance')}
           />
-          <p>{errors.distance?.message}</p>
+          <p>{errors?.distance?.message}</p>
         </div>
         <button className='form__button-submit' type='submit'>
           Submit

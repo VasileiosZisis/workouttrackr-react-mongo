@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form'
 import { useCreateExerciseMutation } from '../../../slices/exercisesApiSlice'
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
+import Joi from 'joi'
+import { joiResolver } from '@hookform/resolvers/joi'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -14,11 +16,21 @@ const ExerciseCreate = () => {
     error
   } = useGetLogSlugQuery(slugLog)
 
+  const schema = Joi.object({
+    title: Joi.string().required().messages({
+      'string.empty': 'This field is required',
+      'string.alphanum': 'Title can contain only letters and numbers'
+    }),
+    session: Joi.string().required().valid('wlsession', 'pasession').messages({
+      'any.only': 'You must choose an option'
+    })
+  })
+
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({ resolver: joiResolver(schema) })
 
   const [createExercise, { isLoading }] = useCreateExerciseMutation()
 
@@ -51,13 +63,14 @@ const ExerciseCreate = () => {
         <label htmlFor='title' name='title'>
           Title
         </label>
+        <p className='form__error-text'>{errors?.title?.message}</p>
         <input
           className='form__input-text'
           type='text'
           {...register('title')}
         />
-        <p>{errors.title?.message}</p>
         <h4>Metrics</h4>
+        <p className='form__error-text'>{errors?.session?.message}</p>
         <div className='form__radio-container'>
           <div>
             <input type='radio' {...register('session')} value='wlsession' />
@@ -79,7 +92,6 @@ const ExerciseCreate = () => {
               dist, pace, time
             </label>
           </div>
-          <p>{errors.session?.message}</p>
         </div>
         <button className='form__button-submit' type='submit'>
           Submit

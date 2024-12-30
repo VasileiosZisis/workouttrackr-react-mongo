@@ -5,6 +5,8 @@ import {
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import Joi from 'joi'
+import { joiResolver } from '@hookform/resolvers/joi'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -21,12 +23,19 @@ const ExerciseEdit = () => {
 
   const navigate = useNavigate()
 
+  const schema = Joi.object({
+    title: Joi.string().required().messages({
+      'string.empty': 'This field is required',
+      'string.alphanum': 'Title can contain only letters and numbers'
+    })
+  })
+
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({ resolver: joiResolver(schema) })
 
   useEffect(() => {
     if (data) {
@@ -68,12 +77,12 @@ const ExerciseEdit = () => {
         <label htmlFor='title' name='title'>
           Title
         </label>
+        <p className='form__error-text'>{errors?.title?.message}</p>
         <input
           className='form__input-text'
           type='text'
           {...register('title')}
         />
-        <p>{errors.title?.message}</p>
         <button className='form__button-submit' type='submit'>
           Submit
         </button>

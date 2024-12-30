@@ -5,6 +5,8 @@ import {
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
+import Joi from 'joi'
+import { joiResolver } from '@hookform/resolvers/joi'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -22,6 +24,27 @@ const WlsessionEdit = () => {
   const [updateWlsessionId, { isLoading: loadingUpdate }] =
     useUpdateWlsessionIdMutation()
 
+  const schema = Joi.object({
+    createdDate: Joi.date()
+      .required()
+      .messages({ 'date.base': 'Must be a valid date' }),
+    set: Joi.array().items(
+      Joi.object({
+        isHard: Joi.boolean(),
+        repetitions: Joi.number().min(0).required().messages({
+          'any.required': 'This field is required',
+          'number.base': 'Repetitions must be a number',
+          'number.min': 'Repetitions must be at least 0'
+        }),
+        kilograms: Joi.number().min(0).required().messages({
+          'any.required': 'This field is required',
+          'number.base': 'Kilograms must be a number',
+          'number.min': 'Kilograms must be at least 0'
+        })
+      })
+    )
+  })
+
   const {
     register,
     reset,
@@ -30,6 +53,7 @@ const WlsessionEdit = () => {
     control,
     formState: { errors }
   } = useForm({
+    resolver: joiResolver(schema),
     defaultValues: {
       createdDate: ''
     }
@@ -85,6 +109,7 @@ const WlsessionEdit = () => {
         <label htmlFor='createdDate' name='createdDate'>
           Date
         </label>
+        <p className='form__error-text'>{errors?.createdDate?.message}</p>
         <input
           className='form__input-date'
           type='date'
@@ -115,7 +140,9 @@ const WlsessionEdit = () => {
                     type='number'
                     {...register(`set.${index}.repetitions`)}
                   />
-                  <p>{errors.set?.[i].repetitions?.message}</p>
+                  <p className='form__error-text'>
+                    {errors?.set?.[index].repetitions?.message}
+                  </p>
                 </div>
                 <div className='form__item-pair'>
                   <label htmlFor='kilograms' name='kilograms'>
@@ -126,7 +153,9 @@ const WlsessionEdit = () => {
                     type='number'
                     {...register(`set.${index}.kilograms`)}
                   />
-                  <p>{errors.set?.[i].kilograms?.message}</p>
+                  <p className='form__error-text'>
+                    {errors?.set?.[index].kilograms?.message}
+                  </p>
                 </div>
               </li>
             )

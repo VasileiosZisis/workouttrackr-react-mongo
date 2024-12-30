@@ -64,7 +64,7 @@ const getWlsessionById = asyncHandler(async (req, res) => {
         return res.json(wlsession);
       } else {
         res.status(404);
-        throw new Error('Session not found');
+        throw new Error('Session(WL) not found');
       }
     }
   }
@@ -95,7 +95,7 @@ const updateWlsessionById = asyncHandler(async (req, res) => {
         res.status(200).json(updatedWlsession);
       } else {
         res.status(404);
-        throw new Error('Session update failed');
+        throw new Error('Session(WL) update failed');
       }
     }
   }
@@ -122,7 +122,7 @@ const deleteWlsession = asyncHandler(async (req, res) => {
         return res.json({ message: 'Session deleted' });
       } else {
         res.status(404);
-        throw new Error('Session not found');
+        throw new Error('Session(WL) not found');
       }
     }
   }

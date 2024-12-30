@@ -2,6 +2,8 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import { useCreateWlsessionMutation } from '../../../slices/wlsessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
+import Joi from 'joi'
+import { joiResolver } from '@hookform/resolvers/joi'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -17,15 +19,37 @@ const WlsessionCreate = () => {
 
   const defaultDate = new Date().toISOString().slice(0, 10)
 
+  const schema = Joi.object({
+    createdDate: Joi.date()
+      .required()
+      .messages({ 'date.base': 'Must be a valid date' }),
+    set: Joi.array().items(
+      Joi.object({
+        isHard: Joi.boolean(),
+        repetitions: Joi.number().min(0).required().messages({
+          'any.required': 'This field is required',
+          'number.base': 'Repetitions must be a number',
+          'number.min': 'Repetitions must be at least 0'
+        }),
+        kilograms: Joi.number().min(0).required().messages({
+          'any.required': 'This field is required',
+          'number.base': 'Kilograms must be a number',
+          'number.min': 'Kilograms must be at least 0'
+        })
+      })
+    )
+  })
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors }
   } = useForm({
+    resolver: joiResolver(schema),
     defaultValues: {
       createdDate: defaultDate,
-      set: [{ repetitions: '', kilograms: '' }]
+      set: [{ repetitions: 0, kilograms: 0 }]
     }
   })
 
@@ -70,12 +94,12 @@ const WlsessionCreate = () => {
         <label htmlFor='createdDate' name='createdDate'>
           Date
         </label>
+        <p className='form__error-text'>{errors?.createdDate?.message}</p>
         <input
           className='form__input-date'
           type='date'
           {...register('createdDate')}
         />
-        <p>{errors.createdDate?.message}</p>
         <ul>
           {fields.map((item, index) => {
             return (
@@ -100,7 +124,9 @@ const WlsessionCreate = () => {
                     type='number'
                     {...register(`set.${index}.repetitions`)}
                   />
-                  <p>{errors.set?.[i].repetitions?.message}</p>
+                  <p className='form__error-text'>
+                    {errors?.set?.[index].repetitions?.message}
+                  </p>
                 </div>
                 <div className='form__item-pair'>
                   <label htmlFor='kilograms' name='kilograms'>
@@ -111,7 +137,9 @@ const WlsessionCreate = () => {
                     type='number'
                     {...register(`set.${index}.kilograms`)}
                   />
-                  <p>{errors.set?.[i].kilograms?.message}</p>
+                  <p className='form__error-text'>
+                    {errors?.set?.[index].kilograms?.message}
+                  </p>
                 </div>
               </li>
             )
@@ -129,7 +157,7 @@ const WlsessionCreate = () => {
             className='form__button-add'
             type='button'
             onClick={() => {
-              append({ repetitions: '', kilograms: '' })
+              append({ repetitions: 0, kilograms: 0 })
             }}
           >
             Add Set
