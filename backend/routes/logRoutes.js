@@ -8,16 +8,21 @@ import {
   updateLogId,
   deleteLog,
 } from '../controllers/logController.js';
+import checkObjectId from '../middleware/checkObjectId.js';
 import { registered } from '../middleware/loginMiddleware.js';
+import { validateLog } from '../middleware/validations.js';
 
-router.route('/').get(registered, getLogs).post(registered, createLog);
+router
+  .route('/')
+  .get(registered, getLogs)
+  .post(registered, validateLog, createLog);
 router
   .route('/:slugLog')
   .get(registered, getLogBySlug)
   .delete(registered, deleteLog);
 router
   .route('/edit/:id')
-  .get(registered, getLogById)
-  .put(registered, updateLogId);
+  .get(registered, checkObjectId, getLogById)
+  .put(registered, validateLog, updateLogId);
 
 export default router;

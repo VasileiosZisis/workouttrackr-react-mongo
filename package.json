@@ -21,7 +21,8 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
-    "mongoose-slug-updater": "^3.3.0"
+    "mongoose-slug-updater": "^3.3.0",
+    "sanitize-html": "^2.14.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
