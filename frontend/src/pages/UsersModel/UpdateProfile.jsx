@@ -1,17 +1,19 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useRegisterMutation } from '../../../slices/usersApiSlice'
-import { setCredentials } from '../../../slices/authSlice'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
-import '../ModelMain.css'
-import '../ModelForms.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { useProfileMutation } from '../../../slices/usersApiSlice'
+import { setCredentials } from '../../../slices/authSlice'
 
-const Register = () => {
-  const dispatch = useDispatch()
-  const [register, { isLoading }] = useRegisterMutation()
+const UpdateProfile = () => {
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+
+  const { userInfo } = useSelector(state => state.auth)
+
+  const [profile, { isLoading }] = useProfileMutation()
 
   const schema = Joi.object({
     username: Joi.string().required().messages({
@@ -23,24 +25,26 @@ const Register = () => {
       .messages({
         'string.empty': 'This field is required',
         'string.email': 'Not a valid email format'
-      }),
-    password: Joi.string().min(6).required().messages({
-      'string.empty': 'This field is required',
-      'string.min': 'Password must be at least 6 characters'
-    })
+      })
   })
 
   const {
-    register: regForm,
+    register,
     handleSubmit,
     formState: { errors }
-  } = useForm({ resolver: joiResolver(schema) })
+  } = useForm({
+    resolver: joiResolver(schema),
+    defaultValues: {
+      username: userInfo.username,
+      email: userInfo.email
+    }
+  })
 
   const onFormSubmit = async data => {
     try {
-      const res = await register(data).unwrap()
-      dispatch(setCredentials(res))
-      navigate('/')
+      const response = await profile(data).unwrap()
+      dispatch(setCredentials(response))
+      navigate(`/logs`)
     } catch (err) {
       console.log(err)
     }
@@ -59,7 +63,7 @@ const Register = () => {
         Go Back
       </button>
       <div className='title-container'>
-        <h2 className='title-container__title'>Create New Account</h2>
+        <h2 className='title-container__title'>Update User Profile</h2>
       </div>
       <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
         <label htmlFor='username' name='username'>
@@ -68,7 +72,7 @@ const Register = () => {
         <input
           className='form__input-text'
           type='text'
-          {...regForm('username')}
+          {...register('username')}
         />
         <p className='form__error-text'>{errors?.username?.message}</p>
         <label htmlFor='email' name='email'>
@@ -77,24 +81,15 @@ const Register = () => {
         <input
           className='form__input-text'
           type='email'
-          {...regForm('email')}
+          {...register('email')}
         />
         <p className='form__error-text'>{errors?.email?.message}</p>
-        <label htmlFor='password' name='password'>
-          Password
-        </label>
-        <input
-          className='form__input-text'
-          type='password'
-          {...regForm('password')}
-        />
-        <p className='form__error-text'>{errors?.password?.message}</p>
         <button className='form__button-submit' type='submit'>
-          Submit
+          Update
         </button>
       </form>
     </main>
   )
 }
 
-export default Register
+export default UpdateProfile

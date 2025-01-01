@@ -3,17 +3,34 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../../slices/authSlice'
 import { useLoginMutation } from '../../../slices/usersApiSlice'
+import Joi from 'joi'
+import { joiResolver } from '@hookform/resolvers/joi'
+import '../ModelMain.css'
+import '../ModelForms.css'
 
 const Login = () => {
   const dispatch = useDispatch()
   const [login, { isLoading }] = useLoginMutation()
   const navigate = useNavigate()
 
+  const schema = Joi.object({
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .required()
+      .messages({
+        'string.empty': 'This field is required',
+        'string.email': 'Not a valid email format'
+      }),
+    password: Joi.string().required().messages({
+      'string.empty': 'This field is required'
+    })
+  })
+
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({ resolver: joiResolver(schema) })
 
   const onSubmit = async data => {
     try {
@@ -32,27 +49,38 @@ const Login = () => {
   if (isLoading) return <p>loading</p>
 
   return (
-    <>
-      <button onClick={submitHandler}>Go Back</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='username' name='username'>
-          username
-        </label>
-        <input type='text' {...register('username')} />
-        <p>{errors.username?.message}</p>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <div className='title-container'>
+        <h2 className='title-container__title'>User Login</h2>
+      </div>
+      <form className='form' onSubmit={handleSubmit(onSubmit)}>
+        <p className='form__error-text'>{errors?.username?.message}</p>
         <label htmlFor='email' name='email'>
-          email
+          Email
         </label>
-        <input type='email' {...register('email')} />
-        <p>{errors.email?.message}</p>
+        <input
+          className='form__input-text'
+          type='email'
+          {...register('email')}
+        />
+        <p className='form__error-text'>{errors?.email?.message}</p>
         <label htmlFor='password' name='password'>
-          password
+          Password
         </label>
-        <input type='password' {...register('password')} />
-        <p>{errors.password?.message}</p>
-        <button type='submit'>Submit</button>
+        <input
+          className='form__input-text'
+          type='password'
+          {...register('password')}
+        />
+        <p className='form__error-text'>{errors.password?.message}</p>
+        <button className='form__button-submit' type='submit'>
+          Submit
+        </button>
       </form>
-    </>
+    </main>
   )
 }
 

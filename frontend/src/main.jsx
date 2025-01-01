@@ -25,6 +25,7 @@ import PasessionShow from './pages/PasessionsModel/PassesionShow.jsx'
 import PasessionEdit from './pages/PasessionsModel/PasessionEdit.jsx'
 import Login from './pages/UsersModel/Login.jsx'
 import Register from './pages/UsersModel/Register.jsx'
+import UpdateProfile from './pages/UsersModel/UpdateProfile.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route index path='/' element={<HomePage />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
+      <Route path='/profile' element={<UpdateProfile />} />
       <Route path='/logs' element={<LogsShow />} />
       <Route path='/logs/create-new-log' element={<LogCreate />} />
       <Route path='/logs/:slugLog' element={<LogSlugShow />} />
