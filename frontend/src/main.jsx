@@ -26,6 +26,7 @@ import PasessionEdit from './pages/PasessionsModel/PasessionEdit.jsx'
 import Login from './pages/UsersModel/Login.jsx'
 import Register from './pages/UsersModel/Register.jsx'
 import UpdateProfile from './pages/UsersModel/UpdateProfile.jsx'
+import PrivateRoute from './components/PrivateRoute.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -34,47 +35,50 @@ const router = createBrowserRouter(
       <Route index path='/' element={<HomePage />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
-      <Route path='/profile' element={<UpdateProfile />} />
-      <Route path='/logs' element={<LogsShow />} />
-      <Route path='/logs/create-new-log' element={<LogCreate />} />
-      <Route path='/logs/:slugLog' element={<LogSlugShow />} />
-      <Route path='/logs/edit/:id' element={<LogEdit />} />
-      <Route
-        path='/logs/:slugLog/create-new-exercise'
-        element={<ExerciseCreate />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise'
-        element={<ExerciseSlugShow />}
-      />
-      <Route
-        path='/logs/:slugLog/edit/:exerciseId'
-        element={<ExerciseEdit />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise/wl/create-new-session'
-        element={<WlsessionCreate />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise/wl/:slugSession'
-        element={<WlsessionShow />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise/wl/edit/:wlsessionId'
-        element={<WlsessionEdit />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise/pa/create-new-session'
-        element={<PasessionCreate />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise/pa/:slugSession'
-        element={<PasessionShow />}
-      />
-      <Route
-        path='/logs/:slugLog/:slugExercise/pa/edit/:pasessionId'
-        element={<PasessionEdit />}
-      />
+
+      <Route path='' element={<PrivateRoute />}>
+        <Route path='/profile' element={<UpdateProfile />} />
+        <Route path='/logs' element={<LogsShow />} />
+        <Route path='/logs/create-new-log' element={<LogCreate />} />
+        <Route path='/logs/:slugLog' element={<LogSlugShow />} />
+        <Route path='/logs/edit/:id' element={<LogEdit />} />
+        <Route
+          path='/logs/:slugLog/create-new-exercise'
+          element={<ExerciseCreate />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise'
+          element={<ExerciseSlugShow />}
+        />
+        <Route
+          path='/logs/:slugLog/edit/:exerciseId'
+          element={<ExerciseEdit />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise/wl/create-new-session'
+          element={<WlsessionCreate />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise/wl/:slugSession'
+          element={<WlsessionShow />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise/wl/edit/:wlsessionId'
+          element={<WlsessionEdit />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise/pa/create-new-session'
+          element={<PasessionCreate />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise/pa/:slugSession'
+          element={<PasessionShow />}
+        />
+        <Route
+          path='/logs/:slugLog/:slugExercise/pa/edit/:pasessionId'
+          element={<PasessionEdit />}
+        />
+      </Route>
     </Route>
   )
 )

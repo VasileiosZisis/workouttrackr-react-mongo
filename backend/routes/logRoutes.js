@@ -10,7 +10,8 @@ import {
 } from '../controllers/logController.js';
 import checkObjectId from '../middleware/checkObjectId.js';
 import { registered } from '../middleware/loginMiddleware.js';
-import { validateLog, isLogAuthor } from '../middleware/validations.js';
+import { validateLog } from '../middleware/validations.js';
+import { isLogAuthor } from '../middleware/authorMiddleware.js';
 
 router
   .route('/')
@@ -22,7 +23,7 @@ router
   .delete(registered, isLogAuthor, deleteLog);
 router
   .route('/edit/:id')
-  .get(registered, isLogAuthor, checkObjectId, getLogById)
+  .get(checkObjectId, registered, isLogAuthor, getLogById)
   .put(registered, isLogAuthor, validateLog, updateLogId);
 
 export default router;

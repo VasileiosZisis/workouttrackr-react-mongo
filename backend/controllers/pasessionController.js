@@ -9,6 +9,7 @@ const createPasession = asyncHandler(async (req, res) => {
     slugExercise: req.params.slugExercise,
   });
   const pasession = new Pasession(req.body);
+  pasession.author = req.user._id;
   pasession.exercise = exercise._id;
   pasession.log = log._id;
   const createdPasession = await pasession.save();

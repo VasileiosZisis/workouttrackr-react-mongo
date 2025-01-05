@@ -1,9 +1,13 @@
 import { useGetLogsQuery } from '../../../slices/logsApiSlice'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import ProtectedRoute from '../../components/ProtectedRoute'
 import '../ModelMain.css'
 
 const LogsShow = () => {
   const { data, isLoading, error } = useGetLogsQuery()
+
+  const { userInfo } = useSelector(state => state.auth)
 
   if (isLoading) return <p>loading</p>
   if (error) return <div>{error?.data?.message || error.error}</div>
@@ -17,11 +21,16 @@ const LogsShow = () => {
         <ul className='model__list'>
           {data.length > 0 &&
             data.map(log => (
-              <li key={log._id} className='model__item'>
-                <Link className='model__link' to={`/logs/${log.slugLog}`}>
-                  {log.title}
-                </Link>
-              </li>
+              <ProtectedRoute
+                key={log._id}
+                condition={userInfo._id === log.author}
+              >
+                <li className='model__item'>
+                  <Link className='model__link' to={`/logs/${log.slugLog}`}>
+                    {log.title}
+                  </Link>
+                </li>
+              </ProtectedRoute>
             ))}
         </ul>
         <Link className='model__button' to={'/logs/create-new-log'}>

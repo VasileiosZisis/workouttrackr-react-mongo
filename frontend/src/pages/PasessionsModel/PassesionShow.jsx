@@ -4,6 +4,8 @@ import {
 } from '../../../slices/pasessionsApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import ProtectedRoute from '../../components/ProtectedRoute'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -20,6 +22,8 @@ const PasessionShow = () => {
 
   const [deletePasession, { isLoading: loadingDelete }] =
     useDeletePasessionMutation()
+
+  const { userInfo } = useSelector(state => state.auth)
 
   const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
@@ -42,71 +46,73 @@ const PasessionShow = () => {
   if (loadingDelete) return <p>loading</p>
 
   return (
-    <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
-      <div className='title-container'>
-        <h1 className='title-container__title'>
-          {new Date(data.pasession.createdDate).toLocaleDateString()}
-        </h1>
-        <div className='title-container__link-container'>
-          <Link
-            className='title-container__link'
-            to={`/logs/${slugLog}/${slugExercise}/pa/edit/${data.pasession._id}`}
-          >
-            Edit
-          </Link>
+    <ProtectedRoute condition={userInfo._id === data.pasession.author}>
+      <main className='model'>
+        <button className='model__button-goback' onClick={submitHandler}>
+          Go Back
+        </button>
+        <div className='title-container'>
+          <h1 className='title-container__title'>
+            {new Date(data.pasession.createdDate).toLocaleDateString()}
+          </h1>
+          <div className='title-container__link-container'>
+            <Link
+              className='title-container__link'
+              to={`/logs/${slugLog}/${slugExercise}/pa/edit/${data.pasession._id}`}
+            >
+              Edit
+            </Link>
+          </div>
+          <div className='title-container__button-container'>
+            <button
+              className='title-container__button'
+              onClick={() => deleteHandler(slugExercise)}
+            >
+              Delete
+            </button>
+          </div>
         </div>
-        <div className='title-container__button-container'>
-          <button
-            className='title-container__button'
-            onClick={() => deleteHandler(slugExercise)}
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-      <table className='sessions__table'>
-        <tbody>
-          <tr>
-            <td colSpan='2' scope='col'>
-              Pace
-            </td>
-            <th colSpan='2' scope='col'>
-              {data.pasession.paceSeconds > 10
-                ? `${data.pasession.paceMinutes}:${data.pasession.paceSeconds} `
-                : `${data.pasession.paceMinutes}:0${data.pasession.paceSeconds} `}
-              <span className='sessions__span'>min/km</span>
-            </th>
-          </tr>
-          <tr>
-            <td colSpan='2' scope='col'>
-              Speed
-            </td>
-            <th colSpan='2' scope='col'>
-              {data.pasession.speed}
-              <span className='sessions__span'> km/min</span>
-            </th>
-          </tr>
-          <tr>
-            <th></th>
-          </tr>
-          <tr>
-            <td>Hours</td>
-            <td>Minutes</td>
-            <td>Seconds</td>
-            <td>Distance</td>
-          </tr>
-          <tr>
-            <th>{data.pasession.time.hours}</th>
-            <th>{data.pasession.time.minutes}</th>
-            <th>{data.pasession.time.seconds}</th>
-            <th>{data.pasession.distance}</th>
-          </tr>
-        </tbody>
-      </table>
-    </main>
+        <table className='sessions__table'>
+          <tbody>
+            <tr>
+              <td colSpan='2' scope='col'>
+                Pace
+              </td>
+              <th colSpan='2' scope='col'>
+                {data.pasession.paceSeconds > 10
+                  ? `${data.pasession.paceMinutes}:${data.pasession.paceSeconds} `
+                  : `${data.pasession.paceMinutes}:0${data.pasession.paceSeconds} `}
+                <span className='sessions__span'>min/km</span>
+              </th>
+            </tr>
+            <tr>
+              <td colSpan='2' scope='col'>
+                Speed
+              </td>
+              <th colSpan='2' scope='col'>
+                {data.pasession.speed}
+                <span className='sessions__span'> km/min</span>
+              </th>
+            </tr>
+            <tr>
+              <th></th>
+            </tr>
+            <tr>
+              <td>Hours</td>
+              <td>Minutes</td>
+              <td>Seconds</td>
+              <td>Distance</td>
+            </tr>
+            <tr>
+              <th>{data.pasession.time.hours}</th>
+              <th>{data.pasession.time.minutes}</th>
+              <th>{data.pasession.time.seconds}</th>
+              <th>{data.pasession.distance}</th>
+            </tr>
+          </tbody>
+        </table>
+      </main>
+    </ProtectedRoute>
   )
 }
 

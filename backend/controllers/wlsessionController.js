@@ -9,6 +9,7 @@ const createWlsession = asyncHandler(async (req, res) => {
     slugExercise: req.params.slugExercise,
   });
   const wlsession = new Wlsession(req.body);
+  wlsession.author = req.user._id;
   wlsession.exercise = exercise._id;
   wlsession.log = log._id;
   const createdWlsession = await wlsession.save();

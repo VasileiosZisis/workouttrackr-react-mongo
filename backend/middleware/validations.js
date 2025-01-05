@@ -1,7 +1,5 @@
 import BaseJoi from 'joi';
 import sanitizeHtml from 'sanitize-html';
-import asyncHandler from '../middleware/asyncHandler.js';
-import Log from '../models/logs.js';
 
 const extension = (joi) => ({
   type: 'string',
@@ -41,23 +39,10 @@ const validateLog = (req, res, next) => {
   }
 };
 
-const isLogAuthor = asyncHandler(async (req, res, next) => {
-  const log = await Log.findOne({ slugLog: req.params.slugLog });
-  if (!log) {
-    res.status(404);
-    throw new Error('Log not found');
-  }
-  if (!log.author.equals(req.user._id)) {
-    res.status(403);
-    throw new Error('You do not have permission to do that!');
-  }
-  next();
-});
-
 const exerciseSchema = Joi.object({
   title: Joi.string().alphanum().escapeHTML().required(),
   session: Joi.string().required().valid('wlsession', 'pasession'),
-});
+}).options({ allowUnknown: true });
 
 const validateExercise = (req, res, next) => {
   const { error } = exerciseSchema.validate(req.body);
@@ -79,7 +64,7 @@ const wlsessionSchema = Joi.object({
       kilograms: Joi.number().min(0).required(),
     })
   ),
-});
+}).options({ allowUnknown: true });
 
 const validateWlsession = (req, res, next) => {
   const { error } = wlsessionSchema.validate(req.body);
@@ -94,14 +79,13 @@ const validateWlsession = (req, res, next) => {
 
 const pasessionSchema = Joi.object({
   createdDate: Joi.date().required(),
-  set: Joi.array().items(
-    Joi.object({
-      isHard: Joi.boolean(),
-      repetitions: Joi.number().min(0).required(),
-      kilograms: Joi.number().min(0).required(),
-    })
-  ),
-});
+  time: Joi.object({
+    hours: Joi.number().min(0).required(),
+    minutes: Joi.number().min(0).required(),
+    seconds: Joi.number().min(0).required(),
+  }),
+  distance: Joi.number().min(0).required(),
+}).options({ allowUnknown: true });
 
 const validatePasession = (req, res, next) => {
   const { error } = pasessionSchema.validate(req.body);
@@ -160,5 +144,4 @@ export {
   validatePasession,
   validateRegisterUser,
   validateUpdateUser,
-  isLogAuthor,
 };
