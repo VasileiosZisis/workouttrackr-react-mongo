@@ -13,7 +13,8 @@ const ExerciseCreate = () => {
   const {
     data: logData,
     isLoading: getLogLoading,
-    error
+    error,
+    refetch
   } = useGetLogSlugQuery(slugLog)
 
   const schema = Joi.object({
@@ -36,7 +37,8 @@ const ExerciseCreate = () => {
 
   const onSubmit = async data => {
     try {
-      const res = await createExercise({ ...data, slugLog: slugLog }).unwrap()
+      await createExercise({ ...data, slugLog: slugLog }).unwrap()
+      refetch()
       navigate(`/logs/${slugLog}`)
     } catch (err) {
       console.log(err)

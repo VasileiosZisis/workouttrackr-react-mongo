@@ -2,6 +2,7 @@ import {
   useGetPasessionSlugQuery,
   useDeletePasessionMutation
 } from '../../../slices/pasessionsApiSlice'
+import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -13,6 +14,8 @@ const PasessionShow = () => {
   const navigate = useNavigate()
 
   const { slugLog, slugExercise, slugSession } = useParams()
+
+  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
 
   const { data, isLoading, error } = useGetPasessionSlugQuery({
     slugLog,
@@ -29,6 +32,7 @@ const PasessionShow = () => {
     if (window.confirm('Are you sure?')) {
       try {
         await deletePasession({ slugLog, slugExercise, slugSession })
+        refetch()
         navigate(`/logs/${slugLog}/${slugExercise}`)
       } catch (err) {
         console.log(err)

@@ -17,6 +17,19 @@ const isLogAuthor = asyncHandler(async (req, res, next) => {
   next();
 });
 
+const isLogByIdAuthor = asyncHandler(async (req, res, next) => {
+  const logId = await Log.findById(req.params.id);
+  if (!logId) {
+    res.status(404);
+    throw new Error('Log not found');
+  }
+  if (!logId.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  next();
+});
+
 const isExerciseAuthor = asyncHandler(async (req, res, next) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
   const exercise = await Exercise.findOne({
@@ -35,6 +48,28 @@ const isExerciseAuthor = asyncHandler(async (req, res, next) => {
     throw new Error('Exercise not found');
   }
   if (!exercise.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  next();
+});
+
+const isExerciseByIdAuthor = asyncHandler(async (req, res, next) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  const exerciseId = await Exercise.findById(req.params.exerciseId);
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  }
+  if (!log.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  if (!exerciseId) {
+    res.status(404);
+    throw new Error('Exercise not found');
+  }
+  if (!exerciseId.author.equals(req.user._id)) {
     res.status(403);
     throw new Error('You do not have permission to do that');
   }
@@ -76,6 +111,39 @@ const isWlsessionAuthor = asyncHandler(async (req, res, next) => {
   next();
 });
 
+const isWlsessionByIdAuthor = asyncHandler(async (req, res, next) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  const exercise = await Exercise.findOne({
+    slugExercise: req.params.slugExercise,
+  });
+  const wlsessionId = await Wlsession.findById(req.params.wlsessionId);
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  }
+  if (!log.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  if (!exercise) {
+    res.status(404);
+    throw new Error('Exercise not found');
+  }
+  if (!exercise.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  if (!wlsessionId) {
+    res.status(404);
+    throw new Error('Session(WL) not found');
+  }
+  if (!wlsessionId.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  next();
+});
+
 const isPasessionAuthor = asyncHandler(async (req, res, next) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
   const exercise = await Exercise.findOne({
@@ -111,4 +179,46 @@ const isPasessionAuthor = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export { isLogAuthor, isExerciseAuthor, isWlsessionAuthor, isPasessionAuthor };
+const isPasessionByIdAuthor = asyncHandler(async (req, res, next) => {
+  const log = await Log.findOne({ slugLog: req.params.slugLog });
+  const exercise = await Exercise.findOne({
+    slugExercise: req.params.slugExercise,
+  });
+  const pasessionId = await Pasession.findById(req.params.pasessionId);
+  if (!log) {
+    res.status(404);
+    throw new Error('Log not found');
+  }
+  if (!log.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  if (!exercise) {
+    res.status(404);
+    throw new Error('Exercise not found');
+  }
+  if (!exercise.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  if (!pasessionId) {
+    res.status(404);
+    throw new Error('Session(PA) not found');
+  }
+  if (!pasessionId.author.equals(req.user._id)) {
+    res.status(403);
+    throw new Error('You do not have permission to do that');
+  }
+  next();
+});
+
+export {
+  isLogAuthor,
+  isLogByIdAuthor,
+  isExerciseAuthor,
+  isExerciseByIdAuthor,
+  isWlsessionAuthor,
+  isWlsessionByIdAuthor,
+  isPasessionAuthor,
+  isPasessionByIdAuthor,
+};

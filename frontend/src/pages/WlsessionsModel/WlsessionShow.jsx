@@ -2,6 +2,7 @@ import {
   useGetWlsessionSlugQuery,
   useDeleteWlsessionMutation
 } from '../../../slices/wlsessionsApiSlice'
+import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -13,6 +14,8 @@ const WlsessionShow = () => {
   const navigate = useNavigate()
 
   const { slugLog, slugExercise, slugSession } = useParams()
+
+  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
 
   const { data, isLoading, error } = useGetWlsessionSlugQuery({
     slugLog,
@@ -29,6 +32,7 @@ const WlsessionShow = () => {
     if (window.confirm('Are you sure?')) {
       try {
         await deleteWlsession({ slugLog, slugExercise, slugSession })
+        refetch()
         navigate(`/logs/${slugLog}/${slugExercise}`)
       } catch (err) {
         console.log(err)

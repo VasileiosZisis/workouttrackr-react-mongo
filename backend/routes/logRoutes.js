@@ -11,7 +11,10 @@ import {
 import checkObjectId from '../middleware/checkObjectId.js';
 import { registered } from '../middleware/loginMiddleware.js';
 import { validateLog } from '../middleware/validations.js';
-import { isLogAuthor } from '../middleware/authorMiddleware.js';
+import {
+  isLogAuthor,
+  isLogByIdAuthor,
+} from '../middleware/authorMiddleware.js';
 
 router
   .route('/')
@@ -19,11 +22,11 @@ router
   .post(registered, validateLog, createLog);
 router
   .route('/:slugLog')
-  .get(registered, isLogAuthor, getLogBySlug)
+  .get(registered, getLogBySlug)
   .delete(registered, isLogAuthor, deleteLog);
 router
   .route('/edit/:id')
-  .get(checkObjectId, registered, isLogAuthor, getLogById)
-  .put(registered, isLogAuthor, validateLog, updateLogId);
+  .get(checkObjectId('id'), registered, isLogByIdAuthor, getLogById)
+  .put(registered, isLogByIdAuthor, validateLog, updateLogId);
 
 export default router;

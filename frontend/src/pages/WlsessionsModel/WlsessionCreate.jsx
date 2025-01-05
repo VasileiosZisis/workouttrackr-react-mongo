@@ -14,7 +14,8 @@ const WlsessionCreate = () => {
   const {
     data: exerciseData,
     isLoading: exerciseLoading,
-    error: exerciseError
+    error: exerciseError,
+    refetch
   } = useGetExerciseSlugQuery({ slugLog, slugExercise })
 
   const defaultDate = new Date().toISOString().slice(0, 10)
@@ -62,11 +63,12 @@ const WlsessionCreate = () => {
 
   const onSubmit = async data => {
     try {
-      const res = await createWlsession({
+      await createWlsession({
         ...data,
         slugLog: slugLog,
         slugExercise: slugExercise
       }).unwrap()
+      refetch()
       navigate(`/logs/${slugLog}/${slugExercise}`)
     } catch (err) {
       console.log(err)

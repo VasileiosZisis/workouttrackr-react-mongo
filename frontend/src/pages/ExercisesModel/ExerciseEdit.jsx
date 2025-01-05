@@ -2,6 +2,7 @@ import {
   useGetExerciseIdQuery,
   useUpdateExerciseIdMutation
 } from '../../../slices/exercisesApiSlice'
+import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -13,7 +14,9 @@ import '../ModelForms.css'
 const ExerciseEdit = () => {
   const { slugLog, exerciseId } = useParams()
 
-  const { data, isLoading, error, refetch } = useGetExerciseIdQuery({
+  const { refetch } = useGetLogSlugQuery(slugLog)
+
+  const { data, isLoading, error } = useGetExerciseIdQuery({
     slugLog,
     exerciseId
   })
@@ -49,8 +52,8 @@ const ExerciseEdit = () => {
         slugLog,
         data: { ...dataForm, _id: exerciseId }
       }).unwrap()
-      navigate(`/logs/${slugLog}`)
       refetch()
+      navigate(`/logs/${slugLog}`)
     } catch (err) {
       console.log(err)
     }

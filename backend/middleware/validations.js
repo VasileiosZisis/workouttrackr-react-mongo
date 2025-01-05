@@ -26,7 +26,7 @@ const Joi = BaseJoi.extend(extension);
 
 const logSchema = Joi.object({
   title: Joi.string().alphanum().escapeHTML().required(),
-});
+}).options({ allowUnknown: true });
 
 const validateLog = (req, res, next) => {
   const { error } = logSchema.validate(req.body);
@@ -44,8 +44,24 @@ const exerciseSchema = Joi.object({
   session: Joi.string().required().valid('wlsession', 'pasession'),
 }).options({ allowUnknown: true });
 
+const exerciseEditSchema = Joi.object({
+  title: Joi.string().alphanum().escapeHTML().required(),
+  session: Joi.string().valid('wlsession', 'pasession'),
+}).options({ allowUnknown: true });
+
 const validateExercise = (req, res, next) => {
   const { error } = exerciseSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    res.status(404);
+    throw new Error(msg);
+  } else {
+    next();
+  }
+};
+
+const validateUpdateExercise = (req, res, next) => {
+  const { error } = exerciseEditSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(',');
     res.status(404);
@@ -59,6 +75,8 @@ const wlsessionSchema = Joi.object({
   createdDate: Joi.date().required(),
   set: Joi.array().items(
     Joi.object({
+      _id: Joi.string().escapeHTML(),
+      volume: Joi.number(),
       isHard: Joi.boolean(),
       repetitions: Joi.number().min(0).required(),
       kilograms: Joi.number().min(0).required(),
@@ -140,6 +158,7 @@ const validateUpdateUser = (req, res, next) => {
 export {
   validateLog,
   validateExercise,
+  validateUpdateExercise,
   validateWlsession,
   validatePasession,
   validateRegisterUser,

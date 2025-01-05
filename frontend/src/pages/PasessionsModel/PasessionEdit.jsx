@@ -2,6 +2,7 @@ import {
   useGetPasessionByIdQuery,
   useUpdatePasessionIdMutation
 } from '../../../slices/pasessionsApiSlice'
+import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -15,7 +16,9 @@ const PasessionEdit = () => {
 
   const { slugLog, slugExercise, pasessionId } = useParams()
 
-  const { data, isLoading, error, refetch } = useGetPasessionByIdQuery({
+  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+
+  const { data, isLoading, error } = useGetPasessionByIdQuery({
     slugLog,
     slugExercise,
     pasessionId
@@ -50,14 +53,13 @@ const PasessionEdit = () => {
       'number.base': 'Distance must be a number',
       'number.min': 'Distance must be at least 0'
     })
-  })
+  }).options({ allowUnknown: true })
 
   const {
     register,
     reset,
     setValue,
     handleSubmit,
-    // control,
     formState: { errors }
   } = useForm({
     resolver: joiResolver(schema),
@@ -83,8 +85,9 @@ const PasessionEdit = () => {
         slugExercise,
         data: { ...dataForm, _id: pasessionId }
       }).unwrap()
-      navigate(`/logs/${slugLog}/${slugExercise}`)
+      console.log(dataForm)
       refetch()
+      navigate(`/logs/${slugLog}/${slugExercise}`)
     } catch (err) {
       console.log(err)
     }

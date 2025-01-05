@@ -2,6 +2,7 @@ import {
   useGetExerciseSlugQuery,
   useDeleteExerciseMutation
 } from '../../../slices/exercisesApiSlice'
+import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
@@ -11,6 +12,8 @@ const ExerciseSlugShow = () => {
   const navigate = useNavigate()
 
   const { slugLog, slugExercise } = useParams()
+
+  const { refetch } = useGetLogSlugQuery(slugLog)
 
   const { data, isLoading, error } = useGetExerciseSlugQuery({
     slugLog,
@@ -26,6 +29,7 @@ const ExerciseSlugShow = () => {
     if (window.confirm('Are you sure?')) {
       try {
         await deleteExercise({ slugLog, slugExercise })
+        refetch()
         navigate(`/logs/${slugLog}`)
       } catch (err) {
         console.log(err)

@@ -10,7 +10,10 @@ import {
 import checkObjectId from '../middleware/checkObjectId.js';
 import { validatePasession } from '../middleware/validations.js';
 import { registered } from '../middleware/loginMiddleware.js';
-import { isPasessionAuthor } from '../middleware/authorMiddleware.js';
+import {
+  isPasessionAuthor,
+  isPasessionByIdAuthor,
+} from '../middleware/authorMiddleware.js';
 
 router.route('/').post(registered, validatePasession, createPasession);
 router
@@ -19,7 +22,17 @@ router
   .delete(registered, isPasessionAuthor, deletePasession);
 router
   .route('/edit/:pasessionId')
-  .get(checkObjectId, registered, isPasessionAuthor, getPasessionById)
-  .put(registered, isPasessionAuthor, validatePasession, updatePasessionById);
+  .get(
+    registered,
+    isPasessionByIdAuthor,
+    checkObjectId('pasessiondId'),
+    getPasessionById
+  )
+  .put(
+    registered,
+    isPasessionByIdAuthor,
+    validatePasession,
+    updatePasessionById
+  );
 
 export default router;

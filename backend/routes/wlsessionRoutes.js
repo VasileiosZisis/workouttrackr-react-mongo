@@ -10,7 +10,10 @@ import {
 import checkObjectId from '../middleware/checkObjectId.js';
 import { validateWlsession } from '../middleware/validations.js';
 import { registered } from '../middleware/loginMiddleware.js';
-import { isWlsessionAuthor } from '../middleware/authorMiddleware.js';
+import {
+  isWlsessionAuthor,
+  isWlsessionByIdAuthor,
+} from '../middleware/authorMiddleware.js';
 
 router.route('/').post(registered, validateWlsession, createWlsession);
 router
@@ -19,7 +22,17 @@ router
   .delete(registered, isWlsessionAuthor, deleteWlsession);
 router
   .route('/edit/:wlsessionId')
-  .get(checkObjectId, registered, isWlsessionAuthor, getWlsessionById)
-  .put(registered, isWlsessionAuthor, validateWlsession, updateWlsessionById);
+  .get(
+    registered,
+    isWlsessionByIdAuthor,
+    checkObjectId('wlsessiondId'),
+    getWlsessionById
+  )
+  .put(
+    registered,
+    isWlsessionByIdAuthor,
+    validateWlsession,
+    updateWlsessionById
+  );
 
 export default router;

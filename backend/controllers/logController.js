@@ -21,31 +21,31 @@ const getLogs = asyncHandler(async (req, res) => {
 const getLogBySlug = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
 
-  const logAggregate = await Log.aggregate([
-    { $match: { _id: log._id } },
-    {
-      $lookup: {
-        from: 'exercises',
-        localField: 'exercises',
-        foreignField: '_id',
-        as: 'exercises',
-      },
-    },
-    {
-      $unwind: '$exercises',
-    },
-    {
-      $sort: { 'exercises._id': -1 },
-    },
-    // {
-    //   $skip: limit * page - limit,
-    // },
-    // {
-    //   $limit: limit,
-    // },
-  ]);
-
   if (log) {
+    const logAggregate = await Log.aggregate([
+      { $match: { _id: log._id } },
+      {
+        $lookup: {
+          from: 'exercises',
+          localField: 'exercises',
+          foreignField: '_id',
+          as: 'exercises',
+        },
+      },
+      {
+        $unwind: '$exercises',
+      },
+      {
+        $sort: { 'exercises._id': -1 },
+      },
+      // {
+      //   $skip: limit * page - limit,
+      // },
+      // {
+      //   $limit: limit,
+      // },
+    ]);
+
     return res.json({ log, logAggregate });
   } else {
     res.status(404);

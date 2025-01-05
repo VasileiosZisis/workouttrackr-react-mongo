@@ -14,7 +14,8 @@ const PasessionCreate = () => {
   const {
     data,
     isLoading: exerciseLoading,
-    error: exerciseError
+    error: exerciseError,
+    refetch
   } = useGetExerciseSlugQuery({ slugLog, slugExercise })
 
   const defaultDate = new Date().toISOString().slice(0, 10)
@@ -73,6 +74,7 @@ const PasessionCreate = () => {
         slugLog: slugLog,
         slugExercise: slugExercise
       }).unwrap()
+      refetch()
       navigate(`/logs/${slugLog}/${slugExercise}`)
     } catch (err) {
       console.log(err)

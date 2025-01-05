@@ -13,7 +13,7 @@ const LogSlugShow = () => {
 
   const { slugLog } = useParams()
 
-  const { data, isLoading, error } = useGetLogSlugQuery(slugLog)
+  const { data, isLoading, error, refetch } = useGetLogSlugQuery(slugLog)
 
   const [deleteLog, { isLoading: loadingDelete }] = useDeleteLogMutation()
 
@@ -23,6 +23,7 @@ const LogSlugShow = () => {
     if (window.confirm('Are you sure?')) {
       try {
         await deleteLog(slugLog)
+        refetch()
         navigate('/logs')
       } catch (err) {
         console.log(err)

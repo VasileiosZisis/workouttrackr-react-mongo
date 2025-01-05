@@ -2,6 +2,7 @@ import {
   useGetWlsessionByIdQuery,
   useUpdateWlsessionIdMutation
 } from '../../../slices/wlsessionsApiSlice'
+import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
@@ -15,7 +16,9 @@ const WlsessionEdit = () => {
 
   const { slugLog, slugExercise, wlsessionId } = useParams()
 
-  const { data, isLoading, error, refetch } = useGetWlsessionByIdQuery({
+  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+
+  const { data, isLoading, error } = useGetWlsessionByIdQuery({
     slugLog,
     slugExercise,
     wlsessionId
@@ -43,7 +46,7 @@ const WlsessionEdit = () => {
         })
       })
     )
-  })
+  }).options({ allowUnknown: true })
 
   const {
     register,
