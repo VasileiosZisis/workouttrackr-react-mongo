@@ -1,5 +1,4 @@
-import { NavLink, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useLogoutMutation } from '../../slices/usersApiSlice'
@@ -61,13 +60,13 @@ const Navbar = () => {
           ) : (
             <>
               <li className='navbar__item'>
-                <NavLink className='navbar__link' to='/register'>
-                  register
+                <NavLink className='navbar__link' to='/login'>
+                  login
                 </NavLink>
               </li>
               <li className='navbar__item'>
-                <NavLink className='navbar__link' to='/login'>
-                  login
+                <NavLink className='navbar__link' to='/register'>
+                  register
                 </NavLink>
               </li>
             </>

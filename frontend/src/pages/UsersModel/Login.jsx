@@ -36,6 +36,7 @@ const Login = () => {
     try {
       const res = await login(data).unwrap()
       dispatch(setCredentials(res))
+      navigate('/logs')
     } catch (err) {
       console.log(err)
     }

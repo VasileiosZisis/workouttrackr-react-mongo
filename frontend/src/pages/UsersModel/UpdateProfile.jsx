@@ -25,7 +25,8 @@ const UpdateProfile = () => {
       .messages({
         'string.empty': 'This field is required',
         'string.email': 'Not a valid email format'
-      })
+      }),
+    password: Joi.string().min(6).required().allow('')
   })
 
   const {
@@ -84,6 +85,15 @@ const UpdateProfile = () => {
           {...register('email')}
         />
         <p className='form__error-text'>{errors?.email?.message}</p>
+        <label htmlFor='password' name='password'>
+          Password
+        </label>
+        <input
+          className='form__input-text'
+          type='password'
+          {...register('password')}
+        />
+        <p className='form__error-text'>{errors?.password?.message}</p>
         <button className='form__button-submit' type='submit'>
           Update
         </button>

@@ -40,7 +40,7 @@ const Register = () => {
     try {
       const res = await register(data).unwrap()
       dispatch(setCredentials(res))
-      navigate('/')
+      navigate('/logs')
     } catch (err) {
       console.log(err)
     }

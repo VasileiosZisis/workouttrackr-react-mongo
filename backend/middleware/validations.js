@@ -131,6 +131,7 @@ const userEditSchema = Joi.object({
     .email({ tlds: { allow: false } })
     .required()
     .escapeHTML(),
+  password: Joi.string().min(6).allow('').escapeHTML(),
 });
 
 const validateRegisterUser = (req, res, next) => {
