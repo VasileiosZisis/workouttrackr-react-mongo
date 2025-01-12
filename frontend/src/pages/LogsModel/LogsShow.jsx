@@ -13,30 +13,31 @@ const LogsShow = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
-    <>
-      {data.length > 0 &&
-        data.map(log => (
-          <ProtectedRoute key={log._id} condition={userInfo._id === log.author}>
-            <main className='model'>
-              <div className='title-container'>
-                <h1 className='title-container__title'>Logs</h1>
-              </div>
-              <div className='model__contents'>
-                <ul className='model__list'>
-                  <li className='model__item'>
-                    <Link className='model__link' to={`/logs/${log.slugLog}`}>
-                      {log.title}
-                    </Link>
-                  </li>
-                </ul>
-                <Link className='model__button' to={'/logs/create-new-log'}>
-                  Create new
-                </Link>
-              </div>
-            </main>
-          </ProtectedRoute>
-        ))}
-    </>
+    <main className='model'>
+      <div className='title-container'>
+        <h1 className='title-container__title'>Logs</h1>
+      </div>
+      <div className='model__contents'>
+        <ul className='model__list'>
+          <li className='model__item'>
+            {data.length > 0 &&
+              data.map(log => (
+                <ProtectedRoute
+                  key={log._id}
+                  condition={userInfo._id === log.author}
+                >
+                  <Link className='model__link' to={`/logs/${log.slugLog}`}>
+                    {log.title}
+                  </Link>
+                </ProtectedRoute>
+              ))}
+          </li>
+        </ul>
+      </div>
+      <Link className='model__button' to={'/logs/create-new-log'}>
+        Create new
+      </Link>
+    </main>
   )
 }
 
