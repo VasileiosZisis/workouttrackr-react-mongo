@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useRegisterMutation } from '../../../slices/usersApiSlice'
@@ -33,8 +34,13 @@ const Register = () => {
   const {
     register: regForm,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
+
+  useEffect(() => {
+    setFocus('username')
+  }, [setFocus])
 
   const onFormSubmit = async data => {
     try {

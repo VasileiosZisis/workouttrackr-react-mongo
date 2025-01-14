@@ -25,7 +25,10 @@ const extension = (joi) => ({
 const Joi = BaseJoi.extend(extension);
 
 const logSchema = Joi.object({
-  title: Joi.string().alphanum().escapeHTML().required(),
+  title: Joi.string()
+    .pattern(/^[a-z]+$/)
+    .escapeHTML()
+    .required(),
 }).options({ allowUnknown: true });
 
 const validateLog = (req, res, next) => {
@@ -40,12 +43,18 @@ const validateLog = (req, res, next) => {
 };
 
 const exerciseSchema = Joi.object({
-  title: Joi.string().alphanum().escapeHTML().required(),
+  title: Joi.string()
+    .pattern(/^[a-z]+$/)
+    .escapeHTML()
+    .required(),
   session: Joi.string().required().valid('wlsession', 'pasession'),
 }).options({ allowUnknown: true });
 
 const exerciseEditSchema = Joi.object({
-  title: Joi.string().alphanum().escapeHTML().required(),
+  title: Joi.string()
+    .pattern(/^[a-z]+$/)
+    .escapeHTML()
+    .required(),
   session: Joi.string().valid('wlsession', 'pasession'),
 }).options({ allowUnknown: true });
 

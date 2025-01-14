@@ -41,54 +41,57 @@ const LogSlugShow = () => {
   if (loadingDelete) return <p>loading</p>
 
   return (
-    <ProtectedRoute condition={userInfo._id === data.log.author}>
-      <main className='model'>
-        <button className='model__button-goback' onClick={submitHandler}>
-          Go back
-        </button>
-        <div className='title-container'>
-          <h1 className='title-container__title'>{data.log.title}</h1>
-          <div className='title-container__link-container'>
-            <Link
-              className='title-container__link'
-              to={`/logs/edit/${data.log._id}`}
-            >
-              Edit
-            </Link>
-          </div>
-          <div className='title-container__button-container'>
-            <button
-              className='title-container__button'
-              onClick={() => deleteHandler(slugLog)}
-            >
-              Delete
-            </button>
-          </div>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go back
+      </button>
+      <div className='title-container'>
+        <h1 className='title-container__title'>{data.log.title}</h1>
+        <div className='title-container__link-container'>
+          <Link
+            className='title-container__link'
+            to={`/logs/edit/${data.log._id}`}
+          >
+            Edit
+          </Link>
         </div>
-        <h2 className='model__subtitle'>Exercises</h2>
-        <div className='model__contents'>
-          <ul className='model__list'>
+        <div className='title-container__button-container'>
+          <button
+            className='title-container__button'
+            onClick={() => deleteHandler(slugLog)}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <h2 className='model__subtitle'>Exercises</h2>
+      <div className='model__contents'>
+        <ul className='model__list'>
+          <li className='model__item'>
             {data.logAggregate.length > 0 &&
               data.logAggregate.map(item => (
-                <li key={item.exercises._id} className='model__item'>
+                <ProtectedRoute
+                  key={item.exercises._id}
+                  condition={userInfo._id === data.log.author}
+                >
                   <Link
                     className='model__link'
                     to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
                   >
                     {item.exercises.title}
                   </Link>
-                </li>
+                </ProtectedRoute>
               ))}
-          </ul>
-          <Link
-            className='model__button'
-            to={`/logs/${slugLog}/create-new-exercise`}
-          >
-            Create new
-          </Link>
-        </div>
-      </main>
-    </ProtectedRoute>
+          </li>
+        </ul>
+        <Link
+          className='model__button'
+          to={`/logs/${slugLog}/create-new-exercise`}
+        >
+          Create new
+        </Link>
+      </div>
+    </main>
   )
 }
 

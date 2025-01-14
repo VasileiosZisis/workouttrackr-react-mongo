@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../../slices/authSlice'
@@ -29,8 +30,13 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
+
+  useEffect(() => {
+    setFocus('email')
+  }, [setFocus])
 
   const onSubmit = async data => {
     try {

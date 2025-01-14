@@ -47,37 +47,40 @@ const ExerciseSlugShow = () => {
   if (loadingDelete) return <p>loading</p>
 
   return (
-    <ProtectedRoute condition={userInfo._id === data.exercise.author}>
-      <main className='model'>
-        <button className='model__button-goback' onClick={submitHandler}>
-          Go Back
-        </button>
-        <div className='title-container'>
-          <h1 className='title-container__title'>{`${data.exercise.title}`}</h1>
-          <div className='title-container__link-container'>
-            <Link
-              className='title-container__link'
-              to={`/logs/${slugLog}/edit/${data.exercise._id}`}
-            >
-              Edit
-            </Link>
-          </div>
-          <div className='title-container__button-container'>
-            <button
-              className='title-container__button'
-              onClick={() => deleteHandler(slugExercise)}
-            >
-              Delete
-            </button>
-          </div>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <div className='title-container'>
+        <h1 className='title-container__title'>{`${data.exercise.title}`}</h1>
+        <div className='title-container__link-container'>
+          <Link
+            className='title-container__link'
+            to={`/logs/${slugLog}/edit/${data.exercise._id}`}
+          >
+            Edit
+          </Link>
         </div>
-        <h2 className='model__subtitle'>Sessions</h2>
-        {data.exercise.session === 'wlsession' ? (
-          <div className='sessions'>
-            <ul className='sessions__list'>
+        <div className='title-container__button-container'>
+          <button
+            className='title-container__button'
+            onClick={() => deleteHandler(slugExercise)}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <h2 className='model__subtitle'>Sessions</h2>
+      {data.exercise.session === 'wlsession' ? (
+        <div className='sessions'>
+          <ul className='sessions__list'>
+            <li className='sessions__item'>
               {data.exerciseAggregate.length > 0 &&
                 data.exerciseAggregate.map(item => (
-                  <li className='sessions__item' key={item.wlsessions._id}>
+                  <ProtectedRoute
+                    key={item.wlsessions._id}
+                    condition={userInfo._id === data.exercise.author}
+                  >
                     <Link
                       className='sessions__link'
                       to={`/logs/${slugLog}/${slugExercise}/wl/${item.wlsessions.slugSession}`}
@@ -146,22 +149,27 @@ const ExerciseSlugShow = () => {
                         </tbody>
                       </table>
                     </Link>
-                  </li>
+                  </ProtectedRoute>
                 ))}
-            </ul>
-            <Link
-              className='model__button'
-              to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
-            >
-              Create New
-            </Link>
-          </div>
-        ) : data.exercise.session === 'pasession' ? (
-          <div className='sessions'>
-            <ul className='sessions__list'>
+            </li>
+          </ul>
+          <Link
+            className='model__button'
+            to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
+          >
+            Create New
+          </Link>
+        </div>
+      ) : data.exercise.session === 'pasession' ? (
+        <div className='sessions'>
+          <ul className='sessions__list'>
+            <li className='sessions__item'>
               {data.exerciseAggregatePa.length > 0 &&
                 data.exerciseAggregatePa.map(item => (
-                  <li className='sessions__item' key={item.pasessions._id}>
+                  <ProtectedRoute
+                    key={item.pasessions._id}
+                    condition={userInfo._id === data.exercise.author}
+                  >
                     <Link
                       className='sessions__link'
                       to={`/logs/${slugLog}/${slugExercise}/pa/${item.pasessions.slugSession}`}
@@ -216,21 +224,21 @@ const ExerciseSlugShow = () => {
                         </tbody>
                       </table>
                     </Link>
-                  </li>
+                  </ProtectedRoute>
                 ))}
-            </ul>
-            <Link
-              className='model__button'
-              to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
-            >
-              Create New
-            </Link>
-          </div>
-        ) : (
-          <h1>NOTHING</h1>
-        )}
-      </main>
-    </ProtectedRoute>
+            </li>
+          </ul>
+          <Link
+            className='model__button'
+            to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
+          >
+            Create New
+          </Link>
+        </div>
+      ) : (
+        <h1>NOTHING</h1>
+      )}
+    </main>
   )
 }
 

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 import { useCreateExerciseMutation } from '../../../slices/exercisesApiSlice'
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -18,10 +19,14 @@ const ExerciseCreate = () => {
   } = useGetLogSlugQuery(slugLog)
 
   const schema = Joi.object({
-    title: Joi.string().required().messages({
-      'string.empty': 'This field is required',
-      'string.alphanum': 'Title can contain only letters and numbers'
-    }),
+    title: Joi.string()
+      .pattern(/^[a-z]+$/)
+      .required()
+      .messages({
+        'string.empty': 'This field is required',
+        'string.pattern.base':
+          'Letters, numbers, spaces, dashes and underscores allowed'
+      }),
     session: Joi.string().required().valid('wlsession', 'pasession').messages({
       'any.only': 'You must choose an option'
     })
@@ -30,8 +35,13 @@ const ExerciseCreate = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
+
+  useEffect(() => {
+    setFocus('title')
+  }, [setFocus])
 
   const [createExercise, { isLoading }] = useCreateExerciseMutation()
 

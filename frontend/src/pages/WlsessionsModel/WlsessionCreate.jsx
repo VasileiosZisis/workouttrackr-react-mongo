@@ -1,4 +1,5 @@
 import { useForm, useFieldArray } from 'react-hook-form'
+import { useEffect } from 'react'
 import { useCreateWlsessionMutation } from '../../../slices/wlsessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -45,6 +46,7 @@ const WlsessionCreate = () => {
     register,
     handleSubmit,
     control,
+    setFocus,
     formState: { errors }
   } = useForm({
     resolver: joiResolver(schema),
@@ -58,6 +60,10 @@ const WlsessionCreate = () => {
     control,
     name: 'set'
   })
+
+  useEffect(() => {
+    setFocus('repetitions')
+  }, [setFocus])
 
   const [createWlsession, { isLoading }] = useCreateWlsessionMutation()
 

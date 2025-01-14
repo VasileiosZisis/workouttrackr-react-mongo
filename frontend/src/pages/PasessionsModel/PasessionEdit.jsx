@@ -60,6 +60,7 @@ const PasessionEdit = () => {
     reset,
     setValue,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({
     resolver: joiResolver(schema),
@@ -75,8 +76,9 @@ const PasessionEdit = () => {
         'createdDate',
         new Date(data.createdDate).toISOString().slice(0, 10)
       )
+      setFocus('hours')
     }
-  }, [data, reset, setValue])
+  }, [data, reset, setValue, setFocus])
 
   const onSubmit = async dataForm => {
     try {

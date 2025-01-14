@@ -27,24 +27,30 @@ const ExerciseEdit = () => {
   const navigate = useNavigate()
 
   const schema = Joi.object({
-    title: Joi.string().required().messages({
-      'string.empty': 'This field is required',
-      'string.alphanum': 'Title can contain only letters and numbers'
-    })
+    title: Joi.string()
+      .pattern(/^[a-z]+$/)
+      .required()
+      .messages({
+        'string.empty': 'This field is required',
+        'string.pattern.base':
+          'Letters, numbers, spaces, dashes and underscores allowed'
+      })
   })
 
   const {
     register,
     setValue,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
 
   useEffect(() => {
     if (data) {
       setValue('title', data.title)
+      setFocus('title')
     }
-  }, [data])
+  }, [data, setFocus])
 
   const onSubmit = async dataForm => {
     try {

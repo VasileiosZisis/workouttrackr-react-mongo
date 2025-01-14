@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 import { useCreatePasessionMutation } from '../../../slices/pasessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -51,6 +52,7 @@ const PasessionCreate = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({
     resolver: joiResolver(schema),
@@ -64,6 +66,10 @@ const PasessionCreate = () => {
       }
     }
   })
+
+  useEffect(() => {
+    setFocus('hours')
+  }, [setFocus])
 
   const [createPasession, { isLoading }] = useCreatePasessionMutation()
 

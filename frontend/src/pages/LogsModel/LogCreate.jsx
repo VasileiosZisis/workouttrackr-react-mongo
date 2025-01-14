@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 import { useCreateLogMutation } from '../../../slices/logsApiSlice'
 import { useNavigate } from 'react-router-dom'
 import Joi from 'joi'
@@ -10,17 +11,26 @@ const LogCreate = () => {
   const navigate = useNavigate()
 
   const schema = Joi.object({
-    title: Joi.string().alphanum().required().messages({
-      'string.empty': 'This field is required',
-      'string.alphanum': 'Title can contain only letters and numbers'
-    })
+    title: Joi.string()
+      .pattern(/^[a-z]+$/)
+      .required()
+      .messages({
+        'string.empty': 'This field is required',
+        'string.pattern.base':
+          'Letters, numbers, spaces, dashes and underscores allowed'
+      })
   })
 
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
+
+  useEffect(() => {
+    setFocus('title')
+  }, [setFocus])
 
   const [createLog, { isLoading }] = useCreateLogMutation()
 
