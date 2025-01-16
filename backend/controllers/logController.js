@@ -14,14 +14,36 @@ const createLog = asyncHandler(async (req, res) => {
 });
 
 const getLogs = asyncHandler(async (req, res) => {
-  const logs = await Log.find({}).sort({ updatedAt: -1, createdAt: -1 });
-  res.json(logs);
+  const limit = Number(req.query.limit) || 10;
+  const page = Number(req.query.page) || 1;
+
+  const totalItems = await Log.countDocuments({});
+
+  const logs = await Log.find({})
+    .sort({ updatedAt: -1, createdAt: -1 })
+    .skip(limit * page - limit)
+    .limit(limit);
+
+  const totalPages = Math.ceil(totalItems / limit);
+
+  res.json({
+    logs,
+    pagination: {
+      totalItems,
+      totalPages,
+      page,
+      limit,
+    },
+  });
 });
 
 const getLogBySlug = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
 
   if (log) {
+    const limit = Number(req.query.limit) || 10;
+    const page = Number(req.query.page) || 1;
+
     const logAggregate = await Log.aggregate([
       { $match: { _id: log._id } },
       {
@@ -38,12 +60,12 @@ const getLogBySlug = asyncHandler(async (req, res) => {
       {
         $sort: { 'exercises._id': -1 },
       },
-      // {
-      //   $skip: limit * page - limit,
-      // },
-      // {
-      //   $limit: limit,
-      // },
+      {
+        $skip: limit * page - limit,
+      },
+      {
+        $limit: limit,
+      },
     ]);
 
     return res.json({ log, logAggregate });

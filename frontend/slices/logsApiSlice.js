@@ -12,8 +12,8 @@ export const logsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Logs'],
     }),
     getLogs: builder.query({
-      query: () => ({
-        url: LOGS_URL,
+      query: ({ limit, page }) => ({
+        url: `${LOGS_URL}?limit=${limit}&page=${page}`,
       }),
       providesTags: ['Logs'],
       keepUnusedDataFor: 5,
