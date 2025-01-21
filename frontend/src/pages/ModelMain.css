@@ -48,6 +48,20 @@
   display: grid;
 }
 
+.model__label {
+  color: var(--textWhite);
+  font-size: 0.9rem;
+}
+
+.model__select {
+  font-size: 0.7rem;
+  background-color: var(--jet);
+  padding: 0.1rem;
+  color: var(--textWhite);
+  border: 1px solid var(--textWhite);
+  margin-bottom: 0.5rem;
+}
+
 .model__subtitle {
   color: var(--textWhite);
   font-size: 1.75rem;

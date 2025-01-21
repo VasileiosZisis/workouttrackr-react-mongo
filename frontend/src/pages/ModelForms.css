@@ -71,10 +71,6 @@ label {
   gap: 1.5rem;
 }
 
-button:disabled {
-  color: white;
-}
-
 .form__button-add {
   max-width: fit-content;
   display: inline-block;

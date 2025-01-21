@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
+import './Pagination.css'
 
 const Pagination = ({ totalPages, initialPage = 1, onPageChange }) => {
   const navigate = useNavigate()
@@ -9,7 +10,6 @@ const Pagination = ({ totalPages, initialPage = 1, onPageChange }) => {
   const searchParams = new URLSearchParams(location.search)
   const currentPage = Number(searchParams.get('page')) || initialPage
 
-  // Handle page change
   const handlePageClick = selectedItem => {
     const newPage = selectedItem.selected + 1
     searchParams.set('page', newPage)
@@ -33,13 +33,13 @@ const Pagination = ({ totalPages, initialPage = 1, onPageChange }) => {
 
   return (
     <ReactPaginate
-      previousLabel={'Previous'}
-      nextLabel={'Next'}
+      previousLabel={'<'}
+      nextLabel={'>'}
       breakLabel={'...'}
       pageCount={totalPages}
       forcePage={currentPage - 1}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={3}
+      marginPagesDisplayed={1}
+      pageRangeDisplayed={9}
       onPageChange={handlePageClick}
       containerClassName={'pagination'}
       pageClassName={'pagination__page'}

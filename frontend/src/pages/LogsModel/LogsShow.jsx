@@ -36,12 +36,16 @@ const LogsShow = () => {
         <h1 className='title-container__title'>Logs</h1>
       </div>
       <div className='model__contents'>
-        <label>
-          Items per page:
-          <select value={limit} onChange={handleLimitChange}>
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
+        <label className='model__label'>
+          per page:&emsp;
+          <select
+            className='model__select'
+            value={limit}
+            onChange={handleLimitChange}
+          >
+            <option value={13}>13</option>
+            <option value={26}>26</option>
+            <option value={52}>52</option>
           </select>
         </label>
         <ul className='model__list'>
@@ -60,10 +64,12 @@ const LogsShow = () => {
           </li>
         </ul>
       </div>
-      <Pagination
-        totalPages={data.pagination.totalPages}
-        initialPage={Number(searchParams.get('page'))}
-      />
+      {data.pagination.totalPages > 1 && (
+        <Pagination
+          totalPages={data.pagination.totalPages}
+          initialPage={Number(searchParams.get('page'))}
+        />
+      )}
       <Link className='model__button' to={'/logs/create-new-log'}>
         Create new
       </Link>

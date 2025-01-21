@@ -1,0 +1,39 @@
+.pagination {
+  font-size: 0.9rem;
+  color: var(--textWhite);
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.pagination > * {
+  width: 25px;
+  height: 28px;
+  text-align: center;
+  padding: 0.1rem;
+  cursor: pointer;
+  border: 1px solid var(--textWhite);
+  background-color: var(--jet);
+}
+
+.pagination__prev {
+  margin-right: 0.5rem;
+}
+
+.pagination__next {
+  margin-left: 0.5rem;
+}
+
+.pagination__active {
+  background-color: var(--eerie-black);
+  color: var(--icterine);
+  border: 1px solid var(--icterine);
+}
+
+.pagination__page:where(:hover, :focus-visible),
+.pagination__prev:where(:hover, :focus-visible),
+.pagination__next:where(:hover, :focus-visible) {
+  background-color: var(--eerie-black);
+  color: var(--icterine);
+  border: 1px solid var(--icterine);
+}
