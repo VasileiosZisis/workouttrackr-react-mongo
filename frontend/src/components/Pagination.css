@@ -3,17 +3,20 @@
   color: var(--textWhite);
   display: flex;
   gap: 0.2rem;
-  margin-bottom: 1rem;
+  margin-block: 0.5rem;
 }
 
 .pagination > * {
-  width: 25px;
-  height: 28px;
   text-align: center;
   padding: 0.1rem;
   cursor: pointer;
-  border: 1px solid var(--textWhite);
+  border: 1px solid var(--borderWhite);
   background-color: var(--jet);
+}
+
+.pagination a {
+  display: block;
+  width: 25px;
 }
 
 .pagination__prev {
@@ -28,6 +31,11 @@
   background-color: var(--eerie-black);
   color: var(--icterine);
   border: 1px solid var(--icterine);
+}
+
+.pagination__disabled {
+  background-color: var(--eerie-black);
+  border: 1px solid var(--eerie-black);
 }
 
 .pagination__page:where(:hover, :focus-visible),

@@ -10,17 +10,25 @@ import '../ModelForms.css'
 
 const ExerciseCreate = () => {
   const navigate = useNavigate()
+
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
+
   const { slugLog } = useParams()
   const {
-    data: logData,
     isLoading: getLogLoading,
     error,
     refetch
-  } = useGetLogSlugQuery(slugLog)
+  } = useGetLogSlugQuery({
+    slugLog,
+    limit,
+    page
+  })
 
   const schema = Joi.object({
     title: Joi.string()
-      .pattern(/^[a-z]+$/)
+      .pattern(/^[A-Za-z0-9-_ ]+$/)
       .required()
       .messages({
         'string.empty': 'This field is required',
@@ -85,9 +93,14 @@ const ExerciseCreate = () => {
         <p className='form__error-text'>{errors?.session?.message}</p>
         <div className='form__radio-container'>
           <div>
-            <input type='radio' {...register('session')} value='wlsession' />
+            <input
+              type='radio'
+              className='form_radio-input'
+              {...register('session')}
+              value='wlsession'
+            />
             <label
-              className='form__label-radio'
+              className='form__radio-label'
               htmlFor='wlsession'
               name='session'
             >
@@ -95,9 +108,14 @@ const ExerciseCreate = () => {
             </label>
           </div>
           <div>
-            <input type='radio' {...register('session')} value='pasession' />
+            <input
+              className='form_radio-input'
+              type='radio'
+              {...register('session')}
+              value='pasession'
+            />
             <label
-              className='form__label-radio'
+              className='form__radio-label'
               htmlFor='pasession'
               name='session'
             >

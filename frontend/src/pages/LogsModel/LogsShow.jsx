@@ -43,9 +43,9 @@ const LogsShow = () => {
             value={limit}
             onChange={handleLimitChange}
           >
-            <option value={13}>13</option>
-            <option value={26}>26</option>
-            <option value={52}>52</option>
+            <option value={12}>12</option>
+            <option value={24}>24</option>
+            <option value={48}>48</option>
           </select>
         </label>
         <ul className='model__list'>
@@ -64,12 +64,10 @@ const LogsShow = () => {
           </li>
         </ul>
       </div>
-      {data.pagination.totalPages > 1 && (
-        <Pagination
-          totalPages={data.pagination.totalPages}
-          initialPage={Number(searchParams.get('page'))}
-        />
-      )}
+      <Pagination
+        totalPages={data.pagination.totalPages}
+        initialPage={page || 1}
+      />
       <Link className='model__button' to={'/logs/create-new-log'}>
         Create new
       </Link>

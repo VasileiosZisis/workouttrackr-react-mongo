@@ -61,7 +61,12 @@ label {
   height: 25px;
 }
 
-.form__label-radio {
+.form_radio-input {
+  height: 1rem;
+  width: 1rem;
+}
+
+.form__radio-label {
   padding-inline: 0.5rem;
 }
 

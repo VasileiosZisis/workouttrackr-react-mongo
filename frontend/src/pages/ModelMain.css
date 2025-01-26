@@ -58,7 +58,7 @@
   background-color: var(--jet);
   padding: 0.1rem;
   color: var(--textWhite);
-  border: 1px solid var(--textWhite);
+  border: 1px solid var(--borderWhite);
   margin-bottom: 0.5rem;
 }
 
@@ -84,11 +84,8 @@
   padding: 0.3rem 0.3rem 0.3rem 0.6rem;
 }
 
-.sessions {
-  text-align: center;
-}
-
 .sessions__list {
+  text-align: center;
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
@@ -119,7 +116,7 @@
 .title-container__link:where(:hover, :focus-visible),
 .title-container__button:where(:hover, :focus-visible),
 .model__button-goback:where(:hover, :focus-visible),
-.wlsessions__link:where(:hover, :focus-visible) .wlsessions__table {
+.sessions__link:where(:hover, :focus-visible) .sessions__table {
   background-color: var(--eerie-black);
   color: var(--icterine);
 }

@@ -18,6 +18,7 @@ const createExercise = asyncHandler(async (req, res) => {
 
 const getExerciseBySlug = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
+
   if (!log) {
     res.status(404);
     throw new Error('Log not found');
@@ -25,6 +26,10 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
     const exercise = await Exercise.findOne({
       slugExercise: req.params.slugExercise,
     });
+
+    const limit = Number(req.query.limit) || 12;
+    const page = Number(req.query.page) || 1;
+
     const exerciseAggregate = await Exercise.aggregate([
       { $match: { _id: exercise._id } },
       {
@@ -41,7 +46,42 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       {
         $sort: { 'wlsessions._id': -1 },
       },
+      {
+        $skip: limit * page - limit,
+      },
+      {
+        $limit: limit,
+      },
     ]);
+
+    const totalWlDocs = await Exercise.aggregate([
+      { $match: { _id: exercise._id } },
+      {
+        $lookup: {
+          from: 'wlsessions',
+          localField: '_id',
+          foreignField: 'exercise',
+          as: 'wlsessions',
+        },
+      },
+      {
+        $unwind: '$wlsessions',
+      },
+      {
+        $count: 'count',
+      },
+    ]);
+
+    let totalWlItems;
+
+    if (totalWlDocs.length) {
+      totalWlItems = totalWlDocs[0].count;
+    } else {
+      totalWlItems = 0;
+    }
+
+    const totalWlPages = Math.ceil(totalWlItems / limit);
+
     const exerciseAggregatePa = await Exercise.aggregate([
       { $match: { _id: exercise._id } },
       {
@@ -58,9 +98,54 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       {
         $sort: { 'pasessions._id': -1 },
       },
+      {
+        $skip: limit * page - limit,
+      },
+      {
+        $limit: limit,
+      },
     ]);
+
+    const totalPaDocs = await Exercise.aggregate([
+      { $match: { _id: exercise._id } },
+      {
+        $lookup: {
+          from: 'pasessions',
+          localField: '_id',
+          foreignField: 'exercise',
+          as: 'pasessions',
+        },
+      },
+      {
+        $unwind: '$pasessions',
+      },
+      {
+        $count: 'count',
+      },
+    ]);
+
+    let totalPaItems;
+
+    if (totalPaDocs.length) {
+      totalPaItems = totalPaDocs[0].count;
+    } else {
+      totalPaItems = 0;
+    }
+
+    const totalPaPages = Math.ceil(totalPaItems / limit);
+
     if (exercise) {
-      return res.json({ exercise, exerciseAggregate, exerciseAggregatePa });
+      return res.json({
+        exercise,
+        exerciseAggregate,
+        exerciseAggregatePa,
+        pagination: {
+          totalWlPages,
+          totalPaPages,
+          page,
+          limit,
+        },
+      });
     } else {
       res.status(404);
       throw new Error('Exercise not found');

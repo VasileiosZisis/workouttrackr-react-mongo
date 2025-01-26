@@ -26,7 +26,7 @@ const Joi = BaseJoi.extend(extension);
 
 const logSchema = Joi.object({
   title: Joi.string()
-    .pattern(/^[a-z]+$/)
+    .pattern(/^[A-Za-z0-9-_ ]+$/)
     .escapeHTML()
     .required(),
 }).options({ allowUnknown: true });
@@ -44,7 +44,7 @@ const validateLog = (req, res, next) => {
 
 const exerciseSchema = Joi.object({
   title: Joi.string()
-    .pattern(/^[a-z]+$/)
+    .pattern(/^[A-Za-z0-9-_ ]+$/)
     .escapeHTML()
     .required(),
   session: Joi.string().required().valid('wlsession', 'pasession'),
@@ -52,7 +52,7 @@ const exerciseSchema = Joi.object({
 
 const exerciseEditSchema = Joi.object({
   title: Joi.string()
-    .pattern(/^[a-z]+$/)
+    .pattern(/^[A-Za-z0-9-_ ]+$/)
     .escapeHTML()
     .required(),
   session: Joi.string().valid('wlsession', 'pasession'),

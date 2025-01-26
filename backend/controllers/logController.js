@@ -14,7 +14,7 @@ const createLog = asyncHandler(async (req, res) => {
 });
 
 const getLogs = asyncHandler(async (req, res) => {
-  const limit = Number(req.query.limit) || 13;
+  const limit = Number(req.query.limit) || 12;
   const page = Number(req.query.page) || 1;
 
   const totalItems = await Log.countDocuments({});
@@ -29,7 +29,6 @@ const getLogs = asyncHandler(async (req, res) => {
   res.json({
     logs,
     pagination: {
-      totalItems,
       totalPages,
       page,
       limit,
@@ -41,7 +40,7 @@ const getLogBySlug = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
 
   if (log) {
-    const limit = Number(req.query.limit) || 10;
+    const limit = Number(req.query.limit) || 12;
     const page = Number(req.query.page) || 1;
 
     const logAggregate = await Log.aggregate([
@@ -68,7 +67,43 @@ const getLogBySlug = asyncHandler(async (req, res) => {
       },
     ]);
 
-    return res.json({ log, logAggregate });
+    const totalDocuments = await Log.aggregate([
+      { $match: { _id: log._id } },
+      {
+        $lookup: {
+          from: 'exercises',
+          localField: 'exercises',
+          foreignField: '_id',
+          as: 'exercises',
+        },
+      },
+      {
+        $unwind: '$exercises',
+      },
+      {
+        $count: 'count',
+      },
+    ]);
+
+    let totalItems;
+
+    if (totalDocuments.length) {
+      totalItems = totalDocuments[0].count;
+    } else {
+      totalItems = 0;
+    }
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return res.json({
+      log,
+      logAggregate,
+      pagination: {
+        totalPages,
+        page,
+        limit,
+      },
+    });
   } else {
     res.status(404);
     throw new Error('Log not found');

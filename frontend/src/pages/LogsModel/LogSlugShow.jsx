@@ -2,22 +2,37 @@ import {
   useGetLogSlugQuery,
   useDeleteLogMutation
 } from '../../../slices/logsApiSlice'
-import { Link } from 'react-router-dom'
-import { useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
+import Pagination from '../../components/Pagination'
 import '../ModelMain.css'
 
 const LogSlugShow = () => {
+  const { slugLog } = useParams()
+  const location = useLocation()
   const navigate = useNavigate()
 
-  const { slugLog } = useParams()
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
 
-  const { data, isLoading, error, refetch } = useGetLogSlugQuery(slugLog)
+  const { data, isLoading, error } = useGetLogSlugQuery({
+    slugLog,
+    limit,
+    page
+  })
 
   const [deleteLog, { isLoading: loadingDelete }] = useDeleteLogMutation()
 
   const { userInfo } = useSelector(state => state.auth)
+
+  const handleLimitChange = e => {
+    const newLimit = Number(e.target.value)
+    searchParams.set('limit', newLimit)
+    searchParams.set('page', 1)
+    navigate(`?${searchParams.toString()}`, { replace: true })
+  }
 
   const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
@@ -66,6 +81,18 @@ const LogSlugShow = () => {
       </div>
       <h2 className='model__subtitle'>Exercises</h2>
       <div className='model__contents'>
+        <label className='model__label'>
+          per page:&emsp;
+          <select
+            className='model__select'
+            value={limit}
+            onChange={handleLimitChange}
+          >
+            <option value={12}>12</option>
+            <option value={24}>24</option>
+            <option value={48}>48</option>
+          </select>
+        </label>
         <ul className='model__list'>
           <li className='model__item'>
             {data.logAggregate.length > 0 &&
@@ -84,13 +111,17 @@ const LogSlugShow = () => {
               ))}
           </li>
         </ul>
-        <Link
-          className='model__button'
-          to={`/logs/${slugLog}/create-new-exercise`}
-        >
-          Create new
-        </Link>
       </div>
+      <Pagination
+        totalPages={data.pagination.totalPages}
+        initialPage={page || 1}
+      />
+      <Link
+        className='model__button'
+        to={`/logs/${slugLog}/create-new-exercise`}
+      >
+        Create new
+      </Link>
     </main>
   )
 }

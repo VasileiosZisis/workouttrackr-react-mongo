@@ -10,14 +10,19 @@ import '../ModelForms.css'
 
 const WlsessionCreate = () => {
   const navigate = useNavigate()
+
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
+
   const { slugLog, slugExercise } = useParams()
 
   const {
-    data: exerciseData,
+    data,
     isLoading: exerciseLoading,
     error: exerciseError,
     refetch
-  } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+  } = useGetExerciseSlugQuery({ slugLog, slugExercise, limit, page })
 
   const defaultDate = new Date().toISOString().slice(0, 10)
 

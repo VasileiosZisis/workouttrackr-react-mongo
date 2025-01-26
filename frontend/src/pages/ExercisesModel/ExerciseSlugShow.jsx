@@ -3,27 +3,46 @@ import {
   useDeleteExerciseMutation
 } from '../../../slices/exercisesApiSlice'
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import ProtectedRoute from '../../components/ProtectedRoute'
+import Pagination from '../../components/Pagination'
+import WlSession from '../../components/WlSession'
+import PaSession from '../../components/PaSession'
 import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {
+  const { slugLog, slugExercise } = useParams()
+  const location = useLocation()
   const navigate = useNavigate()
 
-  const { slugLog, slugExercise } = useParams()
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
 
-  const { refetch } = useGetLogSlugQuery(slugLog)
+  const { refetch } = useGetLogSlugQuery({
+    slugLog,
+    limit,
+    page
+  })
 
   const { data, isLoading, error } = useGetExerciseSlugQuery({
     slugLog,
-    slugExercise
+    slugExercise,
+    limit,
+    page
   })
 
   const [deleteExercise, { isLoading: loadingDelete }] =
     useDeleteExerciseMutation()
 
   const { userInfo } = useSelector(state => state.auth)
+
+  const handleLimitChange = e => {
+    const newLimit = Number(e.target.value)
+    searchParams.set('limit', newLimit)
+    searchParams.set('page', 1)
+    navigate(`?${searchParams.toString()}`, { replace: true })
+  }
 
   const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
@@ -73,86 +92,28 @@ const ExerciseSlugShow = () => {
       <h2 className='model__subtitle'>Sessions</h2>
       {data.exercise.session === 'wlsession' ? (
         <div className='sessions'>
-          <ul className='sessions__list'>
-            <li className='sessions__item'>
-              {data.exerciseAggregate.length > 0 &&
-                data.exerciseAggregate.map(item => (
-                  <ProtectedRoute
-                    key={item.wlsessions._id}
-                    condition={userInfo._id === data.exercise.author}
-                  >
-                    <Link
-                      className='sessions__link'
-                      to={`/logs/${slugLog}/${slugExercise}/wl/${item.wlsessions.slugSession}`}
-                    >
-                      <table className='sessions__table'>
-                        <tbody>
-                          <tr>
-                            <th colSpan='5' scope='col'>
-                              {new Date(
-                                item.wlsessions.createdDate
-                              ).toLocaleDateString()}
-                            </th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <td colSpan='3' scope='col'>
-                              Total Volume
-                            </td>
-                            <th colSpan='2' scope='col'>
-                              {item.wlsessions.totalVolume}
-                            </th>
-                          </tr>
-                          <tr>
-                            <td colSpan='3' scope='col'>
-                              Junk Volume
-                            </td>
-                            <th colSpan='2' scope='col'>
-                              {item.wlsessions.junkVolume}
-                            </th>
-                          </tr>
-                          <tr>
-                            <td colSpan='3' scope='col'>
-                              Working Volume
-                            </td>
-                            <th colSpan='2' scope='col'>
-                              {item.wlsessions.workingVolume}
-                            </th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <td>Set</td>
-                            <td>Reps</td>
-                            <td>KGs</td>
-                            <td>Hard</td>
-                            <td>volume</td>
-                          </tr>
-                          {item.wlsessions.set.map((set, index) => (
-                            <tr key={set._id}>
-                              <td>{index + 1}</td>
-                              <th>{set.repetitions}</th>
-                              <th>{set.kilograms}</th>
-                              <th>
-                                {set.isHard ? (
-                                  <span>true</span>
-                                ) : (
-                                  <span>false</span>
-                                )}
-                              </th>
-                              <th>{set.volume}</th>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </Link>
-                  </ProtectedRoute>
-                ))}
-            </li>
-          </ul>
+          <label className='model__label'>
+            per page:&emsp;
+            <select
+              className='model__select'
+              value={limit}
+              onChange={handleLimitChange}
+            >
+              <option value={12}>12</option>
+              <option value={24}>24</option>
+              <option value={48}>48</option>
+            </select>
+          </label>
+          <WlSession
+            data={data}
+            userInfo={userInfo}
+            slugLog={slugLog}
+            slugExercise={slugExercise}
+          />
+          <Pagination
+            totalPages={data.pagination.totalWlPages}
+            initialPage={page || 1}
+          />
           <Link
             className='model__button'
             to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
@@ -162,72 +123,28 @@ const ExerciseSlugShow = () => {
         </div>
       ) : data.exercise.session === 'pasession' ? (
         <div className='sessions'>
-          <ul className='sessions__list'>
-            <li className='sessions__item'>
-              {data.exerciseAggregatePa.length > 0 &&
-                data.exerciseAggregatePa.map(item => (
-                  <ProtectedRoute
-                    key={item.pasessions._id}
-                    condition={userInfo._id === data.exercise.author}
-                  >
-                    <Link
-                      className='sessions__link'
-                      to={`/logs/${slugLog}/${slugExercise}/pa/${item.pasessions.slugSession}`}
-                    >
-                      <table className='sessions__table'>
-                        <tbody>
-                          <tr>
-                            <th colSpan='5' scope='col'>
-                              {new Date(
-                                item.pasessions.createdDate
-                              ).toLocaleDateString()}
-                            </th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <td colSpan='2' scope='col'>
-                              Pace
-                            </td>
-                            <th colSpan='2' scope='col'>
-                              {item.pasessions.paceSeconds > 10
-                                ? `${item.pasessions.paceMinutes}:${item.pasessions.paceSeconds} `
-                                : `${item.pasessions.paceMinutes}:0${item.pasessions.paceSeconds} `}
-                              <span className='sessions__span'>min/km</span>
-                            </th>
-                          </tr>
-                          <tr>
-                            <td colSpan='2' scope='col'>
-                              Speed
-                            </td>
-                            <th colSpan='2' scope='col'>
-                              {item.pasessions.speed}{' '}
-                              <span className='sessions__span'>km/min</span>
-                            </th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <td>Hours</td>
-                            <td>Minutes</td>
-                            <td>Seconds</td>
-                            <td>Distance</td>
-                          </tr>
-                          <tr>
-                            <th>{item.pasessions.time.hours}</th>
-                            <th>{item.pasessions.time.minutes}</th>
-                            <th>{item.pasessions.time.seconds}</th>
-                            <th>{item.pasessions.distance}</th>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Link>
-                  </ProtectedRoute>
-                ))}
-            </li>
-          </ul>
+          <label className='model__label'>
+            per page:&emsp;
+            <select
+              className='model__select'
+              value={limit}
+              onChange={handleLimitChange}
+            >
+              <option value={12}>12</option>
+              <option value={24}>24</option>
+              <option value={48}>48</option>
+            </select>
+          </label>
+          <PaSession
+            data={data}
+            userInfo={userInfo}
+            slugLog={slugLog}
+            slugExercise={slugExercise}
+          />
+          <Pagination
+            totalPages={data.pagination.totalPaPages}
+            initialPage={page || 1}
+          />
           <Link
             className='model__button'
             to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}

@@ -12,7 +12,7 @@ const LogCreate = () => {
 
   const schema = Joi.object({
     title: Joi.string()
-      .pattern(/^[a-z]+$/)
+      .pattern(/^[A-Za-z0-9-_ ]+$/)
       .required()
       .messages({
         'string.empty': 'This field is required',
