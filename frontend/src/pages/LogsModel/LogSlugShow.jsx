@@ -6,6 +6,8 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Pagination from '../../components/Pagination'
+import Label from '../../components/Label'
+import Loader from '../../components/Label'
 import '../ModelMain.css'
 
 const LogSlugShow = () => {
@@ -51,9 +53,8 @@ const LogSlugShow = () => {
     navigate('/logs')
   }
 
-  if (isLoading) return <p>loading</p>
+  if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
-  if (loadingDelete) return <p>loading</p>
 
   return (
     <main className='model'>
@@ -77,22 +78,12 @@ const LogSlugShow = () => {
           >
             Delete
           </button>
+          {loadingDelete && <Loader />}
         </div>
       </div>
       <h2 className='model__subtitle'>Exercises</h2>
       <div className='model__contents'>
-        <label className='model__label'>
-          per page:&emsp;
-          <select
-            className='model__select'
-            value={limit}
-            onChange={handleLimitChange}
-          >
-            <option value={12}>12</option>
-            <option value={24}>24</option>
-            <option value={48}>48</option>
-          </select>
-        </label>
+        <Label limit={limit} handleLimitChange={handleLimitChange} />
         <ul className='model__list'>
           <li className='model__item'>
             {data.logAggregate.length > 0 &&

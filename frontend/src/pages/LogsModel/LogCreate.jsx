@@ -4,6 +4,7 @@ import { useCreateLogMutation } from '../../../slices/logsApiSlice'
 import { useNavigate } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -48,8 +49,6 @@ const LogCreate = () => {
     navigate('/logs')
   }
 
-  if (isLoading) return <p>loading</p>
-
   return (
     <main className='model'>
       <button className='model__button-goback' onClick={submitHandler}>
@@ -71,6 +70,7 @@ const LogCreate = () => {
         <button className='form__button-submit' type='submit'>
           Submit
         </button>
+        {isLoading && <Loader />}
       </form>
     </main>
   )

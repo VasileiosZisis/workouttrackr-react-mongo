@@ -5,6 +5,7 @@ import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -68,7 +69,7 @@ const ExerciseCreate = () => {
     navigate(`/logs/${slugLog}`)
   }
 
-  if (getLogLoading) return <p>loading</p>
+  if (getLogLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
@@ -126,6 +127,7 @@ const ExerciseCreate = () => {
         <button className='form__button-submit' type='submit'>
           Submit
         </button>
+        {isLoading && <Loader />}
       </form>
     </main>
   )

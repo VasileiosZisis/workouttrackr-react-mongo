@@ -8,6 +8,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -100,8 +101,7 @@ const PasessionEdit = () => {
     navigate(`/logs/${slugLog}/${slugExercise}`)
   }
 
-  if (loadingUpdate) return <p>loading</p>
-  if (isLoading) return <p>loading</p>
+  if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
@@ -166,6 +166,7 @@ const PasessionEdit = () => {
         <button className='form__button-submit' type='submit'>
           Submit
         </button>
+        {loadingUpdate && <Loader />}
       </form>
     </main>
   )

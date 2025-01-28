@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Pagination from '../../components/Pagination'
+import Label from '../../components/Label'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 
 const LogsShow = () => {
@@ -27,7 +29,7 @@ const LogsShow = () => {
     navigate(`?${searchParams.toString()}`, { replace: true })
   }
 
-  if (isLoading) return <p>loading</p>
+  if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
@@ -36,18 +38,7 @@ const LogsShow = () => {
         <h1 className='title-container__title'>Logs</h1>
       </div>
       <div className='model__contents'>
-        <label className='model__label'>
-          per page:&emsp;
-          <select
-            className='model__select'
-            value={limit}
-            onChange={handleLimitChange}
-          >
-            <option value={12}>12</option>
-            <option value={24}>24</option>
-            <option value={48}>48</option>
-          </select>
-        </label>
+        <Label limit={limit} handleLimitChange={handleLimitChange} />
         <ul className='model__list'>
           <li className='model__item'>
             {data.logs.length > 0 &&

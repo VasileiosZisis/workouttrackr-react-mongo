@@ -1,6 +1,5 @@
 import ProtectedRoute from './ProtectedRoute'
 import { Link } from 'react-router-dom'
-import '../pages/ModelMain.css'
 
 const PaSession = ({ data, userInfo, slugLog, slugExercise }) => {
   return (

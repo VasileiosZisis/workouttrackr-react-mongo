@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import Pagination from '../../components/Pagination'
 import WlSession from '../../components/WlSession'
 import PaSession from '../../components/PaSession'
+import Label from '../../components/Label'
+import Loader from '../../components/Label'
 import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {
@@ -61,9 +63,8 @@ const ExerciseSlugShow = () => {
     navigate(`/logs/${slugLog}`)
   }
 
-  if (isLoading) return <p>loading</p>
+  if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
-  if (loadingDelete) return <p>loading</p>
 
   return (
     <main className='model'>
@@ -87,23 +88,13 @@ const ExerciseSlugShow = () => {
           >
             Delete
           </button>
+          {loadingDelete && <Loader />}
         </div>
       </div>
       <h2 className='model__subtitle'>Sessions</h2>
       {data.exercise.session === 'wlsession' ? (
         <div className='sessions'>
-          <label className='model__label'>
-            per page:&emsp;
-            <select
-              className='model__select'
-              value={limit}
-              onChange={handleLimitChange}
-            >
-              <option value={12}>12</option>
-              <option value={24}>24</option>
-              <option value={48}>48</option>
-            </select>
-          </label>
+          <Label limit={limit} handleLimitChange={handleLimitChange} />
           <WlSession
             data={data}
             userInfo={userInfo}

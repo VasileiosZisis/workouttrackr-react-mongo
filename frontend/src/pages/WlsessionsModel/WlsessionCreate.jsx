@@ -5,6 +5,7 @@ import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -19,7 +20,7 @@ const WlsessionCreate = () => {
 
   const {
     data,
-    isLoading: exerciseLoading,
+    isLoading: getExerciseLoading,
     error: exerciseError,
     refetch
   } = useGetExerciseSlugQuery({ slugLog, slugExercise, limit, page })
@@ -91,7 +92,7 @@ const WlsessionCreate = () => {
     navigate(`/logs/${slugLog}/${slugExercise}`)
   }
 
-  if (exerciseLoading) return <p>loading</p>
+  if (getExerciseLoading) return <Loader />
   if (exerciseError)
     return <div>{exerciseError?.data?.message || exerciseError.error}</div>
 
@@ -179,6 +180,7 @@ const WlsessionCreate = () => {
         <button className='form__button-submit' type='submit'>
           Submit
         </button>
+        {isLoading && <Loader />}
       </form>
     </main>
   )

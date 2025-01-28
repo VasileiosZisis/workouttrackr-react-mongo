@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -45,9 +46,8 @@ const WlsessionShow = () => {
     navigate(`/logs/${slugLog}/${slugExercise}`)
   }
 
-  if (isLoading) return <p>loading</p>
+  if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
-  if (loadingDelete) return <p>loading</p>
 
   return (
     <ProtectedRoute condition={userInfo._id === data.wlsession.author}>
@@ -74,6 +74,7 @@ const WlsessionShow = () => {
             >
               Delete
             </button>
+            {loadingDelete && <Loader />}
           </div>
         </div>
         <table className='sessions__table'>
