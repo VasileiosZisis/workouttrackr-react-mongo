@@ -17,14 +17,20 @@ const getLogs = asyncHandler(async (req, res) => {
   const limit = Number(req.query.limit) || 12;
   const page = Number(req.query.page) || 1;
 
-  const totalItems = await Log.countDocuments({});
+  const totalDocuments = await Log.countDocuments({});
 
   const logs = await Log.find({})
     .sort({ updatedAt: -1, createdAt: -1 })
     .skip(limit * page - limit)
     .limit(limit);
 
-  const totalPages = Math.ceil(totalItems / limit);
+  let totalPages;
+
+  if (totalDocuments.length) {
+    totalPages = Math.ceil(totalDocuments[0].count / limit);
+  } else {
+    totalPages = 1;
+  }
 
   res.json({
     logs,
@@ -85,15 +91,13 @@ const getLogBySlug = asyncHandler(async (req, res) => {
       },
     ]);
 
-    let totalItems;
+    let totalPages;
 
     if (totalDocuments.length) {
-      totalItems = totalDocuments[0].count;
+      totalPages = Math.ceil(totalDocuments[0].count / limit);
     } else {
-      totalItems = 0;
+      totalPages = 1;
     }
-
-    const totalPages = Math.ceil(totalItems / limit);
 
     return res.json({
       log,

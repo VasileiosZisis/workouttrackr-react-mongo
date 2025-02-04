@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Pagination from '../../components/Pagination'
 import Label from '../../components/Label'
-import Loader from '../../components/Label'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 
 const LogSlugShow = () => {
@@ -19,7 +19,7 @@ const LogSlugShow = () => {
   const limit = Number(searchParams.get('limit'))
   const page = Number(searchParams.get('page'))
 
-  const { data, isLoading, error } = useGetLogSlugQuery({
+  const { data, isLoading, error, refetch } = useGetLogSlugQuery({
     slugLog,
     limit,
     page

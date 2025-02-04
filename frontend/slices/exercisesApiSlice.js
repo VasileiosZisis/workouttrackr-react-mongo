@@ -16,7 +16,6 @@ export const exercisesApiSlice = apiSlice.injectEndpoints({
         url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}?limit=${limit}&page=${page}`,
       }),
       providesTags: ['Exercises'],
-      keepUnusedDataFor: 5,
     }),
     getExerciseId: builder.query({
       query: ({ slugLog, exerciseId }) => ({

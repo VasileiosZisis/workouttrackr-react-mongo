@@ -9,7 +9,7 @@ import Pagination from '../../components/Pagination'
 import WlSession from '../../components/WlSession'
 import PaSession from '../../components/PaSession'
 import Label from '../../components/Label'
-import Loader from '../../components/Label'
+import Loader from '../../components/Loader'
 import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {

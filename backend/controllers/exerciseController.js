@@ -72,15 +72,13 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       },
     ]);
 
-    let totalWlItems;
+    let totalWlPages;
 
     if (totalWlDocs.length) {
-      totalWlItems = totalWlDocs[0].count;
+      totalWlPages = Math.ceil(totalWlDocs[0].count / limit);
     } else {
-      totalWlItems = 0;
+      totalWlPages = 1;
     }
-
-    const totalWlPages = Math.ceil(totalWlItems / limit);
 
     const exerciseAggregatePa = await Exercise.aggregate([
       { $match: { _id: exercise._id } },
@@ -124,15 +122,13 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       },
     ]);
 
-    let totalPaItems;
+    let totalPaPages;
 
     if (totalPaDocs.length) {
-      totalPaItems = totalPaDocs[0].count;
+      totalPaPages = Math.ceil(totalPaDocs[0].count / limit);
     } else {
-      totalPaItems = 0;
+      totalPaPages = 1;
     }
-
-    const totalPaPages = Math.ceil(totalPaItems / limit);
 
     if (exercise) {
       return res.json({
