@@ -1,0 +1,32 @@
+.Toastify__toast-container {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8rem;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  width: fit-content;
+  background-color: var(--jet);
+  color: var(--textWhite);
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  width: fit-content;
+  background-color: var(--night);
+  color: var(--imperial-red);
+}
+
+.Toastify__progress-bar-theme--colored.Toastify__progress-bar--success {
+  background-color: var(--icterine);
+}
+
+.Toastify__progress-bar-theme--colored.Toastify__progress-bar--error {
+  background-color: var(--imperial-red);
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success.Toastify__toast-icon {
+  color: var(--icterine);
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error.Toastify__toast-icon {
+  color: var(--imperial-red);
+}

@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -74,8 +75,8 @@ const PasessionCreate = () => {
   })
 
   useEffect(() => {
-    setFocus('hours')
-  }, [setFocus])
+    setFocus('time.hours')
+  }, [])
 
   const [createPasession, { isLoading }] = useCreatePasessionMutation()
 
@@ -88,8 +89,9 @@ const PasessionCreate = () => {
       }).unwrap()
       refetch()
       navigate(`/logs/${slugLog}/${slugExercise}`)
+      toast.success('Session created')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 

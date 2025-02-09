@@ -8,6 +8,7 @@ import ProtectedRoute from '../../components/ProtectedRoute'
 import Pagination from '../../components/Pagination'
 import Label from '../../components/Label'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 
 const LogSlugShow = () => {
@@ -42,8 +43,9 @@ const LogSlugShow = () => {
         await deleteLog(slugLog)
         refetch()
         navigate('/logs')
+        toast.success('Log deleted')
       } catch (err) {
-        console.log(err)
+        toast.error(err?.data?.message || err.error)
       }
     }
   }

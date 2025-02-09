@@ -18,9 +18,20 @@ export const logsApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Logs'],
     }),
     getLogSlug: builder.query({
-      query: ({ slugLog, limit, page }) => ({
-        url: `${LOGS_URL}/${slugLog}?limit=${limit}&page=${page}`,
-      }),
+      // query: ({ slugLog, limit, page }) => ({
+      //   url: `${LOGS_URL}/${slugLog}?limit=${limit}&page=${page}`,
+      // }),
+      query: ({ slugLog, limit, page }) => {
+        const queryParams = new URLSearchParams();
+        if (limit) queryParams.append('limit', limit);
+        if (page) queryParams.append('page', page);
+
+        return {
+          url: `${LOGS_URL}/${slugLog}${
+            queryParams.toString() ? `?${queryParams.toString()}` : ''
+          }`,
+        };
+      },
       providesTags: ['Logs'],
     }),
     getLogId: builder.query({

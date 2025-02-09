@@ -5,11 +5,13 @@ import {
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import ProtectedRoute from '../../components/ProtectedRoute'
 import Pagination from '../../components/Pagination'
 import WlSession from '../../components/WlSession'
 import PaSession from '../../components/PaSession'
 import Label from '../../components/Label'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {
@@ -52,8 +54,9 @@ const ExerciseSlugShow = () => {
         await deleteExercise({ slugLog, slugExercise })
         refetch()
         navigate(`/logs/${slugLog}`)
+        toast.success('Exercise deleted')
       } catch (err) {
-        console.log(err)
+        toast.error(err?.data?.message || err.error)
       }
     }
   }
@@ -71,81 +74,84 @@ const ExerciseSlugShow = () => {
       <button className='model__button-goback' onClick={submitHandler}>
         Go Back
       </button>
-      <div className='title-container'>
-        <h1 className='title-container__title'>{`${data.exercise.title}`}</h1>
-        <div className='title-container__link-container'>
-          <Link
-            className='title-container__link'
-            to={`/logs/${slugLog}/edit/${data.exercise._id}`}
-          >
-            Edit
-          </Link>
-        </div>
-        <div className='title-container__button-container'>
-          <button
-            className='title-container__button'
-            onClick={() => deleteHandler(slugExercise)}
-          >
-            Delete
-          </button>
-          {loadingDelete && <Loader />}
-        </div>
-      </div>
-      <h2 className='model__subtitle'>Sessions</h2>
-      {data.exercise.session === 'wlsession' ? (
-        <div className='sessions'>
-          <Label limit={limit} handleLimitChange={handleLimitChange} />
-          <WlSession
-            data={data}
-            userInfo={userInfo}
-            slugLog={slugLog}
-            slugExercise={slugExercise}
-          />
-          <Pagination
-            totalPages={data.pagination.totalWlPages}
-            initialPage={page || 1}
-          />
-          <Link
-            className='model__button'
-            to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
-          >
-            Create New
-          </Link>
-        </div>
-      ) : data.exercise.session === 'pasession' ? (
-        <div className='sessions'>
-          <label className='model__label'>
-            per page:&emsp;
-            <select
-              className='model__select'
-              value={limit}
-              onChange={handleLimitChange}
+      <ProtectedRoute
+        key={data.exercise._id}
+        condition={userInfo._id === data.exercise.author}
+      >
+        <div className='title-container'>
+          <h1 className='title-container__title'>{`${data.exercise.title}`}</h1>
+          <div className='title-container__link-container'>
+            <Link
+              className='title-container__link'
+              to={`/logs/${slugLog}/edit/${data.exercise._id}`}
             >
-              <option value={12}>12</option>
-              <option value={24}>24</option>
-              <option value={48}>48</option>
-            </select>
-          </label>
-          <PaSession
-            data={data}
-            userInfo={userInfo}
-            slugLog={slugLog}
-            slugExercise={slugExercise}
-          />
-          <Pagination
-            totalPages={data.pagination.totalPaPages}
-            initialPage={page || 1}
-          />
-          <Link
-            className='model__button'
-            to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
-          >
-            Create New
-          </Link>
+              Edit
+            </Link>
+          </div>
+          <div className='title-container__button-container'>
+            <button
+              className='title-container__button'
+              onClick={() => deleteHandler(slugExercise)}
+            >
+              Delete
+            </button>
+            {loadingDelete && <Loader />}
+          </div>
         </div>
-      ) : (
-        <h1>NOTHING</h1>
-      )}
+        <h2 className='model__subtitle'>Sessions</h2>
+        {data.exercise.session === 'wlsession' ? (
+          <div className='sessions'>
+            <Label limit={limit} handleLimitChange={handleLimitChange} />
+            <WlSession
+              data={data}
+              slugLog={slugLog}
+              slugExercise={slugExercise}
+            />
+            <Pagination
+              totalPages={data.pagination.totalWlPages}
+              initialPage={page || 1}
+            />
+            <Link
+              className='model__button'
+              to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
+            >
+              Create New
+            </Link>
+          </div>
+        ) : data.exercise.session === 'pasession' ? (
+          <div className='sessions'>
+            <label className='model__label'>
+              per page:&emsp;
+              <select
+                className='model__select'
+                value={limit}
+                onChange={handleLimitChange}
+              >
+                <option value={12}>12</option>
+                <option value={24}>24</option>
+                <option value={48}>48</option>
+              </select>
+            </label>
+            <PaSession
+              data={data}
+              slugLog={slugLog}
+              slugExercise={slugExercise}
+            />
+            <Pagination
+              totalPages={data.pagination.totalPaPages}
+              initialPage={page || 1}
+            />
+            <Link
+              className='model__button'
+              to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
+            >
+              Create New
+            </Link>
+          </div>
+        ) : (
+          <h1>NOTHING</h1>
+        )}
+      </ProtectedRoute>
     </main>
   )
 }

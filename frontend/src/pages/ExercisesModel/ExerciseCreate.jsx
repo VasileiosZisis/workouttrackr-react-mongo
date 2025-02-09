@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -59,8 +60,9 @@ const ExerciseCreate = () => {
       await createExercise({ ...data, slugLog: slugLog }).unwrap()
       refetch()
       navigate(`/logs/${slugLog}`)
+      toast.success('Exercise created')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 

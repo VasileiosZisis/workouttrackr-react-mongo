@@ -2,6 +2,8 @@ import {
   useGetPasessionByIdQuery,
   useUpdatePasessionIdMutation
 } from '../../../slices/pasessionsApiSlice'
+import { useSelector } from 'react-redux'
+import ProtectedRoute from '../../components/ProtectedRoute'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -9,12 +11,13 @@ import { useForm } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
 const PasessionEdit = () => {
   const navigate = useNavigate()
-
+  const { userInfo } = useSelector(state => state.auth)
   const { slugLog, slugExercise, pasessionId } = useParams()
 
   const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
@@ -61,7 +64,6 @@ const PasessionEdit = () => {
     reset,
     setValue,
     handleSubmit,
-    setFocus,
     formState: { errors }
   } = useForm({
     resolver: joiResolver(schema),
@@ -77,9 +79,8 @@ const PasessionEdit = () => {
         'createdDate',
         new Date(data.createdDate).toISOString().slice(0, 10)
       )
-      setFocus('hours')
     }
-  }, [data, reset, setValue, setFocus])
+  }, [data, reset, setValue])
 
   const onSubmit = async dataForm => {
     try {
@@ -91,8 +92,9 @@ const PasessionEdit = () => {
       console.log(dataForm)
       refetch()
       navigate(`/logs/${slugLog}/${slugExercise}`)
+      toast.success('Session updated')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 
@@ -109,65 +111,67 @@ const PasessionEdit = () => {
       <button className='model__button-goback' onClick={submitHandler}>
         Go Back
       </button>
-      <div className='title-container'>
-        <h2 className='title-container__title'>New Session</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='createdDate' name='createdDate'>
-          Date
-        </label>
-        <input
-          className='form__input-date'
-          type='date'
-          {...register('createdDate')}
-        />
-        <p className='form__error-text'>{errors?.createdDate?.message}</p>
-        <div className='form__item-pair'>
-          <label htmlFor='hours' name='hours'>
-            Hours
-          </label>
-          <input
-            className='form__input-number'
-            type='number'
-            {...register('time.hours')}
-          />
-          <p className='form__error-text'>{errors?.time?.hours?.message}</p>
-          <label htmlFor='minutes' name='minutes'>
-            Minutes
-          </label>
-          <input
-            className='form__input-number'
-            type='number'
-            {...register('time.minutes')}
-          />
-          <p className='form__error-text'>{errors?.time?.minutes?.message}</p>
-          <label htmlFor='seconds' name='seconds'>
-            Seconds
-          </label>
-          <input
-            step='0.001'
-            className='form__input-number'
-            type='number'
-            {...register('time.seconds')}
-          />
-          <p className='form__error-text'>{errors?.time?.seconds?.message}</p>
+      <ProtectedRoute condition={userInfo._id === data.author}>
+        <div className='title-container'>
+          <h2 className='title-container__title'>New Session</h2>
         </div>
-        <div className='form__item-pair'>
-          <label htmlFor='distance' name='distance'>
-            Distance
+        <form className='form' onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor='createdDate' name='createdDate'>
+            Date
           </label>
           <input
-            className='form__input-number'
-            type='number'
-            {...register('distance')}
+            className='form__input-date'
+            type='date'
+            {...register('createdDate')}
           />
-          <p>{errors?.distance?.message}</p>
-        </div>
-        <button className='form__button-submit' type='submit'>
-          Submit
-        </button>
-        {loadingUpdate && <Loader />}
-      </form>
+          <p className='form__error-text'>{errors?.createdDate?.message}</p>
+          <div className='form__item-pair'>
+            <label htmlFor='hours' name='hours'>
+              Hours
+            </label>
+            <input
+              className='form__input-number'
+              type='number'
+              {...register('time.hours')}
+            />
+            <p className='form__error-text'>{errors?.time?.hours?.message}</p>
+            <label htmlFor='minutes' name='minutes'>
+              Minutes
+            </label>
+            <input
+              className='form__input-number'
+              type='number'
+              {...register('time.minutes')}
+            />
+            <p className='form__error-text'>{errors?.time?.minutes?.message}</p>
+            <label htmlFor='seconds' name='seconds'>
+              Seconds
+            </label>
+            <input
+              step='0.001'
+              className='form__input-number'
+              type='number'
+              {...register('time.seconds')}
+            />
+            <p className='form__error-text'>{errors?.time?.seconds?.message}</p>
+          </div>
+          <div className='form__item-pair'>
+            <label htmlFor='distance' name='distance'>
+              Distance
+            </label>
+            <input
+              className='form__input-number'
+              type='number'
+              {...register('distance')}
+            />
+            <p>{errors?.distance?.message}</p>
+          </div>
+          <button className='form__button-submit' type='submit'>
+            Submit
+          </button>
+          {loadingUpdate && <Loader />}
+        </form>
+      </ProtectedRoute>
     </main>
   )
 }

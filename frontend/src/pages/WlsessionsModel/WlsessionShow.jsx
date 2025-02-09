@@ -8,6 +8,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -35,8 +36,9 @@ const WlsessionShow = () => {
         await deleteWlsession({ slugLog, slugExercise, slugSession })
         refetch()
         navigate(`/logs/${slugLog}/${slugExercise}`)
+        toast.success('Session deleted')
       } catch (err) {
-        console.log(err)
+        toast.error(err?.data?.message || err.error)
       }
     }
   }
@@ -50,11 +52,11 @@ const WlsessionShow = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
-    <ProtectedRoute condition={userInfo._id === data.wlsession.author}>
-      <main className='model'>
-        <button className='model__button-goback' onClick={submitHandler}>
-          Go Back
-        </button>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <ProtectedRoute condition={userInfo._id === data.wlsession.author}>
         <div className='title-container'>
           <h1 className='title-container__title'>
             {new Date(data.wlsession.createdDate).toLocaleDateString()}
@@ -124,8 +126,8 @@ const WlsessionShow = () => {
             ))}
           </tbody>
         </table>
-      </main>
-    </ProtectedRoute>
+      </ProtectedRoute>
+    </main>
   )
 }
 

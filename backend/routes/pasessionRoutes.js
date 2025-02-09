@@ -25,7 +25,7 @@ router
   .get(
     registered,
     isPasessionByIdAuthor,
-    checkObjectId('pasessiondId'),
+    checkObjectId('pasessionId'),
     getPasessionById
   )
   .put(

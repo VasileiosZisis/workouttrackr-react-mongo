@@ -5,6 +5,10 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useProfileMutation } from '../../../slices/usersApiSlice'
 import { setCredentials } from '../../../slices/authSlice'
+import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
+import '../ModelMain.css'
+import '../ModelForms.css'
 
 const UpdateProfile = () => {
   const navigate = useNavigate()
@@ -26,7 +30,9 @@ const UpdateProfile = () => {
         'string.empty': 'This field is required',
         'string.email': 'Not a valid email format'
       }),
-    password: Joi.string().min(6).required().allow('')
+    password: Joi.string().min(6).required().allow('').messages({
+      'string.min': 'Password must be at least 6 characters'
+    })
   })
 
   const {
@@ -46,8 +52,9 @@ const UpdateProfile = () => {
       const response = await profile(data).unwrap()
       dispatch(setCredentials(response))
       navigate(`/logs`)
+      toast.success('Profile updated')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 
@@ -55,8 +62,6 @@ const UpdateProfile = () => {
     e.preventDefault()
     navigate('/')
   }
-
-  if (isLoading) return <p>loading</p>
 
   return (
     <main className='model'>
@@ -97,6 +102,7 @@ const UpdateProfile = () => {
         <button className='form__button-submit' type='submit'>
           Update
         </button>
+        {isLoading && <Loader />}
       </form>
     </main>
   )

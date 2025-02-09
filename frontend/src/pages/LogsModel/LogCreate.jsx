@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -39,8 +40,9 @@ const LogCreate = () => {
     try {
       await createLog(data).unwrap()
       navigate('/logs')
+      toast.success('Log created')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 

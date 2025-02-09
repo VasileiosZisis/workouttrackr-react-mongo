@@ -6,6 +6,8 @@ import { useRegisterMutation } from '../../../slices/usersApiSlice'
 import { setCredentials } from '../../../slices/authSlice'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
+import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -47,8 +49,9 @@ const Register = () => {
       const res = await register(data).unwrap()
       dispatch(setCredentials(res))
       navigate('/logs')
+      toast.success('Registered Successfully')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 
@@ -56,8 +59,6 @@ const Register = () => {
     e.preventDefault()
     navigate('/')
   }
-
-  if (isLoading) return <p>loading</p>
 
   return (
     <main className='model'>
@@ -98,6 +99,7 @@ const Register = () => {
         <button className='form__button-submit' type='submit'>
           Submit
         </button>
+        {isLoading && <Loader />}
       </form>
     </main>
   )

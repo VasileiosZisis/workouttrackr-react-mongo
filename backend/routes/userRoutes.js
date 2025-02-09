@@ -6,7 +6,6 @@ import {
   logoutUser,
   getUserProfile,
   updateUserProfile,
-  getAllUsers,
 } from '../controllers/userController.js';
 import { registered, admin } from '../middleware/loginMiddleware.js';
 import {
@@ -14,10 +13,7 @@ import {
   validateUpdateUser,
 } from '../middleware/validations.js';
 
-router
-  .route('/')
-  .post(registerUser, validateRegisterUser)
-  .get(registered, admin, getAllUsers);
+router.route('/').post(registerUser, validateRegisterUser);
 router.post('/logout', logoutUser);
 router.post('/login', loginUser);
 router

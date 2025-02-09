@@ -2,6 +2,8 @@ import {
   useGetWlsessionByIdQuery,
   useUpdateWlsessionIdMutation
 } from '../../../slices/wlsessionsApiSlice'
+import { useSelector } from 'react-redux'
+import ProtectedRoute from '../../components/ProtectedRoute'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -9,12 +11,13 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
 const WlsessionEdit = () => {
   const navigate = useNavigate()
-
+  const { userInfo } = useSelector(state => state.auth)
   const { slugLog, slugExercise, wlsessionId } = useParams()
 
   const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
@@ -85,10 +88,11 @@ const WlsessionEdit = () => {
         slugExercise,
         data: { ...dataForm, _id: wlsessionId }
       }).unwrap()
-      navigate(`/logs/${slugLog}/${slugExercise}`)
       refetch()
+      navigate(`/logs/${slugLog}/${slugExercise}`)
+      toast.success('Session updated')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 
@@ -100,93 +104,97 @@ const WlsessionEdit = () => {
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
+  console.log(data)
+
   return (
     <main className='model'>
       <button className='model__button-goback' onClick={submitHandler}>
         Go Back
       </button>
-      <div className='title-container'>
-        <h2 className='title-container__title'>Edit Session</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='createdDate' name='createdDate'>
-          Date
-        </label>
-        <p className='form__error-text'>{errors?.createdDate?.message}</p>
-        <input
-          className='form__input-date'
-          type='date'
-          {...register('createdDate')}
-        />
-        <p>{errors.createdDate?.message}</p>
-        <ul>
-          {fields.map((field, index) => {
-            return (
-              <li className='form__item' key={field.id}>
-                <h4>Set {index + 1}</h4>
-                <div className='form__item-pair'>
-                  <label htmlFor='isHard' name='isHard'>
-                    Hard
-                  </label>
-                  <input
-                    className='form__input-checkbox'
-                    type='checkbox'
-                    {...register(`set.${index}.isHard`)}
-                  />
-                </div>
-                <div className='form__item-pair'>
-                  <label htmlFor='repetitions' name='repetitions'>
-                    Repetitions
-                  </label>
-                  <input
-                    className='form__input-number'
-                    type='number'
-                    {...register(`set.${index}.repetitions`)}
-                  />
-                  <p className='form__error-text'>
-                    {errors?.set?.[index].repetitions?.message}
-                  </p>
-                </div>
-                <div className='form__item-pair'>
-                  <label htmlFor='kilograms' name='kilograms'>
-                    Kilograms
-                  </label>
-                  <input
-                    className='form__input-number'
-                    type='number'
-                    {...register(`set.${index}.kilograms`)}
-                  />
-                  <p className='form__error-text'>
-                    {errors?.set?.[index].kilograms?.message}
-                  </p>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
-        <div className='form__button-container'>
-          <button
-            className='form__button-delSet'
-            type='button'
-            onClick={() => remove(1)}
-          >
-            Delete
-          </button>
-          <button
-            className='form__button-add'
-            type='button'
-            onClick={() => {
-              append({ repetitions: '', kilograms: '' })
-            }}
-          >
-            Add Set
-          </button>
+      <ProtectedRoute condition={userInfo._id === data.author}>
+        <div className='title-container'>
+          <h2 className='title-container__title'>Edit Session</h2>
         </div>
-        <button className='form__button-submit' type='submit'>
-          Submit
-        </button>
-        {loadingUpdate && <Loader />}
-      </form>
+        <form className='form' onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor='createdDate' name='createdDate'>
+            Date
+          </label>
+          <p className='form__error-text'>{errors?.createdDate?.message}</p>
+          <input
+            className='form__input-date'
+            type='date'
+            {...register('createdDate')}
+          />
+          <p>{errors.createdDate?.message}</p>
+          <ul>
+            {fields.map((field, index) => {
+              return (
+                <li className='form__item' key={field.id}>
+                  <h4>Set {index + 1}</h4>
+                  <div className='form__item-pair'>
+                    <label htmlFor='repetitions' name='repetitions'>
+                      Repetitions
+                    </label>
+                    <input
+                      className='form__input-number'
+                      type='number'
+                      {...register(`set.${index}.repetitions`)}
+                    />
+                    <p className='form__error-text'>
+                      {errors?.set?.[index].repetitions?.message}
+                    </p>
+                  </div>
+                  <div className='form__item-pair'>
+                    <label htmlFor='kilograms' name='kilograms'>
+                      Kilograms
+                    </label>
+                    <input
+                      className='form__input-number'
+                      type='number'
+                      {...register(`set.${index}.kilograms`)}
+                    />
+                    <p className='form__error-text'>
+                      {errors?.set?.[index].kilograms?.message}
+                    </p>
+                  </div>
+                  <div className='form__item-pair'>
+                    <label htmlFor='isHard' name='isHard'>
+                      Hard
+                    </label>
+                    <input
+                      className='form__input-checkbox'
+                      type='checkbox'
+                      {...register(`set.${index}.isHard`)}
+                    />
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
+          <div className='form__button-container'>
+            <button
+              className='form__button-delSet'
+              type='button'
+              onClick={() => remove(1)}
+            >
+              Delete
+            </button>
+            <button
+              className='form__button-add'
+              type='button'
+              onClick={() => {
+                append({ repetitions: '', kilograms: '' })
+              }}
+            >
+              Add Set
+            </button>
+          </div>
+          <button className='form__button-submit' type='submit'>
+            Submit
+          </button>
+          {loadingUpdate && <Loader />}
+        </form>
+      </ProtectedRoute>
     </main>
   )
 }

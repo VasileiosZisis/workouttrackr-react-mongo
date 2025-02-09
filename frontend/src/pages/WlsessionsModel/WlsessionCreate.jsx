@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -68,8 +69,8 @@ const WlsessionCreate = () => {
   })
 
   useEffect(() => {
-    setFocus('repetitions')
-  }, [setFocus])
+    setFocus('set.0.repetitions')
+  }, [])
 
   const [createWlsession, { isLoading }] = useCreateWlsessionMutation()
 
@@ -82,8 +83,9 @@ const WlsessionCreate = () => {
       }).unwrap()
       refetch()
       navigate(`/logs/${slugLog}/${slugExercise}`)
+      toast.success('Session created')
     } catch (err) {
-      console.log(err)
+      toast.error(err?.data?.message || err.error)
     }
   }
 
@@ -120,20 +122,11 @@ const WlsessionCreate = () => {
               <li className='form__item' key={item.id}>
                 <h4>Set {index + 1}</h4>
                 <div className='form__item-pair'>
-                  <label htmlFor='isHard' name='isHard'>
-                    Hard
-                  </label>
-                  <input
-                    className='form__input-checkbox'
-                    type='checkbox'
-                    {...register(`set.${index}.isHard`)}
-                  />
-                </div>
-                <div className='form__item-pair'>
                   <label htmlFor='repetitions' name='repetitions'>
                     Repetitions
                   </label>
                   <input
+                    ref={`set.${index}.repetitions`}
                     className='form__input-number'
                     type='number'
                     {...register(`set.${index}.repetitions`)}
@@ -154,6 +147,16 @@ const WlsessionCreate = () => {
                   <p className='form__error-text'>
                     {errors?.set?.[index].kilograms?.message}
                   </p>
+                </div>
+                <div className='form__item-pair'>
+                  <label htmlFor='isHard' name='isHard'>
+                    Hard
+                  </label>
+                  <input
+                    className='form__input-checkbox'
+                    type='checkbox'
+                    {...register(`set.${index}.isHard`)}
+                  />
                 </div>
               </li>
             )

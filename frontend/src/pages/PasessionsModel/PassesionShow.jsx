@@ -8,6 +8,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Loader from '../../components/Loader'
+import { toast } from 'react-toastify'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -35,8 +36,9 @@ const PasessionShow = () => {
         await deletePasession({ slugLog, slugExercise, slugSession })
         refetch()
         navigate(`/logs/${slugLog}/${slugExercise}`)
+        toast.success('Session deleted')
       } catch (err) {
-        console.log(err)
+        toast.error(err?.data?.message || err.error)
       }
     }
   }
@@ -50,11 +52,11 @@ const PasessionShow = () => {
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
-    <ProtectedRoute condition={userInfo._id === data.pasession.author}>
-      <main className='model'>
-        <button className='model__button-goback' onClick={submitHandler}>
-          Go Back
-        </button>
+    <main className='model'>
+      <button className='model__button-goback' onClick={submitHandler}>
+        Go Back
+      </button>
+      <ProtectedRoute condition={userInfo._id === data.pasession.author}>
         <div className='title-container'>
           <h1 className='title-container__title'>
             {new Date(data.pasession.createdDate).toLocaleDateString()}
@@ -80,10 +82,10 @@ const PasessionShow = () => {
         <table className='sessions__table'>
           <tbody>
             <tr>
-              <td colSpan='2' scope='col'>
+              <td colSpan='1' scope='col'>
                 Pace
               </td>
-              <th colSpan='2' scope='col'>
+              <th colSpan='3' scope='col'>
                 {data.pasession.paceSeconds > 10
                   ? `${data.pasession.paceMinutes}:${data.pasession.paceSeconds} `
                   : `${data.pasession.paceMinutes}:0${data.pasession.paceSeconds} `}
@@ -91,11 +93,11 @@ const PasessionShow = () => {
               </th>
             </tr>
             <tr>
-              <td colSpan='2' scope='col'>
+              <td colSpan='1' scope='col'>
                 Speed
               </td>
-              <th colSpan='2' scope='col'>
-                {data.pasession.speed}
+              <th colSpan='3' scope='col'>
+                {data.pasession.speed.toFixed(3)}
                 <span className='sessions__span'> km/min</span>
               </th>
             </tr>
@@ -116,8 +118,8 @@ const PasessionShow = () => {
             </tr>
           </tbody>
         </table>
-      </main>
-    </ProtectedRoute>
+      </ProtectedRoute>
+    </main>
   )
 }
 

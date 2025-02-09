@@ -25,7 +25,7 @@ router
   .get(
     registered,
     isWlsessionByIdAuthor,
-    checkObjectId('wlsessiondId'),
+    checkObjectId('wlsessionId'),
     getWlsessionById
   )
   .put(

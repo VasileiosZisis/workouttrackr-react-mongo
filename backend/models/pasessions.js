@@ -21,37 +21,40 @@ const pasessionSchema = new Schema(
     time: {
       hours: {
         type: Number,
+        default: 0,
       },
       minutes: {
         type: Number,
+        default: 0,
       },
       seconds: {
         type: Number,
+        default: 0,
       },
     },
-    distance: { type: Number },
+    distance: { type: Number, default: 0 },
     pace: {
       type: Number,
       default: function () {
-        return (this.time.totalMinutes / this.distance).toFixed(3);
+        return this.time.totalMinutes / this.distance || 0;
       },
     },
     paceMinutes: {
       type: Number,
       default: function () {
-        return Math.floor(this.pace);
+        return Math.floor(this.pace) || 0;
       },
     },
     paceSeconds: {
       type: Number,
       default: function () {
-        return Math.round((this.pace - this.paceMinutes) * 60);
+        return Math.round((this.pace - this.paceMinutes) * 60) || 0;
       },
     },
     speed: {
       type: Number,
       default: function () {
-        return (this.distance / this.time.totalMinutes).toFixed(3);
+        return this.distance / this.time.totalMinutes || 0;
       },
     },
     exercise: {

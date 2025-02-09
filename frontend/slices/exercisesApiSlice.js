@@ -12,9 +12,20 @@ export const exercisesApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Exercises'],
     }),
     getExerciseSlug: builder.query({
-      query: ({ slugLog, slugExercise, limit, page }) => ({
-        url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}?limit=${limit}&page=${page}`,
-      }),
+      // query: ({ slugLog, slugExercise, limit, page }) => ({
+      //   url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}?limit=${limit}&page=${page}`,
+      // }),
+      query: ({ slugLog, slugExercise, limit, page }) => {
+        const queryParams = new URLSearchParams();
+        if (limit) queryParams.append('limit', limit);
+        if (page) queryParams.append('page', page);
+
+        return {
+          url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}${
+            queryParams.toString() ? `?${queryParams.toString()}` : ''
+          }`,
+        };
+      },
       providesTags: ['Exercises'],
     }),
     getExerciseId: builder.query({
