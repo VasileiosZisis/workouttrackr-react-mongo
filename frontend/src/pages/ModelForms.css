@@ -86,7 +86,8 @@ label {
   border-radius: 5px;
 }
 
-.form__button-delSet {
+.form__button-delSet,
+.form__link {
   max-width: fit-content;
   display: inline-block;
   font-size: 0.9rem;
@@ -108,7 +109,8 @@ label {
 
 .form__button-submit:where(:hover, :focus-visible),
 .form__button-add:where(:hover, :focus-visible),
-.form__button-delSet:where(:hover, :focus-visible) {
+.form__button-delSet:where(:hover, :focus-visible),
+.form__link:where(:hover, :focus-visible) {
   background-color: var(--jet);
   color: var(--textWhite);
 }

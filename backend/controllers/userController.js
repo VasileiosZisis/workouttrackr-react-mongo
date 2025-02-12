@@ -1,6 +1,12 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/users.js';
 import generateToken from '../utils/generateToken.js';
+import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import sgMail from '@sendgrid/mail';
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const url = process.env.CLIENT_URL;
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -90,10 +96,71 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
+    const token = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000;
+    await user.save();
+
+    const msg = {
+      to: email,
+      from: process.env.SENDER_EMAIL,
+      subject: 'Password Reset Request',
+      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
+
+      Please click on the following link, or paste this into your browser to complete the process:
+
+      ${url}/reset-password/${token} 
+
+      If you did not request this, please ignore this email and your password will remain unchanged.`,
+      html: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
+
+      Please click on the following link, or paste this into your browser to complete the process:
+
+      ${url}/reset-password/${token} 
+
+      If you did not request this, please ignore this email and your password will remain unchanged.`,
+    };
+    await sgMail.send(msg);
+
+    res.json({
+      message: `An e-mail has been sent to ${email} with further instructions.`,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+  if (user) {
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+
+    res.json({ message: 'Password reset successful' });
+  } else {
+    res.status(404);
+    throw new Error('Password reset token is invalid or has expired.');
+  }
+});
+
 export {
   loginUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  forgotPassword,
+  resetPassword,
 };

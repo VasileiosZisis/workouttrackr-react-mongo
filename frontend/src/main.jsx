@@ -27,6 +27,8 @@ import Login from './pages/UsersModel/Login.jsx'
 import Register from './pages/UsersModel/Register.jsx'
 import UpdateProfile from './pages/UsersModel/UpdateProfile.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
+import ForgotPassword from './pages/UsersModel/ForgotPassword.jsx'
+import ResetPassword from './pages/UsersModel/ResetPassword.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -35,6 +37,8 @@ const router = createBrowserRouter(
       <Route index path='/' element={<HomePage />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
+      <Route path='/forgot-password' element={<ForgotPassword />} />
+      <Route path='/reset-password/:token' element={<ResetPassword />} />
 
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<UpdateProfile />} />

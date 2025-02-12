@@ -6,8 +6,10 @@ import {
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/userController.js';
-import { registered, admin } from '../middleware/loginMiddleware.js';
+import { registered } from '../middleware/loginMiddleware.js';
 import {
   validateRegisterUser,
   validateUpdateUser,
@@ -20,5 +22,7 @@ router
   .route('/profile')
   .get(registered, getUserProfile)
   .put(registered, validateUpdateUser, updateUserProfile);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
 
 export default router;
