@@ -45,7 +45,7 @@ const PasessionShow = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(`/logs/${slugLog}/${slugExercise}`)
+    navigate(-1)
   }
 
   if (isLoading) return <Loader />
@@ -71,6 +71,7 @@ const PasessionShow = () => {
           </div>
           <div className='title-container__button-container'>
             <button
+              disabled={loadingDelete}
               className='title-container__button'
               onClick={() => deleteHandler(slugExercise)}
             >

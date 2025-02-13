@@ -60,7 +60,7 @@ const UpdateProfile = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate('/')
+    navigate(-1)
   }
 
   return (
@@ -99,7 +99,11 @@ const UpdateProfile = () => {
           {...register('password')}
         />
         <p className='form__error-text'>{errors?.password?.message}</p>
-        <button className='form__button-submit' type='submit'>
+        <button
+          className='form__button-submit'
+          type='submit'
+          disabled={isLoading}
+        >
           Update
         </button>
         {isLoading && <Loader />}

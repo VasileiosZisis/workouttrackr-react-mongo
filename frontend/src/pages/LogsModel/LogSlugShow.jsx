@@ -52,7 +52,7 @@ const LogSlugShow = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate('/logs')
+    navigate(-1)
   }
 
   if (isLoading) return <Loader />
@@ -75,6 +75,7 @@ const LogSlugShow = () => {
         </div>
         <div className='title-container__button-container'>
           <button
+            disabled={loadingDelete}
             className='title-container__button'
             onClick={() => deleteHandler(slugLog)}
           >

@@ -63,7 +63,7 @@ const ExerciseSlugShow = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(`/logs/${slugLog}`)
+    navigate(-1)
   }
 
   if (isLoading) return <Loader />
@@ -90,6 +90,7 @@ const ExerciseSlugShow = () => {
           </div>
           <div className='title-container__button-container'>
             <button
+              disabled={loadingDelete}
               className='title-container__button'
               onClick={() => deleteHandler(slugExercise)}
             >
@@ -120,18 +121,7 @@ const ExerciseSlugShow = () => {
           </div>
         ) : data.exercise.session === 'pasession' ? (
           <div className='sessions'>
-            <label className='model__label'>
-              per page:&emsp;
-              <select
-                className='model__select'
-                value={limit}
-                onChange={handleLimitChange}
-              >
-                <option value={12}>12</option>
-                <option value={24}>24</option>
-                <option value={48}>48</option>
-              </select>
-            </label>
+            <Label limit={limit} handleLimitChange={handleLimitChange} />
             <PaSession
               data={data}
               slugLog={slugLog}
@@ -149,7 +139,7 @@ const ExerciseSlugShow = () => {
             </Link>
           </div>
         ) : (
-          <h1>NOTHING</h1>
+          <h1>NOTHING FOUND</h1>
         )}
       </ProtectedRoute>
     </main>

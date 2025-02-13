@@ -100,7 +100,7 @@ const PasessionEdit = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(`/logs/${slugLog}/${slugExercise}`)
+    navigate(-1)
   }
 
   if (isLoading) return <Loader />
@@ -166,7 +166,11 @@ const PasessionEdit = () => {
             />
             <p>{errors?.distance?.message}</p>
           </div>
-          <button className='form__button-submit' type='submit'>
+          <button
+            className='form__button-submit'
+            type='submit'
+            disabled={loadingUpdate}
+          >
             Submit
           </button>
           {loadingUpdate && <Loader />}

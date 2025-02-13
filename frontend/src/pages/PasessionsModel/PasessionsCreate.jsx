@@ -82,7 +82,7 @@ const PasessionCreate = () => {
 
   const onSubmit = async data => {
     try {
-      const res = await createPasession({
+      await createPasession({
         ...data,
         slugLog: slugLog,
         slugExercise: slugExercise
@@ -163,7 +163,11 @@ const PasessionCreate = () => {
           />
           <p className='form__error-text'>{errors?.distance?.message}</p>
         </div>
-        <button className='form__button-submit' type='submit'>
+        <button
+          className='form__button-submit'
+          type='submit'
+          disabled={isLoading}
+        >
           Submit
         </button>
         {isLoading && <Loader />}

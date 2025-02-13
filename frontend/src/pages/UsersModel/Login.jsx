@@ -88,7 +88,11 @@ const Login = () => {
         <Link className='form__link' to='/forgot-password'>
           Forgot Password
         </Link>
-        <button className='form__button-submit' type='submit'>
+        <button
+          className='form__button-submit'
+          type='submit'
+          disabled={isLoading}
+        >
           Submit
         </button>
         {isLoading && <Loader />}

@@ -68,7 +68,7 @@ const ExerciseCreate = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(`/logs/${slugLog}`)
+    navigate(-1)
   }
 
   if (getLogLoading) return <Loader />
@@ -126,7 +126,11 @@ const ExerciseCreate = () => {
             </label>
           </div>
         </div>
-        <button className='form__button-submit' type='submit'>
+        <button
+          className='form__button-submit'
+          type='submit'
+          disabled={isLoading}
+        >
           Submit
         </button>
         {isLoading && <Loader />}

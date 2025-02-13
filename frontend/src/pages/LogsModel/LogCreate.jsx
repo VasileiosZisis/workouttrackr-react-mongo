@@ -48,7 +48,7 @@ const LogCreate = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate('/logs')
+    navigate(-1)
   }
 
   return (
@@ -69,7 +69,11 @@ const LogCreate = () => {
           type='text'
           {...register('title')}
         />
-        <button className='form__button-submit' type='submit'>
+        <button
+          className='form__button-submit'
+          type='submit'
+          disabled={isLoading}
+        >
           Submit
         </button>
         {isLoading && <Loader />}

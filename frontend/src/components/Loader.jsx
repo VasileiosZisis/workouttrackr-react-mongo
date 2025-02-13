@@ -7,8 +7,8 @@ const Loader = () => {
     >
       <Oval
         visible={true}
-        height='150'
-        width='150'
+        height='75'
+        width='75'
         color='#f2f2f2'
         secondaryColor='#bbbbbb'
         ariaLabel='oval-loading'

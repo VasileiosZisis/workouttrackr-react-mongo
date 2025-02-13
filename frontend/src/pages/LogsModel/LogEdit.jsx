@@ -91,7 +91,11 @@ const LogsEdit = () => {
             type='text'
             {...register('title')}
           />
-          <button className='form__button-submit' type='submit'>
+          <button
+            className='form__button-submit'
+            type='submit'
+            disabled={loadingUpdate}
+          >
             Submit
           </button>
           {loadingUpdate && <Loader />}

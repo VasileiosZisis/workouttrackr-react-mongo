@@ -126,7 +126,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     };
     await sgMail.send(msg);
 
-    res.json({
+    res.status(200).json({
       message: `An e-mail has been sent to ${email} with further instructions.`,
     });
   } else {
@@ -148,7 +148,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     user.resetPasswordExpires = null;
     await user.save();
 
-    res.json({ message: 'Password reset successful' });
+    res.status(200).json({ message: 'Password reset successful' });
   } else {
     res.status(404);
     throw new Error('Password reset token is invalid or has expired.');

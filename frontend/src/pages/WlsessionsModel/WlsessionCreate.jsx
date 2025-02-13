@@ -91,7 +91,7 @@ const WlsessionCreate = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    navigate(`/logs/${slugLog}/${slugExercise}`)
+    navigate(-1)
   }
 
   if (getExerciseLoading) return <Loader />
@@ -180,7 +180,11 @@ const WlsessionCreate = () => {
             Add Set
           </button>
         </div>
-        <button className='form__button-submit' type='submit'>
+        <button
+          className='form__button-submit'
+          type='submit'
+          disabled={isLoading}
+        >
           Submit
         </button>
         {isLoading && <Loader />}
