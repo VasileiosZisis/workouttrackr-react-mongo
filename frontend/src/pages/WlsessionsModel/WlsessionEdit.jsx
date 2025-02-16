@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
@@ -17,10 +17,18 @@ import '../ModelForms.css'
 
 const WlsessionEdit = () => {
   const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
   const { userInfo } = useSelector(state => state.auth)
   const { slugLog, slugExercise, wlsessionId } = useParams()
 
-  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+  const { refetch } = useGetExerciseSlugQuery({
+    slugLog,
+    slugExercise,
+    limit,
+    page
+  })
 
   const { data, isLoading, error } = useGetWlsessionByIdQuery({
     slugLog,
@@ -96,21 +104,19 @@ const WlsessionEdit = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
-  console.log(data)
-
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link
+        className='model__link-goBack'
+        to={`/logs/${slugLog}/${slugExercise}/wl/${new Date(data.createdDate)
+          .toISOString()
+          .slice(0, 10)}`}
+      >
+        &#160;&#160;{new Date(data.createdDate).toLocaleDateString()}
+      </Link>
       <ProtectedRoute condition={userInfo._id === data.author}>
         <div className='title-container'>
           <h2 className='title-container__title'>Edit Session</h2>
@@ -136,6 +142,7 @@ const WlsessionEdit = () => {
                       Repetitions
                     </label>
                     <input
+                      step={0.1}
                       className='form__input-number'
                       type='number'
                       {...register(`set.${index}.repetitions`)}
@@ -149,6 +156,7 @@ const WlsessionEdit = () => {
                       Kilograms
                     </label>
                     <input
+                      step={0.1}
                       className='form__input-number'
                       type='number'
                       {...register(`set.${index}.kilograms`)}

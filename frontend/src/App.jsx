@@ -8,7 +8,12 @@ function App () {
     <>
       <Navbar />
       <Outlet />
-      <ToastContainer transition:Slide draggable={false} theme='colored' />
+      <ToastContainer
+        transition:Slide
+        draggable={false}
+        theme='colored'
+        autoClose={2500}
+      />
     </>
   )
 }

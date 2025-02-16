@@ -50,19 +50,14 @@ const LogSlugShow = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go back
-      </button>
+      <Link className='model__link-goBack' to='/logs'>
+        &#160;&#160;Logs
+      </Link>
       <div className='title-container'>
         <h1 className='title-container__title'>{data.log.title}</h1>
         <div className='title-container__link-container'>

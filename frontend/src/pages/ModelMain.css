@@ -2,14 +2,18 @@
   margin-top: 1rem;
 }
 
-.model__button-goback {
-  display: inline-block;
-  font-size: 0.8rem;
-  background-color: var(--icterine);
-  color: var(--night);
-  padding: 0.3rem 0.6rem;
-  border-radius: 5px;
-  margin-inline: 0.25rem;
+.model__link-goBack {
+  display: block;
+  width: fit-content;
+  color: var(--textWhite);
+}
+
+.model__link-goBack:before {
+  content: '\2190';
+}
+
+.model__link-goBack:where(:hover, :focus-visible) {
+  color: var(--icterine);
 }
 
 .title-container {
@@ -33,10 +37,18 @@
   grid-row-start: 2;
 }
 
-.title-container__link,
-.title-container__button {
+.title-container__link {
   font-size: 0.8rem;
   background-color: var(--icterine);
+  color: var(--night);
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  margin-inline: 0.25rem;
+}
+
+.title-container__button {
+  font-size: 0.8rem;
+  background-color: var(--imperial-red);
   color: var(--night);
   padding: 0.3rem 0.6rem;
   border-radius: 5px;

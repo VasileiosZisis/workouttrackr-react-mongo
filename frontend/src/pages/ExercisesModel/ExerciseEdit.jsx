@@ -6,7 +6,7 @@ import ProtectedRoute from '../../components/ProtectedRoute'
 import { useSelector } from 'react-redux'
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
@@ -33,7 +33,7 @@ const ExerciseEdit = () => {
 
   const schema = Joi.object({
     title: Joi.string()
-      .pattern(/^[a-z]+$/)
+      .pattern(/^[A-Za-z0-9-_ ]+$/)
       .required()
       .messages({
         'string.empty': 'This field is required',
@@ -74,16 +74,16 @@ const ExerciseEdit = () => {
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
+  console.log(data)
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link
+        className='model__link-goBack'
+        to={`/logs/${slugLog}/${data.title}`}
+      >
+        &#160;&#160;{data.title}
+      </Link>
       <ProtectedRoute condition={userInfo._id === data.author}>
         <div className='title-container'>
           <h2 className='title-container__title'>Edit Exercise</h2>

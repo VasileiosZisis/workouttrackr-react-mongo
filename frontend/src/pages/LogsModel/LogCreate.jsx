@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useCreateLogMutation } from '../../../slices/logsApiSlice'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
@@ -46,18 +46,13 @@ const LogCreate = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link className='model__link-goBack' to='/logs'>
+        &#160;&#160;Logs
+      </Link>
       <div className='title-container'>
-        <h2 className='title-container__title'>New Log</h2>
+        <h2 className='title-container__title'>Create New Log</h2>
       </div>
       <form className='form' onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='title' name='title'>

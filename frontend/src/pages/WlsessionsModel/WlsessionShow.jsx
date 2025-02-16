@@ -3,8 +3,7 @@ import {
   useDeleteWlsessionMutation
 } from '../../../slices/wlsessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
-import { Link } from 'react-router-dom'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Loader from '../../components/Loader'
@@ -14,10 +13,17 @@ import '../ModelForms.css'
 
 const WlsessionShow = () => {
   const navigate = useNavigate()
-
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
   const { slugLog, slugExercise, slugSession } = useParams()
 
-  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+  const { refetch } = useGetExerciseSlugQuery({
+    slugLog,
+    slugExercise,
+    limit,
+    page
+  })
 
   const { data, isLoading, error } = useGetWlsessionSlugQuery({
     slugLog,
@@ -43,19 +49,17 @@ const WlsessionShow = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link
+        className='model__link-goBack'
+        to={`/logs/${slugLog}/${slugExercise}`}
+      >
+        &#160;&#160;Sessions
+      </Link>
       <ProtectedRoute condition={userInfo._id === data.wlsession.author}>
         <div className='title-container'>
           <h1 className='title-container__title'>
@@ -83,46 +87,34 @@ const WlsessionShow = () => {
         <table className='sessions__table'>
           <tbody>
             <tr>
-              <td colSpan='3' scope='col'>
-                Total Volume
-              </td>
-              <th colSpan='2' scope='col'>
-                {data.wlsession.totalVolume}
-              </th>
+              <td colSpan='3'>Total Volume</td>
+              <th colSpan='2'>{data.wlsession.totalVolume}</th>
             </tr>
             <tr>
-              <td colSpan='3' scope='col'>
-                Junk Volume
-              </td>
-              <th colSpan='2' scope='col'>
-                {data.wlsession.junkVolume}
-              </th>
+              <td colSpan='3'>Junk Volume</td>
+              <th colSpan='2'>{data.wlsession.junkVolume}</th>
             </tr>
             <tr>
-              <td colSpan='3' scope='col'>
-                Working Volume
-              </td>
-              <th colSpan='2' scope='col'>
-                {data.wlsession.workingVolume}
-              </th>
+              <td colSpan='3'>Working Volume</td>
+              <th colSpan='2'>{data.wlsession.workingVolume}</th>
             </tr>
             <tr>
               <th></th>
             </tr>
             <tr>
               <td>Set</td>
-              <td>reps</td>
-              <td>kgs</td>
-              <td>isHard</td>
-              <td>volume</td>
+              <td>Reps</td>
+              <td>KGs</td>
+              <td>Hard</td>
+              <td>Volume</td>
             </tr>
             {data.wlsession.set.map((set, index) => (
               <tr key={set._id}>
                 <td>{index + 1}</td>
-                <th>{set.repetitions}</th>
-                <th>{set.kilograms}</th>
-                <th>{set.isHard ? <span>true</span> : <span>false</span>}</th>
-                <th>{set.volume}</th>
+                <td>{set.repetitions}</td>
+                <td>{set.kilograms}</td>
+                <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
+                <td>{set.volume}</td>
               </tr>
             ))}
           </tbody>

@@ -98,7 +98,7 @@ label {
 }
 
 .form__button-submit {
-  margin-top: 1rem;
+  margin-block: 1rem;
   display: inline-block;
   font-size: 1rem;
   background-color: var(--icterine);

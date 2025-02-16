@@ -2,7 +2,7 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useCreateWlsessionMutation } from '../../../slices/wlsessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
@@ -20,7 +20,6 @@ const WlsessionCreate = () => {
   const { slugLog, slugExercise } = useParams()
 
   const {
-    data,
     isLoading: getExerciseLoading,
     error: exerciseError,
     refetch
@@ -89,20 +88,18 @@ const WlsessionCreate = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (getExerciseLoading) return <Loader />
   if (exerciseError)
     return <div>{exerciseError?.data?.message || exerciseError.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link
+        className='model__link-goBack'
+        to={`/logs/${slugLog}/${slugExercise}`}
+      >
+        &#160;&#160;Sessions
+      </Link>
       <div className='title-container'>
         <h2 className='title-container__title'>New Session</h2>
       </div>
@@ -126,6 +123,7 @@ const WlsessionCreate = () => {
                     Repetitions
                   </label>
                   <input
+                    step={0.1}
                     ref={`set.${index}.repetitions`}
                     className='form__input-number'
                     type='number'
@@ -140,6 +138,7 @@ const WlsessionCreate = () => {
                     Kilograms
                   </label>
                   <input
+                    step={0.1}
                     className='form__input-number'
                     type='number'
                     {...register(`set.${index}.kilograms`)}

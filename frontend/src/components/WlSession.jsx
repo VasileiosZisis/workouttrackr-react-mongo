@@ -43,7 +43,7 @@ const WlSession = ({ data, slugLog, slugExercise }) => {
                       <td>{index + 1}</td>
                       <td>{set.repetitions}</td>
                       <td>{set.kilograms}</td>
-                      <td>{set.isHard ? '&#10003;' : '-'}</td>
+                      <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
                       <td>{set.volume}</td>
                     </tr>
                   ))}

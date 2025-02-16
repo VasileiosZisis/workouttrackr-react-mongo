@@ -61,19 +61,14 @@ const ExerciseSlugShow = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link className='model__link-goBack' to={`/logs/${slugLog}`}>
+        &#160;&#160;Exercises
+      </Link>
       <ProtectedRoute
         key={data.exercise._id}
         condition={userInfo._id === data.exercise.author}

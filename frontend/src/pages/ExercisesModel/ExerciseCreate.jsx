@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useCreateExerciseMutation } from '../../../slices/exercisesApiSlice'
 import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
@@ -66,19 +66,14 @@ const ExerciseCreate = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (getLogLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link className='model__link-goBack' to={`/logs/${slugLog}`}>
+        &#160;&#160;Exercises
+      </Link>
       <div className='title-container'>
         <h2 className='title-container__title'>New Exercise</h2>
       </div>

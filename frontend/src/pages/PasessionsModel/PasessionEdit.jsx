@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
@@ -19,8 +19,16 @@ const PasessionEdit = () => {
   const navigate = useNavigate()
   const { userInfo } = useSelector(state => state.auth)
   const { slugLog, slugExercise, pasessionId } = useParams()
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
 
-  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+  const { refetch } = useGetExerciseSlugQuery({
+    slugLog,
+    slugExercise,
+    limit,
+    page
+  })
 
   const { data, isLoading, error } = useGetPasessionByIdQuery({
     slugLog,
@@ -89,7 +97,6 @@ const PasessionEdit = () => {
         slugExercise,
         data: { ...dataForm, _id: pasessionId }
       }).unwrap()
-      console.log(dataForm)
       refetch()
       navigate(`/logs/${slugLog}/${slugExercise}`)
       toast.success('Session updated')
@@ -98,19 +105,19 @@ const PasessionEdit = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link
+        className='model__link-goBack'
+        to={`/logs/${slugLog}/${slugExercise}/pa/${new Date(data.createdDate)
+          .toISOString()
+          .slice(0, 10)}`}
+      >
+        &#160;&#160;{new Date(data.createdDate).toLocaleDateString()}
+      </Link>
       <ProtectedRoute condition={userInfo._id === data.author}>
         <div className='title-container'>
           <h2 className='title-container__title'>New Session</h2>
@@ -130,6 +137,7 @@ const PasessionEdit = () => {
               Hours
             </label>
             <input
+              step={0.1}
               className='form__input-number'
               type='number'
               {...register('time.hours')}
@@ -139,6 +147,7 @@ const PasessionEdit = () => {
               Minutes
             </label>
             <input
+              step={0.1}
               className='form__input-number'
               type='number'
               {...register('time.minutes')}
@@ -148,7 +157,7 @@ const PasessionEdit = () => {
               Seconds
             </label>
             <input
-              step='0.001'
+              step={0.1}
               className='form__input-number'
               type='number'
               {...register('time.seconds')}
@@ -160,6 +169,7 @@ const PasessionEdit = () => {
               Distance
             </label>
             <input
+              step={0.1}
               className='form__input-number'
               type='number'
               {...register('distance')}

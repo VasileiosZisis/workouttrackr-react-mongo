@@ -5,7 +5,7 @@ import {
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
@@ -26,7 +26,7 @@ const LogsEdit = () => {
 
   const schema = Joi.object({
     title: Joi.string()
-      .pattern(/^[a-z]+$/)
+      .pattern(/^[A-Za-z0-9-_ ]+$/)
       .required()
       .messages({
         'string.empty': 'This field is required',
@@ -67,16 +67,11 @@ const LogsEdit = () => {
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link className='model__link-goBack' to={`/logs/${data.slugLog}`}>
+        &#160;&#160;{`${data.slugLog}`}
+      </Link>
       <ProtectedRoute condition={userInfo._id === data.author}>
         <div className='title-container'>
           <h2 className='title-container__title'>Edit Log</h2>

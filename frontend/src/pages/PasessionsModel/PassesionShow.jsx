@@ -3,8 +3,7 @@ import {
   useDeletePasessionMutation
 } from '../../../slices/pasessionsApiSlice'
 import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
-import { Link } from 'react-router-dom'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Loader from '../../components/Loader'
@@ -14,10 +13,17 @@ import '../ModelForms.css'
 
 const PasessionShow = () => {
   const navigate = useNavigate()
-
+  const searchParams = new URLSearchParams(location.search)
+  const limit = Number(searchParams.get('limit'))
+  const page = Number(searchParams.get('page'))
   const { slugLog, slugExercise, slugSession } = useParams()
 
-  const { refetch } = useGetExerciseSlugQuery({ slugLog, slugExercise })
+  const { refetch } = useGetExerciseSlugQuery({
+    slugLog,
+    slugExercise,
+    limit,
+    page
+  })
 
   const { data, isLoading, error } = useGetPasessionSlugQuery({
     slugLog,
@@ -43,19 +49,17 @@ const PasessionShow = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   if (isLoading) return <Loader />
   if (error) return <div>{error?.data?.message || error.error}</div>
 
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link
+        className='model__link-goBack'
+        to={`/logs/${slugLog}/${slugExercise}`}
+      >
+        &#160;&#160;Sessions
+      </Link>
       <ProtectedRoute condition={userInfo._id === data.pasession.author}>
         <div className='title-container'>
           <h1 className='title-container__title'>
