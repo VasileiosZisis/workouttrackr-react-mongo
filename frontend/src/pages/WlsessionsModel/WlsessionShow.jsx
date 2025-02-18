@@ -95,7 +95,7 @@ const WlsessionShow = () => {
               <th colSpan='2'>{data.wlsession.junkVolume}</th>
             </tr>
             <tr>
-              <td colSpan='3'>Working Volume</td>
+              <td colSpan='3'>Work Volume</td>
               <th colSpan='2'>{data.wlsession.workingVolume}</th>
             </tr>
             <tr>
