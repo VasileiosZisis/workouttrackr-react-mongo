@@ -140,7 +140,7 @@ const WlSession = ({ data, slugLog, slugExercise }) => {
           ))}
       </ul>
       <div className='sessions__label-container'>
-        <p className='sessions__text'>show:</p>
+        <p className='sessions__text'>show bar:</p>
         <label className='sessions__label'>
           <input
             className='sessions__input-checkbox'

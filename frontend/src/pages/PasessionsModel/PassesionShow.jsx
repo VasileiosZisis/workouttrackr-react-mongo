@@ -91,10 +91,9 @@ const PasessionShow = () => {
                 Pace
               </td>
               <th colSpan='3' scope='col'>
-                {data.pasession.paceSeconds > 10
-                  ? `${data.pasession.paceMinutes}:${data.pasession.paceSeconds} `
-                  : `${data.pasession.paceMinutes}:0${data.pasession.paceSeconds} `}
-                <span className='sessions__span'>min/km</span>
+                {data.pasession.paceMinutes}:
+                {data.pasession.paceSeconds.toString().padStart(2, '0')}
+                <span className='sessions__span'> min:sec</span>
               </th>
             </tr>
             <tr>
