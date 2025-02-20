@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useRegisterMutation } from '../../../slices/usersApiSlice'
 import { setCredentials } from '../../../slices/authSlice'
@@ -55,16 +55,11 @@ const Register = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate(-1)
-  }
-
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link className='model__link-goback' to={'/'}>
+        &#160;&#160;Home
+      </Link>
       <div className='title-container'>
         <h2 className='title-container__title'>Create New Account</h2>
       </div>

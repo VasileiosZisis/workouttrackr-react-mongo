@@ -96,6 +96,12 @@
   padding: 0.3rem 0.3rem 0.3rem 0.6rem;
 }
 
+.model__error {
+  font-size: 1rem;
+  padding: 1rem;
+  color: var(--imperial-red);
+}
+
 .sessions__label-container {
   margin-top: 0.5rem;
   display: flex;

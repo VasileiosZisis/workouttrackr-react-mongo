@@ -90,7 +90,11 @@ const WlsessionCreate = () => {
 
   if (getExerciseLoading) return <Loader />
   if (exerciseError)
-    return <div>{exerciseError?.data?.message || exerciseError.error}</div>
+    return (
+      <div className='model__error'>
+        {exerciseError?.data?.message || exerciseError.error}
+      </div>
+    )
 
   return (
     <main className='model'>

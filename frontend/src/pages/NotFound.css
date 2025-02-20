@@ -1,0 +1,26 @@
+.error {
+  min-height: 50vh;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.error__title {
+  color: var(--textWhite);
+}
+
+.error__button {
+  margin-block: 1rem;
+  background-color: var(--icterine);
+  font-size: 1.1rem;
+  color: var(--night);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  display: inline-block;
+  text-align: center;
+}
+
+.error__button:where(:hover, :focus-visible) {
+  background-color: var(--jet);
+  color: var(--textWhite);
+}

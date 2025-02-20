@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../../slices/authSlice'
 import { useLoginMutation } from '../../../slices/usersApiSlice'
@@ -8,7 +8,6 @@ import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -52,16 +51,11 @@ const Login = () => {
     }
   }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    navigate('/')
-  }
-
   return (
     <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
+      <Link className='model__link-goback' to={'/'}>
+        &#160;&#160;Home
+      </Link>
       <div className='title-container'>
         <h2 className='title-container__title'>User Login</h2>
       </div>

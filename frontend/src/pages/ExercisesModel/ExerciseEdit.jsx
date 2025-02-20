@@ -72,7 +72,10 @@ const ExerciseEdit = () => {
   }
 
   if (isLoading) return <Loader />
-  if (error) return <div>{error?.data?.message || error.error}</div>
+  if (error)
+    return (
+      <div className='model__error'>{error?.data?.message || error.error}</div>
+    )
 
   console.log(data)
 

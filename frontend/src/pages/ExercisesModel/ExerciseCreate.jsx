@@ -67,7 +67,10 @@ const ExerciseCreate = () => {
   }
 
   if (getLogLoading) return <Loader />
-  if (error) return <div>{error?.data?.message || error.error}</div>
+  if (error)
+    return (
+      <div className='model__error'>{error?.data?.message || error.error}</div>
+    )
 
   return (
     <main className='model'>

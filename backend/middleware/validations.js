@@ -143,6 +143,17 @@ const userEditSchema = Joi.object({
   password: Joi.string().min(6).allow('').escapeHTML(),
 });
 
+const forgotPasswordSchema = Joi.object({
+  password: Joi.string().min(6).required().escapeHTML(),
+});
+
+const resetPasswordSchema = Joi.object({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required()
+    .escapeHTML(),
+});
+
 const validateRegisterUser = (req, res, next) => {
   const { error } = userSchema.validate(req.body);
   if (error) {
@@ -165,6 +176,28 @@ const validateUpdateUser = (req, res, next) => {
   }
 };
 
+const validateForgotPassword = (req, res, next) => {
+  const { error } = forgotPasswordSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    res.status(404);
+    throw new Error(msg);
+  } else {
+    next();
+  }
+};
+
+const validateResetPassword = (req, res, next) => {
+  const { error } = resetPasswordSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    res.status(404);
+    throw new Error(msg);
+  } else {
+    next();
+  }
+};
+
 export {
   validateLog,
   validateExercise,
@@ -173,4 +206,6 @@ export {
   validatePasession,
   validateRegisterUser,
   validateUpdateUser,
+  validateForgotPassword,
+  validateResetPassword,
 };

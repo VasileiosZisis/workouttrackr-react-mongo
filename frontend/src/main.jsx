@@ -29,12 +29,14 @@ import UpdateProfile from './pages/UsersModel/UpdateProfile.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
 import ForgotPassword from './pages/UsersModel/ForgotPassword.jsx'
 import ResetPassword from './pages/UsersModel/ResetPassword.jsx'
+import NotFound from './pages/NotFound.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index path='/' element={<HomePage />} />
+      <Route path='*' element={<NotFound />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />

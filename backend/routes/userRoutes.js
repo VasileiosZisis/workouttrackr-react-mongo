@@ -13,6 +13,8 @@ import { registered } from '../middleware/loginMiddleware.js';
 import {
   validateRegisterUser,
   validateUpdateUser,
+  validateForgotPassword,
+  validateResetPassword,
 } from '../middleware/validations.js';
 
 router.route('/').post(registerUser, validateRegisterUser);
@@ -22,7 +24,7 @@ router
   .route('/profile')
   .get(registered, getUserProfile)
   .put(registered, validateUpdateUser, updateUserProfile);
-router.post('/forgot-password', forgotPassword);
-router.post('/reset-password/:token', resetPassword);
+router.post('/forgot-password', validateForgotPassword, forgotPassword);
+router.post('/reset-password/:token', validateResetPassword, resetPassword);
 
 export default router;
