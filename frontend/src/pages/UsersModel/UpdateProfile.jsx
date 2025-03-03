@@ -7,6 +7,7 @@ import { useProfileMutation } from '../../../slices/usersApiSlice'
 import { setCredentials } from '../../../slices/authSlice'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -64,51 +65,56 @@ const UpdateProfile = () => {
   }
 
   return (
-    <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
-      <div className='title-container'>
-        <h2 className='title-container__title'>Update User Profile</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
-        <label htmlFor='username' name='username'>
-          Username
-        </label>
-        <input
-          className='form__input-text'
-          type='text'
-          {...register('username')}
-        />
-        <p className='form__error-text'>{errors?.username?.message}</p>
-        <label htmlFor='email' name='email'>
-          Email
-        </label>
-        <input
-          className='form__input-text'
-          type='email'
-          {...register('email')}
-        />
-        <p className='form__error-text'>{errors?.email?.message}</p>
-        <label htmlFor='password' name='password'>
-          Password
-        </label>
-        <input
-          className='form__input-text'
-          type='password'
-          {...register('password')}
-        />
-        <p className='form__error-text'>{errors?.password?.message}</p>
-        <button
-          className='form__button-submit'
-          type='submit'
-          disabled={isLoading}
-        >
-          Update
+    <>
+      <Helmet>
+        <title>Update User Profile</title>
+      </Helmet>
+      <main className='model'>
+        <button className='model__button-goback' onClick={submitHandler}>
+          &#160;&#160;Go Back
         </button>
-        {isLoading && <Loader />}
-      </form>
-    </main>
+        <div className='title-container'>
+          <h2 className='title-container__title'>Update User Profile</h2>
+        </div>
+        <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
+          <label htmlFor='username' name='username'>
+            Username
+          </label>
+          <input
+            className='form__input-text'
+            type='text'
+            {...register('username')}
+          />
+          <p className='form__error-text'>{errors?.username?.message}</p>
+          <label htmlFor='email' name='email'>
+            Email
+          </label>
+          <input
+            className='form__input-text'
+            type='email'
+            {...register('email')}
+          />
+          <p className='form__error-text'>{errors?.email?.message}</p>
+          <label htmlFor='password' name='password'>
+            Password
+          </label>
+          <input
+            className='form__input-text'
+            type='password'
+            {...register('password')}
+          />
+          <p className='form__error-text'>{errors?.password?.message}</p>
+          <button
+            className='form__button-submit'
+            type='submit'
+            disabled={isLoading}
+          >
+            Update
+          </button>
+          {isLoading && <Loader />}
+        </form>
+      </main>
+    </>
   )
 }
 

@@ -2,17 +2,27 @@
   margin-top: 1rem;
 }
 
+.model__button-goback {
+  display: block;
+  width: fit-content;
+  color: var(--textWhite);
+  background-color: transparent;
+  font-size: 1.25rem;
+}
+
 .model__link-goBack {
   display: block;
   width: fit-content;
   color: var(--textWhite);
 }
 
-.model__link-goBack:before {
+.model__link-goBack:before,
+.model__button-goback:before {
   content: '\2190';
 }
 
-.model__link-goBack:where(:hover, :focus-visible) {
+.model__link-goBack:where(:hover, :focus-visible),
+.model__button-goback:where(:hover, :focus-visible) {
   color: var(--icterine);
 }
 
@@ -152,7 +162,6 @@
 .model__link:where(:hover, :focus-visible),
 .title-container__link:where(:hover, :focus-visible),
 .title-container__button:where(:hover, :focus-visible),
-.model__button-goback:where(:hover, :focus-visible),
 .sessions__link:where(:hover, :focus-visible) .sessions__table {
   background-color: var(--eerie-black);
   color: var(--icterine);
@@ -175,5 +184,49 @@
 
 .sessions__chart {
   width: 100%;
+  overflow-x: auto;
+}
+
+.sessions__chart-scroll {
+  width: 100%;
   height: 450px;
+}
+
+/* MOBILE */
+
+/* 800px */
+@media only screen and (max-width: 50em) {
+  .sessions__chart-scroll {
+    width: 1000px;
+  }
+}
+/* 600px */
+@media only screen and (max-width: 37.5em) {
+  .model__link-goBack,
+  .model__button-goback {
+    font-size: 0.9rem;
+  }
+  .title-container__title {
+    font-size: 1.8rem;
+  }
+  .title-container__link,
+  .title-container__button,
+  .model__select {
+    font-size: 0.6rem;
+  }
+  .model__subtitle {
+    font-size: 1.4rem;
+  }
+  .model__item,
+  .model__button {
+    font-size: 1rem;
+  }
+  .model__label,
+  .sessions__text,
+  .sessions__label {
+    font-size: 0.75rem;
+  }
+}
+/* 400px */
+@media only screen and (max-width: 25em) {
 }

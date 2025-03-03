@@ -9,6 +9,7 @@ import Pagination from '../../components/Pagination'
 import Label from '../../components/Label'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 
 const LogSlugShow = () => {
@@ -57,64 +58,69 @@ const LogSlugShow = () => {
     )
 
   return (
-    <main className='model'>
-      <Link className='model__link-goBack' to='/logs'>
-        &#160;&#160;Logs
-      </Link>
-      <div className='title-container'>
-        <h1 className='title-container__title'>{data.log.title}</h1>
-        <div className='title-container__link-container'>
-          <Link
-            className='title-container__link'
-            to={`/logs/edit/${data.log._id}`}
-          >
-            Edit
-          </Link>
+    <>
+      <Helmet>
+        <title>{data.log.title}</title>
+      </Helmet>
+      <main className='model'>
+        <Link className='model__link-goBack' to='/logs'>
+          &#160;&#160;Logs
+        </Link>
+        <div className='title-container'>
+          <h1 className='title-container__title'>{data.log.title}</h1>
+          <div className='title-container__link-container'>
+            <Link
+              className='title-container__link'
+              to={`/logs/edit/${data.log._id}`}
+            >
+              Edit
+            </Link>
+          </div>
+          <div className='title-container__button-container'>
+            <button
+              disabled={loadingDelete}
+              className='title-container__button'
+              onClick={() => deleteHandler(slugLog)}
+            >
+              Delete
+            </button>
+            {loadingDelete && <Loader />}
+          </div>
         </div>
-        <div className='title-container__button-container'>
-          <button
-            disabled={loadingDelete}
-            className='title-container__button'
-            onClick={() => deleteHandler(slugLog)}
-          >
-            Delete
-          </button>
-          {loadingDelete && <Loader />}
-        </div>
-      </div>
-      <h2 className='model__subtitle'>Exercises</h2>
-      <div className='model__contents'>
-        <Label limit={limit} handleLimitChange={handleLimitChange} />
-        <ul className='model__list'>
-          <li className='model__item'>
-            {data.logAggregate.length > 0 &&
-              data.logAggregate.map(item => (
-                <ProtectedRoute
-                  key={item.exercises._id}
-                  condition={userInfo._id === data.log.author}
-                >
-                  <Link
-                    className='model__link'
-                    to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
+        <h2 className='model__subtitle'>Exercises</h2>
+        <div className='model__contents'>
+          <Label limit={limit} handleLimitChange={handleLimitChange} />
+          <ul className='model__list'>
+            <li className='model__item'>
+              {data.logAggregate.length > 0 &&
+                data.logAggregate.map(item => (
+                  <ProtectedRoute
+                    key={item.exercises._id}
+                    condition={userInfo._id === data.log.author}
                   >
-                    {item.exercises.title}
-                  </Link>
-                </ProtectedRoute>
-              ))}
-          </li>
-        </ul>
-      </div>
-      <Pagination
-        totalPages={data.pagination.totalPages}
-        initialPage={page || 1}
-      />
-      <Link
-        className='model__button'
-        to={`/logs/${slugLog}/create-new-exercise`}
-      >
-        Create new
-      </Link>
-    </main>
+                    <Link
+                      className='model__link'
+                      to={`/logs/${slugLog}/${item.exercises.slugExercise}`}
+                    >
+                      {item.exercises.title}
+                    </Link>
+                  </ProtectedRoute>
+                ))}
+            </li>
+          </ul>
+        </div>
+        <Pagination
+          totalPages={data.pagination.totalPages}
+          initialPage={page || 1}
+        />
+        <Link
+          className='model__button'
+          to={`/logs/${slugLog}/create-new-exercise`}
+        >
+          Create new
+        </Link>
+      </main>
+    </>
   )
 }
 

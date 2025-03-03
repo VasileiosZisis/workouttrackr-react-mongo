@@ -5,6 +5,7 @@ import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
 import { useForgotPasswordMutation } from '../../../slices/usersApiSlice'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -45,34 +46,39 @@ const ForgotPassword = () => {
   }
 
   return (
-    <main className='model'>
-      <button className='model__button-goback' onClick={submitHandler}>
-        Go Back
-      </button>
-      <div className='title-container'>
-        <h2 className='title-container__title'>Forgot Password</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='email' name='email'>
-          Email
-        </label>
-        <input
-          className='form__input-text'
-          type='email'
-          placeholder='Enter your email'
-          {...register('email')}
-        />
-        <p className='form__error-text'>{errors?.email?.message}</p>
-        <button
-          className='form__button-submit'
-          type='submit'
-          disabled={isLoading}
-        >
-          Submit
+    <>
+      <Helmet>
+        <title>Forgot Password</title>
+      </Helmet>
+      <main className='model'>
+        <button className='model__button-goback' onClick={submitHandler}>
+          Go Back
         </button>
-        {isLoading && <Loader />}
-      </form>
-    </main>
+        <div className='title-container'>
+          <h2 className='title-container__title'>Forgot Password</h2>
+        </div>
+        <form className='form' onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor='email' name='email'>
+            Email
+          </label>
+          <input
+            className='form__input-text'
+            type='email'
+            placeholder='Enter your email'
+            {...register('email')}
+          />
+          <p className='form__error-text'>{errors?.email?.message}</p>
+          <button
+            className='form__button-submit'
+            type='submit'
+            disabled={isLoading}
+          >
+            Submit
+          </button>
+          {isLoading && <Loader />}
+        </form>
+      </main>
+    </>
   )
 }
 

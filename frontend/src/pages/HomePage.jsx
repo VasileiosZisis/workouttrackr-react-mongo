@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet-async'
 import './HomePage.css'
 
 const HomePage = () => {
@@ -16,88 +17,104 @@ const HomePage = () => {
   }, [userInfo])
 
   return (
-    <main className='homepage-main'>
-      <div className='hero-section'>
-        <img
-          className='hero-section__img'
-          src='https://res.cloudinary.com/dmdbza74n/image/upload/v1681755285/training%20app/victor-freitas-vjkM-0m34KU-unsplash_cjlnkj.webp'
+    <>
+      <Helmet>
+        <meta
+          name='description'
+          content='Workout tracker is a web app where you can log your training and track your progress.'
         />
-        <div className='hero-section__title-container'>
-          <h1 className='hero-section__title'>
-            <span className='hero-section__title--big'>Log </span>your training
-            <br />
-            <span className='hero-section__title--big'>Track </span>
-            your progress
-          </h1>
-          <Link className='hero-section__button' to='/register'>
-            Register
-          </Link>
-        </div>
-      </div>
-      <div className='logs-section'>
-        <div>
-          <h2 className='logs-section__title'>Start Logging</h2>
-          <p className='logs-section__subtitle'>Your training plan.</p>
-          <p className='logs-section__subtitle'>A new goal.</p>
-        </div>
-        <div>
+        <meta
+          property='og:description'
+          content='Workout tracker is a web app where you can log your training and track your progress.'
+        />
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content='https://www.workouttrackr.com/' />
+        <meta
+          property='og:image'
+          content='https://res.cloudinary.com/dmdbza74n/image/upload/v1690481966/training%20app/workouttrackr-h_rbls2r.png'
+        />
+        <meta property='og:image:type' content='image/png' />
+        <meta property='og:image:width' content='900' />
+        <meta property='og:image:height' content='365' />
+        <title>Workout Tracker | workouttrackr</title>
+      </Helmet>
+      <main className='homepage'>
+        <div className='hero'>
           <img
-            className='logs-section__img'
-            src='https://res.cloudinary.com/dmdbza74n/image/upload/v1681755281/training%20app/logs_ah9o6f.webp'
+            className='hero__img'
+            src='https://res.cloudinary.com/dmdbza74n/image/upload/v1681755285/training%20app/victor-freitas-vjkM-0m34KU-unsplash_cjlnkj.webp'
           />
-        </div>
-      </div>
-      <div className='exercises-section'>
-        <div>
-          <img
-            className='exercises-section__img'
-            src='https://res.cloudinary.com/dmdbza74n/image/upload/v1681755282/training%20app/exercises_j9o1sv.webp'
-          />
-        </div>
-        <div>
-          <h2 className='exercises-section__title'>Name your exercises</h2>
-          <p className='exercises-section__subtitle'>No premade lists.</p>
-          <p className='exercises-section__subtitle'>Set your custom labels.</p>
-        </div>
-      </div>
-      <div className='sessions-section'>
-        <div className='sessions-section__img-container--left'>
-          <img
-            className='sessions-section__img'
-            src='https://res.cloudinary.com/dmdbza74n/image/upload/v1681755282/training%20app/session_s2h5xi.webp'
-          />
-        </div>
-        <div>
-          <h2 className='h2-home-black'>Track your progress</h2>
-          <p className='p-home-black'>Add your sessions.</p>
-          <p className='p-home-black'>Visualize your progress.</p>
-        </div>
-        <div className='sessions-section__img-container--right'>
-          <img
-            className='sessions-section__img'
-            src='https://res.cloudinary.com/dmdbza74n/image/upload/v1681755282/training%20app/sessions_cwjmun.webp'
-          />
-        </div>
-      </div>
-      <div className='bottom-section'>
-        <div className='bottom-section__text-container'>
-          <p className='bottom-section__text'>
-            The project is still in the early stages, and new features and
-            metrics will be added over time.
-          </p>
-        </div>
-        {/* <div className='bottom-section__contact-container'>
-          <div>
-            <h2 className='bottom-section__title'>Request a feature</h2>
-          </div>
-          <div>
-            <Link className='bottom-section__button' to='/contact'>
-              Contact
+          <div className='hero__title-container'>
+            <h1 className='hero__title'>
+              <span className='hero__title'>Log </span>your training
+              <br />
+              <span className='hero__title'>Track </span>
+              your progress
+            </h1>
+            <Link className='hero__button' to='/register'>
+              Register
             </Link>
           </div>
-        </div> */}
-      </div>
-    </main>
+        </div>
+        <div className='hLogs'>
+          <div className='hLogs-left'>
+            <h2 className='hLogs'>Start Logging</h2>
+            <p className='hLogs'>Your training plan.</p>
+            <p className='hLogs'>A new goal.</p>
+          </div>
+          <div className='hLogs-right'>
+            <img
+              className='hLogs'
+              src='https://res.cloudinary.com/dmdbza74n/image/upload/v1740923832/training%20app/logsv2_xoiyfv.webp'
+            />
+          </div>
+        </div>
+        <div className='hExercises'>
+          <div>
+            <img
+              className='hExercises'
+              src='https://res.cloudinary.com/dmdbza74n/image/upload/v1740923970/training%20app/exercisesv2_hkgttw.webp'
+            />
+          </div>
+          <div>
+            <h2 className='hExercises'>Name your exercises</h2>
+            <p className='hExercises'>No premade lists.</p>
+            <p className='hExercises'>Set your custom labels.</p>
+          </div>
+        </div>
+        <div className='hSessions'>
+          <div className='hSessions__img-container-left'>
+            <img
+              className='hSessions__img'
+              src='https://res.cloudinary.com/dmdbza74n/image/upload/v1740924881/training%20app/sessionv2_xnogxa.webp'
+            />
+          </div>
+          <div>
+            <h2 className='hSessions__title'>Track your progress</h2>
+            <p className='hSessions__subtitle'>Add your hSessions.</p>
+            <p className='hSessions__subtitle'>Visualize your progress.</p>
+          </div>
+          <div className='hSessions__img-container-right'>
+            <img
+              className='hSessions__img'
+              src='https://res.cloudinary.com/dmdbza74n/image/upload/v1740924921/training%20app/graphv2_vdqj2m.webp'
+            />
+          </div>
+        </div>
+        <footer className='footer'>
+          <p className='footer__text'>
+            Created by&#160;
+            <a
+              className='footer__link'
+              href='https://www.vasiliszisis.me/'
+              target='_blank'
+            >
+              Vasilis Zisis
+            </a>
+          </p>
+        </footer>
+      </main>
+    </>
   )
 }
 

@@ -6,6 +6,7 @@ import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -40,26 +41,31 @@ const ResetPassword = () => {
   }
 
   return (
-    <main className='model'>
-      <div className='title-container'>
-        <h2 className='title-container__title'>Create New Account</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='password' name='password'>
-          Password
-        </label>
-        <input
-          className='form__input-text'
-          type='password'
-          {...register('password')}
-        />
-        <p className='form__error-text'>{errors?.password?.message}</p>
-        <button type='submit' disabled={isLoading}>
-          Submit
-        </button>
-        {isLoading && <Loader />}
-      </form>
-    </main>
+    <>
+      <Helmet>
+        <title>Reset Password</title>
+      </Helmet>
+      <main className='model'>
+        <div className='title-container'>
+          <h2 className='title-container__title'>Reset Password</h2>
+        </div>
+        <form className='form' onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor='password' name='password'>
+            Password
+          </label>
+          <input
+            className='form__input-text'
+            type='password'
+            {...register('password')}
+          />
+          <p className='form__error-text'>{errors?.password?.message}</p>
+          <button type='submit' disabled={isLoading}>
+            Submit
+          </button>
+          {isLoading && <Loader />}
+        </form>
+      </main>
+    </>
   )
 }
 

@@ -11,6 +11,7 @@ import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -71,35 +72,40 @@ const LogsEdit = () => {
     )
 
   return (
-    <main className='model'>
-      <Link className='model__link-goBack' to={`/logs/${data.slugLog}`}>
-        &#160;&#160;{`${data.slugLog}`}
-      </Link>
-      <ProtectedRoute condition={userInfo._id === data.author}>
-        <div className='title-container'>
-          <h2 className='title-container__title'>Edit Log</h2>
-        </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='title' name='title'>
-            Title
-          </label>
-          <p className='form__error-text'>{errors?.title?.message}</p>
-          <input
-            className='form__input-text'
-            type='text'
-            {...register('title')}
-          />
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={loadingUpdate}
-          >
-            Submit
-          </button>
-          {loadingUpdate && <Loader />}
-        </form>
-      </ProtectedRoute>
-    </main>
+    <>
+      <Helmet>
+        <title>Edit Log</title>
+      </Helmet>
+      <main className='model'>
+        <Link className='model__link-goBack' to={`/logs/${data.slugLog}`}>
+          &#160;&#160;{`${data.slugLog}`}
+        </Link>
+        <ProtectedRoute condition={userInfo._id === data.author}>
+          <div className='title-container'>
+            <h2 className='title-container__title'>Edit Log</h2>
+          </div>
+          <form className='form' onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor='title' name='title'>
+              Title
+            </label>
+            <p className='form__error-text'>{errors?.title?.message}</p>
+            <input
+              className='form__input-text'
+              type='text'
+              {...register('title')}
+            />
+            <button
+              className='form__button-submit'
+              type='submit'
+              disabled={loadingUpdate}
+            >
+              Submit
+            </button>
+            {loadingUpdate && <Loader />}
+          </form>
+        </ProtectedRoute>
+      </main>
+    </>
   )
 }
 

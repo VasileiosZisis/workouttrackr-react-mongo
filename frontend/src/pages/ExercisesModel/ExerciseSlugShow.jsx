@@ -12,6 +12,7 @@ import PaSession from '../../components/PaSession'
 import Label from '../../components/Label'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {
@@ -68,79 +69,85 @@ const ExerciseSlugShow = () => {
     )
 
   return (
-    <main className='model'>
-      <Link className='model__link-goBack' to={`/logs/${slugLog}`}>
-        &#160;&#160;Exercises
-      </Link>
-      <ProtectedRoute
-        key={data.exercise._id}
-        condition={userInfo._id === data.exercise.author}
-      >
-        <div className='title-container'>
-          <h1 className='title-container__title'>{`${data.exercise.title}`}</h1>
-          <div className='title-container__link-container'>
-            <Link
-              className='title-container__link'
-              to={`/logs/${slugLog}/edit/${data.exercise._id}`}
-            >
-              Edit
-            </Link>
+    <>
+      <Helmet>
+        <title>{data.exercise.title}</title>
+      </Helmet>
+      <main className='model'>
+        <Link className='model__link-goBack' to={`/logs/${slugLog}`}>
+          &#160;&#160;Exercises
+        </Link>
+        <ProtectedRoute
+          key={data.exercise._id}
+          condition={userInfo._id === data.exercise.author}
+        >
+          <div className='title-container'>
+            <h1 className='title-container__title'>{data.exercise.title}</h1>
+            <div className='title-container__link-container'>
+              <Link
+                className='title-container__link'
+                to={`/logs/${slugLog}/edit/${data.exercise._id}`}
+              >
+                Edit
+              </Link>
+            </div>
+            <div className='title-container__button-container'>
+              <button
+                disabled={loadingDelete}
+                className='title-container__button'
+                onClick={() => deleteHandler(slugExercise)}
+              >
+                Delete
+              </button>
+              {loadingDelete && <Loader />}
+            </div>
           </div>
-          <div className='title-container__button-container'>
-            <button
-              disabled={loadingDelete}
-              className='title-container__button'
-              onClick={() => deleteHandler(slugExercise)}
-            >
-              Delete
-            </button>
-            {loadingDelete && <Loader />}
-          </div>
-        </div>
-        <h2 className='model__subtitle'>Sessions</h2>
-        {data.exercise.session === 'wlsession' ? (
-          <div className='sessions'>
-            <Label limit={limit} handleLimitChange={handleLimitChange} />
-            <WlSession
-              data={data}
-              slugLog={slugLog}
-              slugExercise={slugExercise}
-            />
-            <Pagination
-              totalPages={data.pagination.totalWlPages}
-              initialPage={page || 1}
-            />
-            <Link
-              className='model__button'
-              to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
-            >
-              Create New
-            </Link>
-          </div>
-        ) : data.exercise.session === 'pasession' ? (
-          <div className='sessions'>
-            <Label limit={limit} handleLimitChange={handleLimitChange} />
-            <PaSession
-              data={data}
-              slugLog={slugLog}
-              slugExercise={slugExercise}
-            />
-            <Pagination
-              totalPages={data.pagination.totalPaPages}
-              initialPage={page || 1}
-            />
-            <Link
-              className='model__button'
-              to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
-            >
-              Create New
-            </Link>
-          </div>
-        ) : (
-          <h1>NOTHING FOUND</h1>
-        )}
-      </ProtectedRoute>
-    </main>
+          <h2 className='model__subtitle'>Sessions</h2>
+          {data.exercise.session === 'wlsession' ? (
+            <div className='sessions'>
+              <Label limit={limit} handleLimitChange={handleLimitChange} />
+              <WlSession
+                data={data}
+                slugLog={slugLog}
+                slugExercise={slugExercise}
+              />
+              <Pagination
+                totalPages={data.pagination.totalWlPages}
+                initialPage={page || 1}
+              />
+              <Link
+                className='model__button'
+                to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
+              >
+                Create New
+              </Link>
+            </div>
+          ) : (
+            data.exercise.session ===
+            'pasession'(
+              <div className='sessions'>
+                <Label limit={limit} handleLimitChange={handleLimitChange} />
+                <PaSession
+                  data={data}
+                  slugLog={slugLog}
+                  slugExercise={slugExercise}
+                />
+                <Pagination
+                  totalPages={data.pagination.totalPaPages}
+                  initialPage={page || 1}
+                />
+                <Link
+                  className='model__button'
+                  to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
+                >
+                  Create New
+                </Link>
+              </div>
+            )
+          )}
+        </ProtectedRoute>
+      </main>
+    </>
   )
 }
 

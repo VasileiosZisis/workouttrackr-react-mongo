@@ -7,6 +7,7 @@ import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -103,80 +104,85 @@ const PasessionCreate = () => {
     )
 
   return (
-    <main className='model'>
-      <Link
-        className='model__link-goBack'
-        to={`/logs/${slugLog}/${slugExercise}`}
-      >
-        &#160;&#160;Sessions
-      </Link>
-      <div className='title-container'>
-        <h2 className='title-container__title'>New Session</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='createdDate' name='createdDate'>
-          Date
-        </label>
-        <input
-          className='form__input-date'
-          type='date'
-          {...register('createdDate')}
-        />
-        <p className='form__error-text'>{errors.createdDate?.message}</p>
-        <div className='form__item-pair'>
-          <label htmlFor='hours' name='hours'>
-            Hours
-          </label>
-          <input
-            step={0.1}
-            className='form__input-number'
-            type='number'
-            {...register('time.hours')}
-          />
-          <p className='form__error-text'>{errors?.time?.hours?.message}</p>
-          <label htmlFor='minutes' name='minutes'>
-            Minutes
-          </label>
-          <input
-            step={0.1}
-            className='form__input-number'
-            type='number'
-            {...register('time.minutes')}
-          />
-          <p className='form__error-text'>{errors?.time?.minutes?.message}</p>
-          <label htmlFor='seconds' name='seconds'>
-            Seconds
-          </label>
-          <input
-            step={0.1}
-            className='form__input-number'
-            type='number'
-            {...register('time.seconds')}
-          />
-          <p className='form__error-text'>{errors?.time?.seconds?.message}</p>
-        </div>
-        <div className='form__item-pair'>
-          <label htmlFor='distance' name='distance'>
-            Distance
-          </label>
-          <input
-            step={0.1}
-            className='form__input-number'
-            type='number'
-            {...register('distance')}
-          />
-          <p className='form__error-text'>{errors?.distance?.message}</p>
-        </div>
-        <button
-          className='form__button-submit'
-          type='submit'
-          disabled={isLoading}
+    <>
+      <Helmet>
+        <title>Create New Session</title>
+      </Helmet>
+      <main className='model'>
+        <Link
+          className='model__link-goBack'
+          to={`/logs/${slugLog}/${slugExercise}`}
         >
-          Submit
-        </button>
-        {isLoading && <Loader />}
-      </form>
-    </main>
+          &#160;&#160;Sessions
+        </Link>
+        <div className='title-container'>
+          <h2 className='title-container__title'>New Session</h2>
+        </div>
+        <form className='form' onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor='createdDate' name='createdDate'>
+            Date
+          </label>
+          <input
+            className='form__input-date'
+            type='date'
+            {...register('createdDate')}
+          />
+          <p className='form__error-text'>{errors.createdDate?.message}</p>
+          <div className='form__item-pair'>
+            <label htmlFor='hours' name='hours'>
+              Hours
+            </label>
+            <input
+              step={0.1}
+              className='form__input-number'
+              type='number'
+              {...register('time.hours')}
+            />
+            <p className='form__error-text'>{errors?.time?.hours?.message}</p>
+            <label htmlFor='minutes' name='minutes'>
+              Minutes
+            </label>
+            <input
+              step={0.1}
+              className='form__input-number'
+              type='number'
+              {...register('time.minutes')}
+            />
+            <p className='form__error-text'>{errors?.time?.minutes?.message}</p>
+            <label htmlFor='seconds' name='seconds'>
+              Seconds
+            </label>
+            <input
+              step={0.1}
+              className='form__input-number'
+              type='number'
+              {...register('time.seconds')}
+            />
+            <p className='form__error-text'>{errors?.time?.seconds?.message}</p>
+          </div>
+          <div className='form__item-pair'>
+            <label htmlFor='distance' name='distance'>
+              Distance
+            </label>
+            <input
+              step={0.1}
+              className='form__input-number'
+              type='number'
+              {...register('distance')}
+            />
+            <p className='form__error-text'>{errors?.distance?.message}</p>
+          </div>
+          <button
+            className='form__button-submit'
+            type='submit'
+            disabled={isLoading}
+          >
+            Submit
+          </button>
+          {isLoading && <Loader />}
+        </form>
+      </main>
+    </>
   )
 }
 

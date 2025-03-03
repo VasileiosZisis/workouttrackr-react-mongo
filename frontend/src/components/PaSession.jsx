@@ -38,20 +38,31 @@ const PaSession = ({ data, slugLog, slugExercise }) => {
   }
 
   const options = {
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
         position: 'top',
         labels: {
           color: '#f2f2f2',
-          font: { family: 'Roboto, sans-serif', size: '16px' }
+          font: () => {
+            return {
+              family: 'Roboto, sans-serif',
+              size: window.innerWidth < 800 ? '12px' : '16px'
+            }
+          }
         }
       },
       title: {
         display: true,
         text: 'Pace & Speed Over Time',
         color: '#f2f2f2',
-        font: { family: 'Roboto, sans-serif', size: '32px' }
+        font: () => {
+          return {
+            family: 'Roboto, sans-serif',
+            size: window.innerWidth < 800 ? '28px' : '32px'
+          }
+        }
       }
     },
     scales: {
@@ -60,11 +71,21 @@ const PaSession = ({ data, slugLog, slugExercise }) => {
           display: true,
           text: 'Date',
           color: '#f2f2f2',
-          font: { family: 'Roboto, sans-serif', size: '20px' }
+          font: () => {
+            return {
+              family: 'Roboto, sans-serif',
+              size: window.innerWidth < 800 ? '16px' : '20px'
+            }
+          }
         },
         ticks: {
           color: '#f2f2f2',
-          font: { family: 'Roboto, sans-serif', size: '16px' }
+          font: () => {
+            return {
+              family: 'Roboto, sans-serif',
+              size: window.innerWidth < 800 ? '12px' : '16px'
+            }
+          }
         }
       },
       y: {
@@ -72,11 +93,21 @@ const PaSession = ({ data, slugLog, slugExercise }) => {
           display: true,
           text: 'Metrics',
           color: '#f2f2f2',
-          font: { family: 'Roboto, sans-serif', size: '20px' }
+          font: () => {
+            return {
+              family: 'Roboto, sans-serif',
+              size: window.innerWidth < 800 ? '16px' : '20px'
+            }
+          }
         },
         ticks: {
           color: '#f2f2f2',
-          font: { family: 'Roboto, sans-serif', size: '16px' }
+          font: () => {
+            return {
+              family: 'Roboto, sans-serif',
+              size: window.innerWidth < 800 ? '12px' : '16px'
+            }
+          }
         }
       }
     }
@@ -168,7 +199,9 @@ const PaSession = ({ data, slugLog, slugExercise }) => {
         </label>
       </div>
       <div className='sessions__chart'>
-        <Bar data={chartData} options={options} />
+        <div className='sessions__chart-scroll'>
+          <Bar data={chartData} options={options} />
+        </div>
       </div>
     </>
   )

@@ -8,6 +8,7 @@ import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -56,51 +57,56 @@ const Register = () => {
   }
 
   return (
-    <main className='model'>
-      <Link className='model__link-goback' to={'/'}>
-        &#160;&#160;Home
-      </Link>
-      <div className='title-container'>
-        <h2 className='title-container__title'>Create New Account</h2>
-      </div>
-      <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
-        <label htmlFor='username' name='username'>
-          Username
-        </label>
-        <input
-          className='form__input-text'
-          type='text'
-          {...regForm('username')}
-        />
-        <p className='form__error-text'>{errors?.username?.message}</p>
-        <label htmlFor='email' name='email'>
-          Email
-        </label>
-        <input
-          className='form__input-text'
-          type='email'
-          {...regForm('email')}
-        />
-        <p className='form__error-text'>{errors?.email?.message}</p>
-        <label htmlFor='password' name='password'>
-          Password
-        </label>
-        <input
-          className='form__input-text'
-          type='password'
-          {...regForm('password')}
-        />
-        <p className='form__error-text'>{errors?.password?.message}</p>
-        <button
-          className='form__button-submit'
-          type='submit'
-          disabled={isLoading}
-        >
-          Submit
-        </button>
-        {isLoading && <Loader />}
-      </form>
-    </main>
+    <>
+      <Helmet>
+        <title>Create New Account</title>
+      </Helmet>
+      <main className='model'>
+        <Link className='model__link-goBack' to={'/'}>
+          &#160;&#160;Home
+        </Link>
+        <div className='title-container'>
+          <h2 className='title-container__title'>Create New Account</h2>
+        </div>
+        <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
+          <label htmlFor='username' name='username'>
+            Username
+          </label>
+          <input
+            className='form__input-text'
+            type='text'
+            {...regForm('username')}
+          />
+          <p className='form__error-text'>{errors?.username?.message}</p>
+          <label htmlFor='email' name='email'>
+            Email
+          </label>
+          <input
+            className='form__input-text'
+            type='email'
+            {...regForm('email')}
+          />
+          <p className='form__error-text'>{errors?.email?.message}</p>
+          <label htmlFor='password' name='password'>
+            Password
+          </label>
+          <input
+            className='form__input-text'
+            type='password'
+            {...regForm('password')}
+          />
+          <p className='form__error-text'>{errors?.password?.message}</p>
+          <button
+            className='form__button-submit'
+            type='submit'
+            disabled={isLoading}
+          >
+            Submit
+          </button>
+          {isLoading && <Loader />}
+        </form>
+      </main>
+    </>
   )
 }
 

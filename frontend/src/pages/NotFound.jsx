@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import './NotFound.css'
 
 const NotFound = () => {
@@ -7,16 +8,21 @@ const NotFound = () => {
   }
 
   return (
-    <main className='error'>
-      <div>
-        <h1 className='error__title'>This page does not exist</h1>
-      </div>
-      <div>
-        <button className='error__button' onClick={goBack}>
-          Go Back
-        </button>
-      </div>
-    </main>
+    <>
+      <Helmet>
+        <title>Error Page</title>
+      </Helmet>
+      <main className='error'>
+        <div>
+          <h1 className='error__title'>This page does not exist</h1>
+        </div>
+        <div>
+          <button className='error__button' onClick={goBack}>
+            Go Back
+          </button>
+        </div>
+      </main>
+    </>
   )
 }
 export default NotFound

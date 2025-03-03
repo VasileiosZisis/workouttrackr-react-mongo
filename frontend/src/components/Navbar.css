@@ -4,7 +4,7 @@
   flex-direction: row;
   justify-content: space-between;
   background-color: var(--eerie-black);
-  min-height: 2.8rem;
+  min-height: 2.5rem;
   font-size: 1.1rem;
 }
 
@@ -17,6 +17,7 @@
 
 .navbar__link,
 .navbar__button {
+  border-bottom: 1px solid transparent;
   height: 100%;
   display: grid;
   place-items: center;
@@ -29,14 +30,14 @@
   background-color: var(--eerie-black);
 }
 
-.navbar__item:where(:hover, :focus-visible),
+.navbar__link:where(:hover, :focus-visible),
 .navbar__button:where(:hover, :focus-visible) {
-  background-color: var(--jet);
+  border-bottom: 1px solid var(--icterine);
   color: var(--icterine);
 }
 
 .navbar__link.active {
-  background-color: var(--jet);
+  border-bottom: 1px solid var(--icterine);
   color: var(--icterine);
 }
 
@@ -55,7 +56,10 @@
   .navbar {
     justify-content: center;
   }
-
+  .navbar__list {
+    display: flex;
+    padding-inline: 0rem;
+  }
   .navbar__link,
   .navbar__button {
     font-size: 1rem;
