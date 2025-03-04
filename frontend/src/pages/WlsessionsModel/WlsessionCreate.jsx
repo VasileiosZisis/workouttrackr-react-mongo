@@ -100,7 +100,7 @@ const WlsessionCreate = () => {
   return (
     <>
       <Helmet>
-        <title>Create New Session</title>
+        <title>New Session</title>
       </Helmet>
       <main className='model'>
         <Link

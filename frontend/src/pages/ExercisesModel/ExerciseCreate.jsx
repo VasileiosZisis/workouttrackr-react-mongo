@@ -76,7 +76,7 @@ const ExerciseCreate = () => {
   return (
     <>
       <Helmet>
-        <title>Create New Exercise</title>
+        <title>New Exercise</title>
       </Helmet>
       <main className='model'>
         <Link className='model__link-goBack' to={`/logs/${slugLog}`}>

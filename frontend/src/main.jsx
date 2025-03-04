@@ -30,6 +30,7 @@ import PrivateRoute from './components/PrivateRoute.jsx'
 import ForgotPassword from './pages/UsersModel/ForgotPassword.jsx'
 import ResetPassword from './pages/UsersModel/ResetPassword.jsx'
 import NotFound from './pages/NotFound.jsx'
+import Contact from './pages/Contact.jsx'
 import './index.css'
 
 const router = createBrowserRouter(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
     <Route path='/' element={<App />}>
       <Route index path='/' element={<HomePage />} />
       <Route path='*' element={<NotFound />} />
+      <Route path='/contact' element={<Contact />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />

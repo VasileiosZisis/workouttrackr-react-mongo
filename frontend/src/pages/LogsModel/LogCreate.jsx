@@ -50,7 +50,7 @@ const LogCreate = () => {
   return (
     <>
       <Helmet>
-        <title>Create New Log</title>
+        <title>New Log</title>
       </Helmet>
       <main className='model'>
         <Link className='model__link-goBack' to='/logs'>
