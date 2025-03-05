@@ -21,6 +21,7 @@ const PasessionCreate = () => {
   const { slugLog, slugExercise } = useParams()
 
   const {
+    data: exerciseData,
     isLoading: getExerciseLoading,
     error: exerciseError,
     refetch
@@ -115,72 +116,139 @@ const PasessionCreate = () => {
         >
           &#160;&#160;Sessions
         </Link>
-        <div className='title-container'>
-          <h2 className='title-container__title'>New Session</h2>
+        <div className='model__grid'>
+          <div className='model__left-side'>
+            <div className='title-container'>
+              <h2 className='title-container__title'>Previous Session</h2>
+            </div>
+            {exerciseData.latestPasession.length > 0 && (
+              <table className='sessions__table'>
+                <tbody>
+                  <tr>
+                    <td colSpan='1' scope='col'>
+                      Pace
+                    </td>
+                    <th colSpan='3' scope='col'>
+                      {exerciseData.latestPasession[0].pasessions.paceMinutes}:
+                      {exerciseData.latestPasession[0].pasessions.paceSeconds
+                        .toString()
+                        .padStart(2, '0')}
+                      <span className='sessions__span'> min:sec</span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td colSpan='1' scope='col'>
+                      Speed
+                    </td>
+                    <th colSpan='3' scope='col'>
+                      {exerciseData.latestPasession[0].pasessions.speed.toFixed(
+                        3
+                      )}
+                      <span className='sessions__span'> km/min</span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <td>Hours</td>
+                    <td>Minutes</td>
+                    <td>Seconds</td>
+                    <td>Distance</td>
+                  </tr>
+                  <tr>
+                    <th>
+                      {exerciseData.latestPasession[0].pasessions.time.hours}
+                    </th>
+                    <th>
+                      {exerciseData.latestPasession[0].pasessions.time.minutes}
+                    </th>
+                    <th>
+                      {exerciseData.latestPasession[0].pasessions.time.seconds}
+                    </th>
+                    <th>
+                      {exerciseData.latestPasession[0].pasessions.distance}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            )}
+          </div>
+          <div className='model__right-side'>
+            <div className='title-container'>
+              <h2 className='title-container__title'>New Session</h2>
+            </div>
+            <form className='form' onSubmit={handleSubmit(onSubmit)}>
+              <label htmlFor='createdDate' name='createdDate'>
+                Date
+              </label>
+              <input
+                className='form__input-date'
+                type='date'
+                {...register('createdDate')}
+              />
+              <p className='form__error-text'>{errors.createdDate?.message}</p>
+              <div className='form__item-pair'>
+                <label htmlFor='hours' name='hours'>
+                  Hours
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('time.hours')}
+                />
+                <p className='form__error-text'>
+                  {errors?.time?.hours?.message}
+                </p>
+                <label htmlFor='minutes' name='minutes'>
+                  Minutes
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('time.minutes')}
+                />
+                <p className='form__error-text'>
+                  {errors?.time?.minutes?.message}
+                </p>
+                <label htmlFor='seconds' name='seconds'>
+                  Seconds
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('time.seconds')}
+                />
+                <p className='form__error-text'>
+                  {errors?.time?.seconds?.message}
+                </p>
+              </div>
+              <div className='form__item-pair'>
+                <label htmlFor='distance' name='distance'>
+                  Distance
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('distance')}
+                />
+                <p className='form__error-text'>{errors?.distance?.message}</p>
+              </div>
+              <button
+                className='form__button-submit'
+                type='submit'
+                disabled={isLoading}
+              >
+                Submit
+              </button>
+              {isLoading && <Loader />}
+            </form>
+          </div>
         </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='createdDate' name='createdDate'>
-            Date
-          </label>
-          <input
-            className='form__input-date'
-            type='date'
-            {...register('createdDate')}
-          />
-          <p className='form__error-text'>{errors.createdDate?.message}</p>
-          <div className='form__item-pair'>
-            <label htmlFor='hours' name='hours'>
-              Hours
-            </label>
-            <input
-              step={0.1}
-              className='form__input-number'
-              type='number'
-              {...register('time.hours')}
-            />
-            <p className='form__error-text'>{errors?.time?.hours?.message}</p>
-            <label htmlFor='minutes' name='minutes'>
-              Minutes
-            </label>
-            <input
-              step={0.1}
-              className='form__input-number'
-              type='number'
-              {...register('time.minutes')}
-            />
-            <p className='form__error-text'>{errors?.time?.minutes?.message}</p>
-            <label htmlFor='seconds' name='seconds'>
-              Seconds
-            </label>
-            <input
-              step={0.1}
-              className='form__input-number'
-              type='number'
-              {...register('time.seconds')}
-            />
-            <p className='form__error-text'>{errors?.time?.seconds?.message}</p>
-          </div>
-          <div className='form__item-pair'>
-            <label htmlFor='distance' name='distance'>
-              Distance
-            </label>
-            <input
-              step={0.1}
-              className='form__input-number'
-              type='number'
-              {...register('distance')}
-            />
-            <p className='form__error-text'>{errors?.distance?.message}</p>
-          </div>
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={isLoading}
-          >
-            Submit
-          </button>
-          {isLoading && <Loader />}
-        </form>
       </main>
     </>
   )

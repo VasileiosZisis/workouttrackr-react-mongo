@@ -123,8 +123,7 @@ const ExerciseSlugShow = () => {
               </Link>
             </div>
           ) : (
-            data.exercise.session ===
-            'pasession'(
+            data.exercise.session === 'pasession' && (
               <div className='sessions'>
                 <Label limit={limit} handleLimitChange={handleLimitChange} />
                 <PaSession

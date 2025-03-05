@@ -21,6 +21,7 @@ const WlsessionCreate = () => {
   const { slugLog, slugExercise } = useParams()
 
   const {
+    data: exerciseData,
     isLoading: getExerciseLoading,
     error: exerciseError,
     refetch
@@ -109,94 +110,148 @@ const WlsessionCreate = () => {
         >
           &#160;&#160;Sessions
         </Link>
-        <div className='title-container'>
-          <h2 className='title-container__title'>New Session</h2>
-        </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='createdDate' name='createdDate'>
-            Date
-          </label>
-          <p className='form__error-text'>{errors?.createdDate?.message}</p>
-          <input
-            className='form__input-date'
-            type='date'
-            {...register('createdDate')}
-          />
-          <ul>
-            {fields.map((item, index) => {
-              return (
-                <li className='form__item' key={item.id}>
-                  <h4>Set {index + 1}</h4>
-                  <div className='form__item-pair'>
-                    <label htmlFor='repetitions' name='repetitions'>
-                      Repetitions
-                    </label>
-                    <input
-                      step={0.1}
-                      ref={`set.${index}.repetitions`}
-                      className='form__input-number'
-                      type='number'
-                      {...register(`set.${index}.repetitions`)}
-                    />
-                    <p className='form__error-text'>
-                      {errors?.set?.[index].repetitions?.message}
-                    </p>
-                  </div>
-                  <div className='form__item-pair'>
-                    <label htmlFor='kilograms' name='kilograms'>
-                      Kilograms
-                    </label>
-                    <input
-                      step={0.1}
-                      className='form__input-number'
-                      type='number'
-                      {...register(`set.${index}.kilograms`)}
-                    />
-                    <p className='form__error-text'>
-                      {errors?.set?.[index].kilograms?.message}
-                    </p>
-                  </div>
-                  <div className='form__item-pair'>
-                    <label htmlFor='isHard' name='isHard'>
-                      Hard
-                    </label>
-                    <input
-                      className='form__input-checkbox'
-                      type='checkbox'
-                      {...register(`set.${index}.isHard`)}
-                    />
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
-          <div className='form__button-container'>
-            <button
-              className='form__button-delSet'
-              type='button'
-              onClick={() => remove(1)}
-            >
-              Delete
-            </button>
-            <button
-              className='form__button-add'
-              type='button'
-              onClick={() => {
-                append({ repetitions: 0, kilograms: 0 })
-              }}
-            >
-              Add Set
-            </button>
+        <div className='model__grid'>
+          <div className='model__left-side'>
+            <div className='title-container'>
+              <h2 className='title-container__title'>Previous Session</h2>
+            </div>
+            {exerciseData.latestPasession.length > 0 && (
+              <table className='sessions__table'>
+                <tbody>
+                  <tr>
+                    <td colSpan='3'>Total Volume</td>
+                    <th colSpan='2'>
+                      {exerciseData.latestWlsession[0].wlsessions.totalVolume}
+                    </th>
+                  </tr>
+                  <tr>
+                    <td colSpan='3'>Junk Volume</td>
+                    <th colSpan='2'>
+                      {exerciseData.latestWlsession[0].wlsessions.junkVolume}
+                    </th>
+                  </tr>
+                  <tr>
+                    <td colSpan='3'>Work Volume</td>
+                    <th colSpan='2'>
+                      {exerciseData.latestWlsession[0].wlsessions.workingVolume}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <td>Set</td>
+                    <td>Reps</td>
+                    <td>KGs</td>
+                    <td>Hard</td>
+                    <td>Volume</td>
+                  </tr>
+                  {exerciseData.latestWlsession[0].wlsessions.set.map(
+                    (set, index) => (
+                      <tr key={set._id}>
+                        <td>{index + 1}</td>
+                        <td>{set.repetitions}</td>
+                        <td>{set.kilograms}</td>
+                        <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
+                        <td>{set.volume}</td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={isLoading}
-          >
-            Submit
-          </button>
-          {isLoading && <Loader />}
-        </form>
+          <div className='model__right-side'>
+            <div className='title-container'>
+              <h2 className='title-container__title'>New Session</h2>
+            </div>
+            <form className='form' onSubmit={handleSubmit(onSubmit)}>
+              <label htmlFor='createdDate' name='createdDate'>
+                Date
+              </label>
+              <p className='form__error-text'>{errors?.createdDate?.message}</p>
+              <input
+                className='form__input-date'
+                type='date'
+                {...register('createdDate')}
+              />
+              <ul>
+                {fields.map((item, index) => {
+                  return (
+                    <li className='form__item' key={item.id}>
+                      <h4>Set {index + 1}</h4>
+                      <div className='form__item-pair'>
+                        <label htmlFor='repetitions' name='repetitions'>
+                          Repetitions
+                        </label>
+                        <input
+                          step={0.1}
+                          ref={`set.${index}.repetitions`}
+                          className='form__input-number'
+                          type='number'
+                          {...register(`set.${index}.repetitions`)}
+                        />
+                        <p className='form__error-text'>
+                          {errors?.set?.[index].repetitions?.message}
+                        </p>
+                      </div>
+                      <div className='form__item-pair'>
+                        <label htmlFor='kilograms' name='kilograms'>
+                          Kilograms
+                        </label>
+                        <input
+                          step={0.1}
+                          className='form__input-number'
+                          type='number'
+                          {...register(`set.${index}.kilograms`)}
+                        />
+                        <p className='form__error-text'>
+                          {errors?.set?.[index].kilograms?.message}
+                        </p>
+                      </div>
+                      <div className='form__item-pair'>
+                        <label htmlFor='isHard' name='isHard'>
+                          Hard
+                        </label>
+                        <input
+                          className='form__input-checkbox'
+                          type='checkbox'
+                          {...register(`set.${index}.isHard`)}
+                        />
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+              <div className='form__button-container'>
+                <button
+                  className='form__button-delSet'
+                  type='button'
+                  onClick={() => remove(1)}
+                >
+                  Delete
+                </button>
+                <button
+                  className='form__button-add'
+                  type='button'
+                  onClick={() => {
+                    append({ repetitions: 0, kilograms: 0 })
+                  }}
+                >
+                  Add Set
+                </button>
+              </div>
+              <button
+                className='form__button-submit'
+                type='submit'
+                disabled={isLoading}
+              >
+                Submit
+              </button>
+              {isLoading && <Loader />}
+            </form>
+          </div>
+        </div>
       </main>
     </>
   )

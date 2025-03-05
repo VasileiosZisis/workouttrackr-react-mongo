@@ -54,6 +54,27 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       },
     ]);
 
+    const latestWlsession = await Exercise.aggregate([
+      { $match: { _id: exercise._id } },
+      {
+        $lookup: {
+          from: 'wlsessions',
+          localField: '_id',
+          foreignField: 'exercise',
+          as: 'wlsessions',
+        },
+      },
+      {
+        $unwind: '$wlsessions',
+      },
+      {
+        $sort: { 'wlsessions._id': -1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
     const totalWlDocs = await Exercise.aggregate([
       { $match: { _id: exercise._id } },
       {
@@ -104,6 +125,27 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
       },
     ]);
 
+    const latestPasession = await Exercise.aggregate([
+      { $match: { _id: exercise._id } },
+      {
+        $lookup: {
+          from: 'pasessions',
+          localField: '_id',
+          foreignField: 'exercise',
+          as: 'pasessions',
+        },
+      },
+      {
+        $unwind: '$pasessions',
+      },
+      {
+        $sort: { 'pasessions._id': -1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
     const totalPaDocs = await Exercise.aggregate([
       { $match: { _id: exercise._id } },
       {
@@ -132,6 +174,8 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
 
     if (exercise) {
       return res.json({
+        latestWlsession,
+        latestPasession,
         exercise,
         exerciseAggregate,
         exerciseAggregatePa,

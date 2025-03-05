@@ -99,11 +99,12 @@ label {
 
 .form__button-submit {
   margin-block: 1rem;
+  width: fit-content;
   display: inline-block;
   font-size: 1rem;
   background-color: var(--icterine);
   color: var(--night);
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem 1.2rem;
   border-radius: 5px;
 }
 

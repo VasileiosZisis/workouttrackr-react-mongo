@@ -2,6 +2,12 @@
   margin-top: 1rem;
 }
 
+.model__grid {
+  display: grid;
+  grid-template-columns: 40% 40%;
+  grid-template-rows: 1fr;
+}
+
 .model__button-goback {
   display: block;
   width: fit-content;
@@ -199,6 +205,12 @@
   .sessions__chart-scroll {
     width: 1000px;
   }
+  .model__grid {
+    grid-template-columns: 1fr;
+  }
+  .model__right-side {
+    margin-top: 2rem;
+  }
 }
 /* 600px */
 @media only screen and (max-width: 37.5em) {
@@ -226,7 +238,4 @@
   .sessions__label {
     font-size: 0.75rem;
   }
-}
-/* 400px */
-@media only screen and (max-width: 25em) {
 }
