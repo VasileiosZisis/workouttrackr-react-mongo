@@ -42,34 +42,38 @@ const LogsShow = () => {
         <title>Logs</title>
       </Helmet>
       <main className='model'>
-        <div className='title-container'>
-          <h1 className='title-container__title'>Logs</h1>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h1 className='title-container__title'>Logs</h1>
+          </div>
         </div>
-        <div className='model__contents'>
-          <Label limit={limit} handleLimitChange={handleLimitChange} />
-          <ul className='model__list'>
-            <li className='model__item'>
-              {data.logs.length > 0 &&
-                data.logs.map(log => (
-                  <ProtectedRoute
-                    key={log._id}
-                    condition={userInfo._id === log.author}
-                  >
-                    <Link className='model__link' to={`/logs/${log.slugLog}`}>
-                      {log.title}
-                    </Link>
-                  </ProtectedRoute>
-                ))}
-            </li>
-          </ul>
+        <div className='model__container'>
+          <div className='model__contents'>
+            <Label limit={limit} handleLimitChange={handleLimitChange} />
+            <ul className='model__list'>
+              <li className='model__item'>
+                {data.logs.length > 0 &&
+                  data.logs.map(log => (
+                    <ProtectedRoute
+                      key={log._id}
+                      condition={userInfo._id === log.author}
+                    >
+                      <Link className='model__link' to={`/logs/${log.slugLog}`}>
+                        {log.title}
+                      </Link>
+                    </ProtectedRoute>
+                  ))}
+              </li>
+            </ul>
+          </div>
+          <Pagination
+            totalPages={data.pagination.totalPages}
+            initialPage={page || 1}
+          />
+          <Link className='model__button' to={'/logs/create-new-log'}>
+            Create new
+          </Link>
         </div>
-        <Pagination
-          totalPages={data.pagination.totalPages}
-          initialPage={page || 1}
-        />
-        <Link className='model__button' to={'/logs/create-new-log'}>
-          Create new
-        </Link>
       </main>
     </>
   )

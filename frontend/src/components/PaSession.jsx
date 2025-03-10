@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import Pagination from './Pagination'
+import Label from './Label'
 import { useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
@@ -13,7 +15,14 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const PaSession = ({ data, slugLog, slugExercise }) => {
+const PaSession = ({
+  data,
+  slugLog,
+  slugExercise,
+  page,
+  limit,
+  handleLimitChange
+}) => {
   const [showPace, setShowPace] = useState(true)
   const [showSpeed, setShowSpeed] = useState(true)
 
@@ -115,92 +124,108 @@ const PaSession = ({ data, slugLog, slugExercise }) => {
 
   return (
     <>
-      <ul className='sessions__list'>
-        {data.exerciseAggregatePa.length > 0 &&
-          data.exerciseAggregatePa.map(item => (
-            <li key={item.pasessions._id} className='sessions__item'>
-              <Link
-                className='sessions__link'
-                to={`/logs/${slugLog}/${slugExercise}/pa/${item.pasessions.slugSession}`}
-              >
-                <table className='sessions__table'>
-                  <tbody>
-                    <tr>
-                      <th colSpan='5' scope='col'>
-                        {new Date(
-                          item.pasessions.createdDate
-                        ).toLocaleDateString()}
-                      </th>
-                    </tr>
-                    <tr>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <td colSpan='1' scope='col'>
-                        Pace
-                      </td>
-                      <th colSpan='3' scope='col'>
-                        {item.pasessions.paceMinutes}:
-                        {item.pasessions.paceSeconds
-                          .toString()
-                          .padStart(2, '0')}
-                        <span className='sessions__span'> min:sec</span>
-                      </th>
-                    </tr>
-                    <tr>
-                      <td colSpan='1' scope='col'>
-                        Speed
-                      </td>
-                      <th colSpan='3' scope='col'>
-                        {item.pasessions.speed.toFixed(3)}
-                        <span className='sessions__span'> km/min</span>
-                      </th>
-                    </tr>
-                    <tr>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <td>Hours</td>
-                      <td>Minutes</td>
-                      <td>Seconds</td>
-                      <td>Distance</td>
-                    </tr>
-                    <tr>
-                      <th>{item.pasessions.time.hours}</th>
-                      <th>{item.pasessions.time.minutes}</th>
-                      <th>{item.pasessions.time.seconds}</th>
-                      <th>{item.pasessions.distance}</th>
-                    </tr>
-                  </tbody>
-                </table>
-              </Link>
-            </li>
-          ))}
-      </ul>
-      <div className='sessions__label-container'>
-        <p className='sessions__text'>show bar:</p>
-        <label className='sessions__label'>
-          <input
-            className='sessions__input-checkbox'
-            type='checkbox'
-            checked={showPace}
-            onChange={() => setShowPace(!showPace)}
-          />
-          &#160;Pace
-        </label>
-        <label className='sessions__label'>
-          <input
-            className='sessions__input-checkbox'
-            type='checkbox'
-            checked={showSpeed}
-            onChange={() => setShowSpeed(!showSpeed)}
-          />
-          &#160;Speed
-        </label>
+      <div className='model__container'>
+        <h2 className='model__subtitle'>Sessions</h2>
+        <Label limit={limit} handleLimitChange={handleLimitChange} />
+        <ul className='sessions__list'>
+          {data.exerciseAggregatePa.length > 0 &&
+            data.exerciseAggregatePa.map(item => (
+              <li key={item.pasessions._id} className='sessions__item'>
+                <Link
+                  className='sessions__link'
+                  to={`/logs/${slugLog}/${slugExercise}/pa/${item.pasessions.slugSession}`}
+                >
+                  <table className='sessions__table'>
+                    <tbody>
+                      <tr>
+                        <th colSpan='5' scope='col'>
+                          {new Date(
+                            item.pasessions.createdDate
+                          ).toLocaleDateString()}
+                        </th>
+                      </tr>
+                      <tr>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <td colSpan='1' scope='col'>
+                          Pace
+                        </td>
+                        <th colSpan='3' scope='col'>
+                          {item.pasessions.paceMinutes}:
+                          {item.pasessions.paceSeconds
+                            .toString()
+                            .padStart(2, '0')}
+                          <span className='sessions__span'> min:sec</span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <td colSpan='1' scope='col'>
+                          Speed
+                        </td>
+                        <th colSpan='3' scope='col'>
+                          {item.pasessions.speed.toFixed(3)}
+                          <span className='sessions__span'> km/min</span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <td>Hours</td>
+                        <td>Minutes</td>
+                        <td>Seconds</td>
+                        <td>Distance</td>
+                      </tr>
+                      <tr>
+                        <th>{item.pasessions.time.hours}</th>
+                        <th>{item.pasessions.time.minutes}</th>
+                        <th>{item.pasessions.time.seconds}</th>
+                        <th>{item.pasessions.distance}</th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Link>
+              </li>
+            ))}
+        </ul>
+        <Pagination
+          totalPages={data.pagination.totalWlPages}
+          initialPage={page || 1}
+        />
+        <Link
+          className='model__button'
+          to={`/logs/${slugLog}/${slugExercise}/pa/create-new-session`}
+        >
+          Create New
+        </Link>
       </div>
-      <div className='sessions__chart'>
-        <div className='sessions__chart-scroll'>
-          <Bar data={chartData} options={options} />
+      <div className='model__container'>
+        <div className='sessions__label-container'>
+          <p className='sessions__text'>show bar:</p>
+          <label className='sessions__label'>
+            <input
+              className='sessions__input-checkbox'
+              type='checkbox'
+              checked={showPace}
+              onChange={() => setShowPace(!showPace)}
+            />
+            &#160;Pace
+          </label>
+          <label className='sessions__label'>
+            <input
+              className='sessions__input-checkbox'
+              type='checkbox'
+              checked={showSpeed}
+              onChange={() => setShowSpeed(!showSpeed)}
+            />
+            &#160;Speed
+          </label>
+        </div>
+        <div className='sessions__chart'>
+          <div className='sessions__chart-scroll'>
+            <Bar data={chartData} options={options} />
+          </div>
         </div>
       </div>
     </>

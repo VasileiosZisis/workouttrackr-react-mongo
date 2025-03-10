@@ -46,24 +46,28 @@ const ResetPassword = () => {
         <title>Reset Password</title>
       </Helmet>
       <main className='model'>
-        <div className='title-container'>
-          <h2 className='title-container__title'>Reset Password</h2>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h2 className='title-container__title'>Reset Password</h2>
+          </div>
         </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='password' name='password'>
-            Password
-          </label>
-          <input
-            className='form__input-text'
-            type='password'
-            {...register('password')}
-          />
-          <p className='form__error-text'>{errors?.password?.message}</p>
-          <button type='submit' disabled={isLoading}>
-            Submit
-          </button>
-          {isLoading && <Loader />}
-        </form>
+        <div className='model__container'>
+          <form className='form' onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor='password' name='password'>
+              Password
+            </label>
+            <input
+              className='form__input-text'
+              type='password'
+              {...register('password')}
+            />
+            <p className='form__error-text'>{errors?.password?.message}</p>
+            <button type='submit' disabled={isLoading}>
+              Submit
+            </button>
+            {isLoading && <Loader />}
+          </form>
+        </div>
       </main>
     </>
   )

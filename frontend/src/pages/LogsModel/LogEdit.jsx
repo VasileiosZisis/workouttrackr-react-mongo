@@ -77,32 +77,38 @@ const LogsEdit = () => {
         <title>Edit Log</title>
       </Helmet>
       <main className='model'>
-        <Link className='model__link-goBack' to={`/logs/${data.slugLog}`}>
-          &#160;&#160;{`${data.slugLog}`}
-        </Link>
+        <div className='model__container'>
+          <Link className='model__link-goBack' to={`/logs/${data.slugLog}`}>
+            &#160;&#160;{`${data.slugLog}`}
+          </Link>
+        </div>
         <ProtectedRoute condition={userInfo._id === data.author}>
-          <div className='title-container'>
-            <h2 className='title-container__title'>Edit Log</h2>
+          <div className='model__container'>
+            <div className='title-container'>
+              <h2 className='title-container__title'>Edit Log</h2>
+            </div>
           </div>
-          <form className='form' onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor='title' name='title'>
-              Title
-            </label>
-            <p className='form__error-text'>{errors?.title?.message}</p>
-            <input
-              className='form__input-text'
-              type='text'
-              {...register('title')}
-            />
-            <button
-              className='form__button-submit'
-              type='submit'
-              disabled={loadingUpdate}
-            >
-              Submit
-            </button>
-            {loadingUpdate && <Loader />}
-          </form>
+          <div className='model__container'>
+            <form className='form' onSubmit={handleSubmit(onSubmit)}>
+              <label htmlFor='title' name='title'>
+                Title
+              </label>
+              <p className='form__error-text'>{errors?.title?.message}</p>
+              <input
+                className='form__input-text'
+                type='text'
+                {...register('title')}
+              />
+              <button
+                className='form__button-submit'
+                type='submit'
+                disabled={loadingUpdate}
+              >
+                Submit
+              </button>
+              {loadingUpdate && <Loader />}
+            </form>
+          </div>
         </ProtectedRoute>
       </main>
     </>

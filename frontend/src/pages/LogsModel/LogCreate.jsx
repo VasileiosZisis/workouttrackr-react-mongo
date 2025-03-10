@@ -53,31 +53,37 @@ const LogCreate = () => {
         <title>New Log</title>
       </Helmet>
       <main className='model'>
-        <Link className='model__link-goBack' to='/logs'>
-          &#160;&#160;Logs
-        </Link>
-        <div className='title-container'>
-          <h2 className='title-container__title'>Create New Log</h2>
+        <div className='model__container'>
+          <Link className='model__link-goBack' to='/logs'>
+            &#160;&#160;Logs
+          </Link>
         </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='title' name='title'>
-            Title
-          </label>
-          <p className='form__error-text'>{errors?.title?.message}</p>
-          <input
-            className='form__input-text'
-            type='text'
-            {...register('title')}
-          />
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={isLoading}
-          >
-            Submit
-          </button>
-          {isLoading && <Loader />}
-        </form>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h2 className='title-container__title'>New Log</h2>
+          </div>
+        </div>
+        <div className='model__container'>
+          <form className='form' onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor='title' name='title'>
+              Title
+            </label>
+            <p className='form__error-text'>{errors?.title?.message}</p>
+            <input
+              className='form__input-text'
+              type='text'
+              {...register('title')}
+            />
+            <button
+              className='form__button-submit'
+              type='submit'
+              disabled={isLoading}
+            >
+              Submit
+            </button>
+            {isLoading && <Loader />}
+          </form>
+        </div>
       </main>
     </>
   )

@@ -64,71 +64,77 @@ const WlsessionShow = () => {
         </title>
       </Helmet>
       <main className='model'>
-        <Link
-          className='model__link-goBack'
-          to={`/logs/${slugLog}/${slugExercise}`}
-        >
-          &#160;&#160;Sessions
-        </Link>
+        <div className='model__container'>
+          <Link
+            className='model__link-goBack'
+            to={`/logs/${slugLog}/${slugExercise}`}
+          >
+            &#160;&#160;Sessions
+          </Link>
+        </div>
         <ProtectedRoute condition={userInfo._id === data.wlsession.author}>
-          <div className='title-container'>
-            <h1 className='title-container__title'>
-              {new Date(data.wlsession.createdDate).toLocaleDateString()}
-            </h1>
-            <div className='title-container__link-container'>
-              <Link
-                className='title-container__link'
-                to={`/logs/${slugLog}/${slugExercise}/wl/edit/${data.wlsession._id}`}
-              >
-                Edit
-              </Link>
-            </div>
-            <div className='title-container__button-container'>
-              <button
-                disabled={loadingDelete}
-                className='title-container__button'
-                onClick={() => deleteHandler(slugExercise)}
-              >
-                Delete
-              </button>
-              {loadingDelete && <Loader />}
+          <div className='model__container'>
+            <div className='title-container'>
+              <h1 className='title-container__title'>
+                {new Date(data.wlsession.createdDate).toLocaleDateString()}
+              </h1>
+              <div className='title-container__link-container'>
+                <Link
+                  className='title-container__link'
+                  to={`/logs/${slugLog}/${slugExercise}/wl/edit/${data.wlsession._id}`}
+                >
+                  Edit
+                </Link>
+              </div>
+              <div className='title-container__button-container'>
+                <button
+                  disabled={loadingDelete}
+                  className='title-container__button'
+                  onClick={() => deleteHandler(slugExercise)}
+                >
+                  Delete
+                </button>
+                {loadingDelete && <Loader />}
+              </div>
             </div>
           </div>
-          <table className='sessions__table'>
-            <tbody>
-              <tr>
-                <td colSpan='3'>Total Volume</td>
-                <th colSpan='2'>{data.wlsession.totalVolume}</th>
-              </tr>
-              <tr>
-                <td colSpan='3'>Junk Volume</td>
-                <th colSpan='2'>{data.wlsession.junkVolume}</th>
-              </tr>
-              <tr>
-                <td colSpan='3'>Work Volume</td>
-                <th colSpan='2'>{data.wlsession.workingVolume}</th>
-              </tr>
-              <tr>
-                <th></th>
-              </tr>
-              <tr>
-                <td>Set</td>
-                <td>Reps</td>
-                <td>KGs</td>
-                <td>Hard</td>
-                <td>Volume</td>
-              </tr>
-              {data.wlsession.set.map((set, index) => (
-                <tr key={set._id}>
-                  <td>{index + 1}</td>
-                  <td>{set.repetitions}</td>
-                  <td>{set.kilograms}</td>
-                  <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
-                  <td>{set.volume}</td>
+          <div className='model__container'>
+            <table className='sessions__table'>
+              <tbody>
+                <tr>
+                  <td colSpan='3'>Total Volume</td>
+                  <th colSpan='2'>{data.wlsession.totalVolume}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                <tr>
+                  <td colSpan='3'>Junk Volume</td>
+                  <th colSpan='2'>{data.wlsession.junkVolume}</th>
+                </tr>
+                <tr>
+                  <td colSpan='3'>Work Volume</td>
+                  <th colSpan='2'>{data.wlsession.workingVolume}</th>
+                </tr>
+                <tr>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>Set</td>
+                  <td>Reps</td>
+                  <td>KGs</td>
+                  <td>Hard</td>
+                  <td>Volume</td>
+                </tr>
+                {data.wlsession.set.map((set, index) => (
+                  <tr key={set._id}>
+                    <td>{index + 1}</td>
+                    <td>{set.repetitions}</td>
+                    <td>{set.kilograms}</td>
+                    <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
+                    <td>{set.volume}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </ProtectedRoute>
       </main>
     </>

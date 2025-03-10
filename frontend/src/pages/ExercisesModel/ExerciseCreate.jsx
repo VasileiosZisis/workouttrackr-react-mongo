@@ -79,65 +79,71 @@ const ExerciseCreate = () => {
         <title>New Exercise</title>
       </Helmet>
       <main className='model'>
-        <Link className='model__link-goBack' to={`/logs/${slugLog}`}>
-          &#160;&#160;Exercises
-        </Link>
-        <div className='title-container'>
-          <h2 className='title-container__title'>New Exercise</h2>
+        <div className='model__container'>
+          <Link className='model__link-goBack' to={`/logs/${slugLog}`}>
+            &#160;&#160;Exercises
+          </Link>
         </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='title' name='title'>
-            Title
-          </label>
-          <p className='form__error-text'>{errors?.title?.message}</p>
-          <input
-            className='form__input-text'
-            type='text'
-            {...register('title')}
-          />
-          <h4>Metrics</h4>
-          <p className='form__error-text'>{errors?.session?.message}</p>
-          <div className='form__radio-container'>
-            <div>
-              <input
-                type='radio'
-                className='form_radio-input'
-                {...register('session')}
-                value='wlsession'
-              />
-              <label
-                className='form__radio-label'
-                htmlFor='wlsession'
-                name='session'
-              >
-                reps * kgs = vol
-              </label>
-            </div>
-            <div>
-              <input
-                className='form_radio-input'
-                type='radio'
-                {...register('session')}
-                value='pasession'
-              />
-              <label
-                className='form__radio-label'
-                htmlFor='pasession'
-                name='session'
-              >
-                dist, pace, time
-              </label>
-            </div>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h2 className='title-container__title'>New Exercise</h2>
           </div>
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={isLoading}
-          >
-            Submit
-          </button>
-          {isLoading && <Loader />}
-        </form>
+        </div>
+        <div className='model__container'>
+          <form className='form' onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor='title' name='title'>
+              Title
+            </label>
+            <p className='form__error-text'>{errors?.title?.message}</p>
+            <input
+              className='form__input-text'
+              type='text'
+              {...register('title')}
+            />
+            <h4>Metrics</h4>
+            <p className='form__error-text'>{errors?.session?.message}</p>
+            <div className='form__radio-container'>
+              <div>
+                <input
+                  type='radio'
+                  className='form_radio-input'
+                  {...register('session')}
+                  value='wlsession'
+                />
+                <label
+                  className='form__radio-label'
+                  htmlFor='wlsession'
+                  name='session'
+                >
+                  reps * kgs = vol
+                </label>
+              </div>
+              <div>
+                <input
+                  className='form_radio-input'
+                  type='radio'
+                  {...register('session')}
+                  value='pasession'
+                />
+                <label
+                  className='form__radio-label'
+                  htmlFor='pasession'
+                  name='session'
+                >
+                  dist, pace, time
+                </label>
+              </div>
+            </div>
+            <button
+              className='form__button-submit'
+              type='submit'
+              disabled={isLoading}
+            >
+              Submit
+            </button>
+            {isLoading && <Loader />}
+          </form>
+        </div>
       </main>
     </>
   )

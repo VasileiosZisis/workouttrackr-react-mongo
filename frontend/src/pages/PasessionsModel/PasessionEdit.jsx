@@ -118,85 +118,95 @@ const PasessionEdit = () => {
         <title>Edit Session</title>
       </Helmet>
       <main className='model'>
-        <Link
-          className='model__link-goBack'
-          to={`/logs/${slugLog}/${slugExercise}/pa/${new Date(data.createdDate)
-            .toISOString()
-            .slice(0, 10)}`}
-        >
-          &#160;&#160;{new Date(data.createdDate).toLocaleDateString()}
-        </Link>
+        <div className='model__container'>
+          <Link
+            className='model__link-goBack'
+            to={`/logs/${slugLog}/${slugExercise}/pa/${new Date(
+              data.createdDate
+            )
+              .toISOString()
+              .slice(0, 10)}`}
+          >
+            &#160;&#160;{new Date(data.createdDate).toLocaleDateString()}
+          </Link>
+        </div>
         <ProtectedRoute condition={userInfo._id === data.author}>
-          <div className='title-container'>
-            <h2 className='title-container__title'>Edit Session</h2>
+          <div className='model__container'>
+            <div className='title-container'>
+              <h2 className='title-container__title'>Edit Session</h2>
+            </div>
           </div>
-          <form className='form' onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor='createdDate' name='createdDate'>
-              Date
-            </label>
-            <input
-              className='form__input-date'
-              type='date'
-              {...register('createdDate')}
-            />
-            <p className='form__error-text'>{errors?.createdDate?.message}</p>
-            <div className='form__item-pair'>
-              <label htmlFor='hours' name='hours'>
-                Hours
+          <div className='model__container'>
+            <form className='form' onSubmit={handleSubmit(onSubmit)}>
+              <label htmlFor='createdDate' name='createdDate'>
+                Date
               </label>
               <input
-                step={0.1}
-                className='form__input-number'
-                type='number'
-                {...register('time.hours')}
+                className='form__input-date'
+                type='date'
+                {...register('createdDate')}
               />
-              <p className='form__error-text'>{errors?.time?.hours?.message}</p>
-              <label htmlFor='minutes' name='minutes'>
-                Minutes
-              </label>
-              <input
-                step={0.1}
-                className='form__input-number'
-                type='number'
-                {...register('time.minutes')}
-              />
-              <p className='form__error-text'>
-                {errors?.time?.minutes?.message}
-              </p>
-              <label htmlFor='seconds' name='seconds'>
-                Seconds
-              </label>
-              <input
-                step={0.1}
-                className='form__input-number'
-                type='number'
-                {...register('time.seconds')}
-              />
-              <p className='form__error-text'>
-                {errors?.time?.seconds?.message}
-              </p>
-            </div>
-            <div className='form__item-pair'>
-              <label htmlFor='distance' name='distance'>
-                Distance
-              </label>
-              <input
-                step={0.1}
-                className='form__input-number'
-                type='number'
-                {...register('distance')}
-              />
-              <p>{errors?.distance?.message}</p>
-            </div>
-            <button
-              className='form__button-submit'
-              type='submit'
-              disabled={loadingUpdate}
-            >
-              Submit
-            </button>
-            {loadingUpdate && <Loader />}
-          </form>
+              <p className='form__error-text'>{errors?.createdDate?.message}</p>
+              <div className='form__item-pair'>
+                <label htmlFor='hours' name='hours'>
+                  Hours
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('time.hours')}
+                />
+                <p className='form__error-text'>
+                  {errors?.time?.hours?.message}
+                </p>
+                <label htmlFor='minutes' name='minutes'>
+                  Minutes
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('time.minutes')}
+                />
+                <p className='form__error-text'>
+                  {errors?.time?.minutes?.message}
+                </p>
+                <label htmlFor='seconds' name='seconds'>
+                  Seconds
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('time.seconds')}
+                />
+                <p className='form__error-text'>
+                  {errors?.time?.seconds?.message}
+                </p>
+              </div>
+              <div className='form__item-pair'>
+                <label htmlFor='distance' name='distance'>
+                  Distance
+                </label>
+                <input
+                  step={0.1}
+                  className='form__input-number'
+                  type='number'
+                  {...register('distance')}
+                />
+                <p>{errors?.distance?.message}</p>
+              </div>
+              <button
+                className='form__button-submit'
+                type='submit'
+                disabled={loadingUpdate}
+              >
+                Submit
+              </button>
+              {loadingUpdate && <Loader />}
+            </form>
+          </div>
         </ProtectedRoute>
       </main>
     </>

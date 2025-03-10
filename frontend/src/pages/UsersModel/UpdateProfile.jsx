@@ -70,49 +70,55 @@ const UpdateProfile = () => {
         <title>Update User Profile</title>
       </Helmet>
       <main className='model'>
-        <button className='model__button-goback' onClick={submitHandler}>
-          &#160;&#160;Go Back
-        </button>
-        <div className='title-container'>
-          <h2 className='title-container__title'>Update User Profile</h2>
-        </div>
-        <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
-          <label htmlFor='username' name='username'>
-            Username
-          </label>
-          <input
-            className='form__input-text'
-            type='text'
-            {...register('username')}
-          />
-          <p className='form__error-text'>{errors?.username?.message}</p>
-          <label htmlFor='email' name='email'>
-            Email
-          </label>
-          <input
-            className='form__input-text'
-            type='email'
-            {...register('email')}
-          />
-          <p className='form__error-text'>{errors?.email?.message}</p>
-          <label htmlFor='password' name='password'>
-            Password
-          </label>
-          <input
-            className='form__input-text'
-            type='password'
-            {...register('password')}
-          />
-          <p className='form__error-text'>{errors?.password?.message}</p>
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={isLoading}
-          >
-            Update
+        <div className='model__container'>
+          <button className='model__button-goback' onClick={submitHandler}>
+            &#160;&#160;Go Back
           </button>
-          {isLoading && <Loader />}
-        </form>
+        </div>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h2 className='title-container__title'>Update User Profile</h2>
+          </div>
+        </div>
+        <div className='model__container'>
+          <form className='form' onSubmit={handleSubmit(onFormSubmit)}>
+            <label htmlFor='username' name='username'>
+              Username
+            </label>
+            <input
+              className='form__input-text'
+              type='text'
+              {...register('username')}
+            />
+            <p className='form__error-text'>{errors?.username?.message}</p>
+            <label htmlFor='email' name='email'>
+              Email
+            </label>
+            <input
+              className='form__input-text'
+              type='email'
+              {...register('email')}
+            />
+            <p className='form__error-text'>{errors?.email?.message}</p>
+            <label htmlFor='password' name='password'>
+              Password
+            </label>
+            <input
+              className='form__input-text'
+              type='password'
+              {...register('password')}
+            />
+            <p className='form__error-text'>{errors?.password?.message}</p>
+            <button
+              className='form__button-submit'
+              type='submit'
+              disabled={isLoading}
+            >
+              Update
+            </button>
+            {isLoading && <Loader />}
+          </form>
+        </div>
       </main>
     </>
   )

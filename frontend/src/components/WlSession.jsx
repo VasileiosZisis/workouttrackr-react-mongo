@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import Pagination from './Pagination'
+import Label from './Label'
 import { useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
@@ -13,7 +15,14 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const WlSession = ({ data, slugLog, slugExercise }) => {
+const WlSession = ({
+  data,
+  slugLog,
+  slugExercise,
+  page,
+  limit,
+  handleLimitChange
+}) => {
   const [showTotalVolume, setShowTotalVolume] = useState(true)
   const [showJunkVolume, setShowJunkVolume] = useState(true)
   const [showWorkVolume, setShowWorkVolume] = useState(true)
@@ -119,90 +128,106 @@ const WlSession = ({ data, slugLog, slugExercise }) => {
 
   return (
     <>
-      <ul className='sessions__list'>
-        {data.exerciseAggregate.length > 0 &&
-          data.exerciseAggregate.map(item => (
-            <li key={item.wlsessions._id} className='sessions__item'>
-              <Link
-                className='sessions__link'
-                to={`/logs/${slugLog}/${slugExercise}/wl/${item.wlsessions.slugSession}`}
-              >
-                <table className='sessions__table'>
-                  <tbody>
-                    <tr>
-                      <th colSpan='5' scope='col'>
-                        {new Date(
-                          item.wlsessions.createdDate
-                        ).toLocaleDateString()}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td colSpan='3'>Total Volume</td>
-                      <th colSpan='2'>{item.wlsessions.totalVolume}</th>
-                    </tr>
-                    <tr>
-                      <td colSpan='3'>Junk Volume</td>
-                      <th colSpan='2'>{item.wlsessions.junkVolume}</th>
-                    </tr>
-                    <tr>
-                      <td colSpan='3'>Work Volume</td>
-                      <th colSpan='2'>{item.wlsessions.workingVolume}</th>
-                    </tr>
-                    <tr>
-                      <td>Set</td>
-                      <td>Reps</td>
-                      <td>KGs</td>
-                      <td>Hard</td>
-                      <td>Volume</td>
-                    </tr>
-                    {item.wlsessions.set.map((set, index) => (
-                      <tr key={set._id}>
-                        <td>{index + 1}</td>
-                        <td>{set.repetitions}</td>
-                        <td>{set.kilograms}</td>
-                        <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
-                        <td>{set.volume}</td>
+      <div className='model__container'>
+        <h2 className='model__subtitle'>Sessions</h2>
+        <Label limit={limit} handleLimitChange={handleLimitChange} />
+        <ul className='sessions__list'>
+          {data.exerciseAggregate.length > 0 &&
+            data.exerciseAggregate.map(item => (
+              <li key={item.wlsessions._id} className='sessions__item'>
+                <Link
+                  className='sessions__link'
+                  to={`/logs/${slugLog}/${slugExercise}/wl/${item.wlsessions.slugSession}`}
+                >
+                  <table className='sessions__table'>
+                    <tbody>
+                      <tr>
+                        <th colSpan='5' scope='col'>
+                          {new Date(
+                            item.wlsessions.createdDate
+                          ).toLocaleDateString()}
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Link>
-            </li>
-          ))}
-      </ul>
-      <div className='sessions__label-container'>
-        <p className='sessions__text'>show bar:</p>
-        <label className='sessions__label'>
-          <input
-            className='sessions__input-checkbox'
-            type='checkbox'
-            checked={showTotalVolume}
-            onChange={() => setShowTotalVolume(!showTotalVolume)}
-          />
-          &#160;Total Volume
-        </label>
-        <label className='sessions__label'>
-          <input
-            className='sessions__input-checkbox'
-            type='checkbox'
-            checked={showJunkVolume}
-            onChange={() => setShowJunkVolume(!showJunkVolume)}
-          />
-          &#160;Junk Volume
-        </label>
-        <label className='sessions__label'>
-          <input
-            className='sessions__input-checkbox'
-            type='checkbox'
-            checked={showWorkVolume}
-            onChange={() => setShowWorkVolume(!showWorkVolume)}
-          />
-          &#160;Work Volume
-        </label>
+                      <tr>
+                        <td colSpan='3'>Total Volume</td>
+                        <th colSpan='2'>{item.wlsessions.totalVolume}</th>
+                      </tr>
+                      <tr>
+                        <td colSpan='3'>Junk Volume</td>
+                        <th colSpan='2'>{item.wlsessions.junkVolume}</th>
+                      </tr>
+                      <tr>
+                        <td colSpan='3'>Work Volume</td>
+                        <th colSpan='2'>{item.wlsessions.workingVolume}</th>
+                      </tr>
+                      <tr>
+                        <td>Set</td>
+                        <td>Reps</td>
+                        <td>KGs</td>
+                        <td>Hard</td>
+                        <td>Volume</td>
+                      </tr>
+                      {item.wlsessions.set.map((set, index) => (
+                        <tr key={set._id}>
+                          <td>{index + 1}</td>
+                          <td>{set.repetitions}</td>
+                          <td>{set.kilograms}</td>
+                          <td>{set.isHard ? <span>&#10003;</span> : '-'}</td>
+                          <td>{set.volume}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Link>
+              </li>
+            ))}
+        </ul>
+        <Pagination
+          totalPages={data.pagination.totalWlPages}
+          initialPage={page || 1}
+        />
+        <Link
+          className='model__button'
+          to={`/logs/${slugLog}/${slugExercise}/wl/create-new-session`}
+        >
+          Create New
+        </Link>
       </div>
-      <div className='sessions__chart'>
-        <div className='sessions__chart-scroll'>
-          <Bar data={chartData} options={options} />
+      <div className='model__container'>
+        <div className='sessions__label-container'>
+          <p className='sessions__text'>show bar:</p>
+          <label className='sessions__label'>
+            <input
+              className='sessions__input-checkbox'
+              type='checkbox'
+              checked={showTotalVolume}
+              onChange={() => setShowTotalVolume(!showTotalVolume)}
+            />
+            &#160;Total Volume
+          </label>
+          <label className='sessions__label'>
+            <input
+              className='sessions__input-checkbox'
+              type='checkbox'
+              checked={showJunkVolume}
+              onChange={() => setShowJunkVolume(!showJunkVolume)}
+            />
+            &#160;Junk Volume
+          </label>
+          <label className='sessions__label'>
+            <input
+              className='sessions__input-checkbox'
+              type='checkbox'
+              checked={showWorkVolume}
+              onChange={() => setShowWorkVolume(!showWorkVolume)}
+            />
+            &#160;Work Volume
+          </label>
+        </div>
+        <div className='sessions__chart'>
+          <div className='sessions__chart-scroll'>
+            <Bar data={chartData} options={options} />
+          </div>
         </div>
       </div>
     </>

@@ -51,32 +51,38 @@ const ForgotPassword = () => {
         <title>Forgot Password</title>
       </Helmet>
       <main className='model'>
-        <button className='model__button-goback' onClick={submitHandler}>
-          Go Back
-        </button>
-        <div className='title-container'>
-          <h2 className='title-container__title'>Forgot Password</h2>
-        </div>
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor='email' name='email'>
-            Email
-          </label>
-          <input
-            className='form__input-text'
-            type='email'
-            placeholder='Enter your email'
-            {...register('email')}
-          />
-          <p className='form__error-text'>{errors?.email?.message}</p>
-          <button
-            className='form__button-submit'
-            type='submit'
-            disabled={isLoading}
-          >
-            Submit
+        <div className='model__container'>
+          <button className='model__button-goback' onClick={submitHandler}>
+            Go Back
           </button>
-          {isLoading && <Loader />}
-        </form>
+        </div>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h2 className='title-container__title'>Forgot Password</h2>
+          </div>
+        </div>
+        <div className='model__container'>
+          <form className='form' onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor='email' name='email'>
+              Email
+            </label>
+            <input
+              className='form__input-text'
+              type='email'
+              placeholder='Enter your email'
+              {...register('email')}
+            />
+            <p className='form__error-text'>{errors?.email?.message}</p>
+            <button
+              className='form__button-submit'
+              type='submit'
+              disabled={isLoading}
+            >
+              Submit
+            </button>
+            {isLoading && <Loader />}
+          </form>
+        </div>
       </main>
     </>
   )

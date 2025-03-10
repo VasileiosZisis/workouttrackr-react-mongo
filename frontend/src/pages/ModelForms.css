@@ -98,7 +98,7 @@ label {
 }
 
 .form__button-submit {
-  margin-block: 1rem;
+  margin-top: 0.5rem;
   width: fit-content;
   display: inline-block;
   font-size: 1rem;
