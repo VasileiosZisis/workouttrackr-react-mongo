@@ -57,14 +57,14 @@ const HomePage = () => {
           </div>
         </div>
         <div className='hLogs'>
-          <div className='hLogs-left'>
-            <h2 className='hLogs'>Start Logging</h2>
-            <p className='hLogs'>Your training plan.</p>
-            <p className='hLogs'>A new goal.</p>
+          <div className='hLogs-left--end'>
+            <h2 className='hLogs__title'>Start Logging</h2>
+            <p className='hLogs__subtitle'>Your training plan.</p>
+            <p className='hLogs__subtitle'>A new goal.</p>
           </div>
           <div className='hLogs-right'>
             <img
-              className='hLogs'
+              className='hLogs__img'
               src='https://res.cloudinary.com/dmdbza74n/image/upload/v1740923832/training%20app/logsv2_xoiyfv.webp'
             />
           </div>
@@ -72,14 +72,14 @@ const HomePage = () => {
         <div className='hExercises'>
           <div>
             <img
-              className='hExercises'
+              className='hExercises__img'
               src='https://res.cloudinary.com/dmdbza74n/image/upload/v1740923970/training%20app/exercisesv2_hkgttw.webp'
             />
           </div>
           <div>
-            <h2 className='hExercises'>Name your exercises</h2>
-            <p className='hExercises'>No premade lists.</p>
-            <p className='hExercises'>Set your custom labels.</p>
+            <h2 className='hExercises__title'>Name your exercises</h2>
+            <p className='hExercises__subtitle'>No premade lists.</p>
+            <p className='hExercises__subtitle'>Set your custom labels.</p>
           </div>
         </div>
         <div className='hSessions'>

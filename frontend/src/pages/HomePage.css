@@ -67,19 +67,24 @@
   align-items: center;
 }
 
+.hLogs-left--end {
+  display: grid;
+  justify-content: end;
+}
+
 .hLogs-left,
 .hLogs-right {
   display: grid;
   place-items: center;
 }
 
-.hLogs,
+.hLogs__title,
 .hSessions__title {
   color: var(--night);
   font-size: 2.2rem;
 }
 
-.hLogs,
+.hLogs__subtitle,
 .hSessions__subtitle {
   color: var(--night);
   font-size: 1.3rem;
