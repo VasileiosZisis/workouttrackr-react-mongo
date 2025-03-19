@@ -29,14 +29,14 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'unsafe-inline'", "'self'"],
         connectSrc: ["'self'"],
+        imgSrc: [
+          "'self'",
+          'blob:',
+          'data:',
+          'https://res.cloudinary.com/dmdbza74n/',
+        ],
       },
     },
-    imgSrc: [
-      "'self'",
-      'blob:',
-      'data:',
-      'https://res.cloudinary.com/dmdbza74n/',
-    ],
   })
 );
 
