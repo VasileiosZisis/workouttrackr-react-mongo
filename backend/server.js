@@ -31,6 +31,12 @@ app.use(
         connectSrc: ["'self'"],
       },
     },
+    imgSrc: [
+      "'self'",
+      'blob:',
+      'data:',
+      'https://res.cloudinary.com/dmdbza74n/',
+    ],
   })
 );
 
