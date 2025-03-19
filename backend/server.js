@@ -11,12 +11,28 @@ import exerciseRoutes from './routes/exerciseRoutes.js';
 import wlsessionRoutes from './routes/wlsessionRoutes.js';
 import pasessionRoutes from './routes/pasessionRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import helmet from 'helmet';
 
 const port = process.env.PORT;
 
 connectDB();
 
 const app = express();
+
+app.use(helmet());
+
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'unsafe-inline'", "'self'"],
+        connectSrc: ["'self'"],
+      },
+    },
+  })
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
