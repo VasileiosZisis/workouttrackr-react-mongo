@@ -10,7 +10,7 @@ function App () {
       <Navbar />
       <Outlet />
       <ToastContainer
-        position='top-center'
+        position='top-right'
         transition:Slide
         draggable={false}
         theme='colored'

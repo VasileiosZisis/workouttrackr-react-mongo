@@ -49,7 +49,7 @@ const Navbar = () => {
               {userInfo.isAdmin && (
                 <li className='navbar__item'>
                   <NavLink className='navbar__link' to='/'>
-                    admin link
+                    admin
                   </NavLink>
                 </li>
               )}

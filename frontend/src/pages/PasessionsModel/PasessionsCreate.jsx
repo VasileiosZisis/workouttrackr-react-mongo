@@ -208,7 +208,7 @@ const PasessionCreate = () => {
                     Hours
                   </label>
                   <input
-                    step={0.1}
+                    step={0.01}
                     className='form__input-number'
                     type='number'
                     {...register('time.hours')}
@@ -220,7 +220,7 @@ const PasessionCreate = () => {
                     Minutes
                   </label>
                   <input
-                    step={0.1}
+                    step={0.01}
                     className='form__input-number'
                     type='number'
                     {...register('time.minutes')}
@@ -232,7 +232,7 @@ const PasessionCreate = () => {
                     Seconds
                   </label>
                   <input
-                    step={0.1}
+                    step={0.01}
                     className='form__input-number'
                     type='number'
                     {...register('time.seconds')}
@@ -246,7 +246,7 @@ const PasessionCreate = () => {
                     Distance
                   </label>
                   <input
-                    step={0.1}
+                    step={0.01}
                     className='form__input-number'
                     type='number'
                     {...register('distance')}

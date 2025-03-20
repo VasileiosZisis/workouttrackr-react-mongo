@@ -155,7 +155,7 @@ const WlsessionEdit = () => {
                           Repetitions
                         </label>
                         <input
-                          step={0.1}
+                          step={0.01}
                           className='form__input-number'
                           type='number'
                           {...register(`set.${index}.repetitions`)}
@@ -169,7 +169,7 @@ const WlsessionEdit = () => {
                           Kilograms
                         </label>
                         <input
-                          step={0.1}
+                          step={0.01}
                           className='form__input-number'
                           type='number'
                           {...register(`set.${index}.kilograms`)}
