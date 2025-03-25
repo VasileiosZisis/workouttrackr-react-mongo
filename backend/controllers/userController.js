@@ -48,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, altcha } = req.body;
 
   const isAltchaVerified = await verifyAltcha(altcha);
   if (!isAltchaVerified) {

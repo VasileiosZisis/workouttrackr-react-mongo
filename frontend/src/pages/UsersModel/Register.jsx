@@ -118,7 +118,6 @@ const Register = () => {
               apiKey={import.meta.env.VITE_ALTCHA_API_KEY}
               challengeurl='https://eu.altcha.org/api/v1/challenge'
               auto='onsubmit'
-              test='true'
             ></altcha-widget>
             <input type='hidden' {...regForm('altcha')} />
             <p className='form__error-text'>{errors?.altcha?.message}</p>
