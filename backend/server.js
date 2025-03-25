@@ -27,8 +27,8 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'unsafe-inline'", "'self'"],
-        connectSrc: ["'self'"],
+        scriptSrc: ["'unsafe-inline'", "'self'", 'https://eu.altcha.org'],
+        connectSrc: ["'self'", 'https://eu.altcha.org'],
         imgSrc: [
           "'self'",
           'blob:',
