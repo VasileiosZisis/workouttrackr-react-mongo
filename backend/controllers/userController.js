@@ -9,12 +9,11 @@ import fetch from 'node-fetch';
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const url = process.env.CLIENT_URL;
 
-const ALTCHA_VERIFY_URL = process.env.ALTCHA_VERIFY_URL;
 const ALTCHA_SECRET = process.env.ALTCHA_SECRET;
 
 const verifyAltcha = async (payload) => {
   try {
-    const response = await fetch(ALTCHA_VERIFY_URL, {
+    const response = await fetch('https://eu.altcha.org/api/v1/verify', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
