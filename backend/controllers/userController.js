@@ -4,9 +4,32 @@ import generateToken from '../utils/generateToken.js';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import sgMail from '@sendgrid/mail';
+import fetch from 'node-fetch';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const url = process.env.CLIENT_URL;
+
+const ALTCHA_VERIFY_URL = process.env.ALTCHA_VERIFY_URL;
+const ALTCHA_SECRET = process.env.ALTCHA_SECRET;
+
+const verifyAltcha = async (payload) => {
+  try {
+    const response = await fetch(ALTCHA_VERIFY_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${ALTCHA_SECRET}`,
+      },
+      body: JSON.stringify({ payload }),
+    });
+
+    const result = await response.json();
+    return result.verified;
+  } catch (error) {
+    console.error('ALTCHA verification error:', error);
+    return false;
+  }
+};
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -27,11 +50,19 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
+
+  const isAltchaVerified = await verifyAltcha(altcha);
+  if (!isAltchaVerified) {
+    res.status(400);
+    throw new Error('Verification failed. Please complete the CAPTCHA.');
+  }
+
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
     throw new Error('User already exists');
   }
+
   const user = await User.create({
     username,
     email,

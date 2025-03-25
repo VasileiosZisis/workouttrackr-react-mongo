@@ -31,6 +31,9 @@ const Register = () => {
     password: Joi.string().min(6).required().messages({
       'string.empty': 'This field is required',
       'string.min': 'Password must be at least 6 characters'
+    }),
+    altcha: Joi.string().required().messages({
+      'string.empty': 'Please complete the verification'
     })
   })
 
@@ -38,12 +41,21 @@ const Register = () => {
     register: regForm,
     handleSubmit,
     setFocus,
+    setValue,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
 
   useEffect(() => {
+    import('altcha').then(() => {
+      const widget = document.querySelector('altcha-widget')
+      widget.addEventListener('statechange', ev => {
+        if (ev.detail.state === 'verified') {
+          setValue('altcha', ev.detail.payload, { shouldValidate: true })
+        }
+      })
+    })
     setFocus('username')
-  }, [setFocus])
+  }, [setFocus, setValue])
 
   const onFormSubmit = async data => {
     try {
@@ -101,6 +113,14 @@ const Register = () => {
               {...regForm('password')}
             />
             <p className='form__error-text'>{errors?.password?.message}</p>
+            <label>Verification</label>
+            <altcha-widget
+              apiKey={import.meta.env.VITE_ALTCHA_API_KEY}
+              challengeurl='https://eu.altcha.org/api/v1/challenge'
+              auto='onsubmit'
+            ></altcha-widget>
+            <input type='hidden' {...regForm('altcha')} />
+            <p className='form__error-text'>{errors?.altcha?.message}</p>
             <button
               className='form__button-submit'
               type='submit'

@@ -14,7 +14,7 @@ function App () {
         transition:Slide
         draggable={false}
         theme='colored'
-        autoClose={2500}
+        autoClose={4000}
       />
     </HelmetProvider>
   )
