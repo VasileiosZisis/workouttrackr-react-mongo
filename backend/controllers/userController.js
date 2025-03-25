@@ -11,19 +11,89 @@ const url = process.env.CLIENT_URL;
 
 const ALTCHA_SECRET = process.env.ALTCHA_SECRET;
 
-const verifyAltcha = async (payload) => {
-  try {
-    const response = await fetch('https://eu.altcha.org/api/v1/verify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${ALTCHA_SECRET}`,
-      },
-      body: JSON.stringify({ payload }),
-    });
+// const verifyAltcha = async (payload) => {
+//   try {
+//     const response = await fetch('https://eu.altcha.org/api/v1/verify', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization:
+//           'Bearer csec_1678511082c29cf278bf563768155eec33beb23983aa9813',
+//       },
+//       body: JSON.stringify({ payload }),
+//     });
+//     const result = await response.json();
+//     console.log(result);
+//     return result.verified;
+//   } catch (error) {
+//     console.error('ALTCHA verification error:', error);
+//     return false;
+//   }
+// };
 
-    const result = await response.json();
-    return result.verified;
+const verifyAltcha = async (payload) => {
+  console.log('Raw ALTCHA payload:', payload);
+  try {
+    if (typeof payload !== 'string') {
+      console.log('Payload is not a string:', typeof payload);
+      return false;
+    }
+
+    let decodedData;
+    try {
+      decodedData = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
+    } catch (e) {
+      console.log('Failed to decode payload as base64:', e.message);
+      return false;
+    }
+    console.log('Decoded ALTCHA payload:', decodedData);
+
+    const {
+      algorithm = 'SHA-256',
+      challenge,
+      salt,
+      number,
+      signature,
+      test,
+    } = decodedData;
+
+    if (!challenge || !salt || number === undefined) {
+      console.log('Missing required fields (challenge, salt, or number)');
+      return false;
+    }
+
+    const verificationData = `${challenge}.${salt}.${number}`;
+    console.log('verificationData:', verificationData);
+
+    const hash = crypto
+      .createHash(algorithm.toLowerCase())
+      .update(verificationData)
+      .digest('hex');
+    console.log('SHA hash of verificationData:', hash);
+
+    const hmac = crypto
+      .createHmac(algorithm.toLowerCase(), ALTCHA_SECRET)
+      .update(hash)
+      .digest('hex');
+    console.log('Computed HMAC signature:', hmac);
+    console.log('Received signature:', signature);
+
+    // Only bypass in development with test mode
+    if (test && !signature && process.env.NODE_ENV === 'development') {
+      console.log(
+        'Test mode detected, accepting empty signature in development'
+      );
+      return true;
+    }
+
+    if (!signature) {
+      console.log('Signature missing in non-test mode');
+      return false;
+    }
+
+    const isValid = hmac === signature;
+    console.log('Signature valid:', isValid);
+    return isValid;
   } catch (error) {
     console.error('ALTCHA verification error:', error);
     return false;
@@ -48,7 +118,13 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
+  console.log('req.body:', req.body);
   const { username, email, password, altcha } = req.body;
+
+  if (!altcha) {
+    res.status(400);
+    throw new Error('ALTCHA verification payload is missing');
+  }
 
   const isAltchaVerified = await verifyAltcha(altcha);
   if (!isAltchaVerified) {

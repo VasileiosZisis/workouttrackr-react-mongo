@@ -48,9 +48,13 @@ const Register = () => {
   useEffect(() => {
     import('altcha').then(() => {
       const widget = document.querySelector('altcha-widget')
+      if (!widget) {
+        return
+      }
       widget.addEventListener('statechange', ev => {
         if (ev.detail.state === 'verified') {
           setValue('altcha', ev.detail.payload, { shouldValidate: true })
+        } else if (ev.detail.state === 'error') {
         }
       })
     })
@@ -117,7 +121,6 @@ const Register = () => {
             <altcha-widget
               apiKey={import.meta.env.VITE_ALTCHA_API_KEY}
               challengeurl='https://eu.altcha.org/api/v1/challenge'
-              auto='onsubmit'
             ></altcha-widget>
             <input type='hidden' {...regForm('altcha')} />
             <p className='form__error-text'>{errors?.altcha?.message}</p>
