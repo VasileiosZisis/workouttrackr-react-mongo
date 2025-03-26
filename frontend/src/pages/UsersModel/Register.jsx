@@ -17,7 +17,6 @@ const Register = () => {
   const dispatch = useDispatch()
   const [register, { isLoading }] = useRegisterMutation()
   const navigate = useNavigate()
-  const [nonce] = useState(() => window.__nonce__)
   const [turnstileToken, setTurnstileToken] = useState('')
 
   const schema = Joi.object({
@@ -114,7 +113,6 @@ const Register = () => {
                 theme: 'dark'
               }}
               onSuccess={token => setTurnstileToken(token)}
-              nonce={nonce}
             />
             <button
               className='form__button-submit'

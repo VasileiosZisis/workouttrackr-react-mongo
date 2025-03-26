@@ -12,7 +12,6 @@ import wlsessionRoutes from './routes/wlsessionRoutes.js';
 import pasessionRoutes from './routes/pasessionRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import helmet from 'helmet';
-import crypto from 'crypto';
 
 const port = process.env.PORT;
 
@@ -21,9 +20,6 @@ connectDB();
 const app = express();
 
 app.use((req, res, next) => {
-  const nonce = crypto.randomBytes(16).toString('base64');
-  res.locals.nonce = nonce;
-
   helmet({
     crossOriginEmbedderPolicy: false,
     contentSecurityPolicy: {
@@ -65,65 +61,17 @@ app.use(
 );
 app.use('/api/users', userRoutes);
 
-// if (process.env.NODE_ENV === 'production') {
-//   const __dirname = path.resolve();
-
-//   app.use(express.static(path.join(__dirname, '/frontend/dist')));
-
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
-//   );
-// } else {
-//   app.get('/', (req, res) => {
-//     res.send('API is running...');
-//   });
-// }
-
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
+
   app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
-  app.get('*', (req, res) => {
-    const indexHtml = path.resolve(__dirname, 'frontend', 'dist', 'index.html');
-    res.sendFile(
-      indexHtml,
-      {
-        headers: {
-          'Content-Security-Policy': res.get('Content-Security-Policy'),
-        },
-      },
-      (err) => {
-        if (err) {
-          res.status(500).send('Error serving index.html');
-        } else {
-          res.send(`
-          <script nonce="${res.locals.nonce}">
-            window.__nonce__ = "${res.locals.nonce}";
-          </script>
-        `);
-        }
-      }
-    );
-  });
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  );
 } else {
   app.get('/', (req, res) => {
-    res.send(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="nonce" content="${res.locals.nonce}" />
-          <title>Development Mode</title>
-        </head>
-        <body>
-          <div id="root"></div>
-          <script type="module" src="http://localhost:5173/src/main.jsx" nonce="${res.locals.nonce}"></script>
-          <script nonce="${res.locals.nonce}">
-            window.__nonce__ = "${res.locals.nonce}";
-          </script>
-        </body>
-      </html>
-    `);
+    res.send('API is running...');
   });
 }
 
