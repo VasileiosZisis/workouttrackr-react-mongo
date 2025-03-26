@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useRegisterMutation } from '../../../slices/usersApiSlice'
@@ -9,6 +9,7 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
 import { Helmet } from 'react-helmet-async'
+import { Turnstile } from '@marsidev/react-turnstile'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
@@ -16,6 +17,8 @@ const Register = () => {
   const dispatch = useDispatch()
   const [register, { isLoading }] = useRegisterMutation()
   const navigate = useNavigate()
+  const [nonce] = useState(() => window.__nonce__)
+  const [turnstileToken, setTurnstileToken] = useState('')
 
   const schema = Joi.object({
     username: Joi.string().required().messages({
@@ -31,9 +34,6 @@ const Register = () => {
     password: Joi.string().min(6).required().messages({
       'string.empty': 'This field is required',
       'string.min': 'Password must be at least 6 characters'
-    }),
-    altcha: Joi.string().required().messages({
-      'string.empty': 'Please complete the verification'
     })
   })
 
@@ -41,29 +41,20 @@ const Register = () => {
     register: regForm,
     handleSubmit,
     setFocus,
-    setValue,
     formState: { errors }
   } = useForm({ resolver: joiResolver(schema) })
 
   useEffect(() => {
-    import('altcha').then(() => {
-      const widget = document.querySelector('altcha-widget')
-      if (!widget) {
-        return
-      }
-      widget.addEventListener('statechange', ev => {
-        if (ev.detail.state === 'verified') {
-          setValue('altcha', ev.detail.payload, { shouldValidate: true })
-        } else if (ev.detail.state === 'error') {
-        }
-      })
-    })
     setFocus('username')
-  }, [setFocus, setValue])
+  }, [setFocus])
 
   const onFormSubmit = async data => {
+    if (!turnstileToken) {
+      toast.error('Please complete the CAPTCHA verification')
+      return
+    }
     try {
-      const res = await register(data).unwrap()
+      const res = await register({ ...data, turnstileToken }).unwrap()
       dispatch(setCredentials(res))
       navigate('/logs')
       toast.success('Registered Successfully')
@@ -117,17 +108,18 @@ const Register = () => {
               {...regForm('password')}
             />
             <p className='form__error-text'>{errors?.password?.message}</p>
-            <label>Verification</label>
-            <altcha-widget
-              apiKey={import.meta.env.VITE_ALTCHA_API_KEY}
-              challengeurl='https://eu.altcha.org/api/v1/challenge'
-            ></altcha-widget>
-            <input type='hidden' {...regForm('altcha')} />
-            <p className='form__error-text'>{errors?.altcha?.message}</p>
+            <Turnstile
+              siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+              options={{
+                theme: 'dark'
+              }}
+              onSuccess={token => setTurnstileToken(token)}
+              nonce={nonce}
+            />
             <button
               className='form__button-submit'
               type='submit'
-              disabled={isLoading}
+              disabled={isLoading || !turnstileToken}
             >
               Submit
             </button>

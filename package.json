@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^8.1.4",
-    "altcha": "^1.4.0",
+    "axios": "^1.8.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
@@ -29,7 +29,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "mongoose-slug-updater": "^3.3.0",
-    "node-fetch": "^3.3.2",
     "sanitize-html": "^2.14.0"
   },
   "devDependencies": {
