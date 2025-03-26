@@ -15,6 +15,7 @@ It includes the following:
 - Admin functionality
 - JWT for authentication
 - Authorization
+- Captcha protection on registration with Cloudflare
 - React-hook-form for the forms and JOI for frontend and backend validation
 - Data visualization with react-chartjs-2
 - Pagination with react-paginate

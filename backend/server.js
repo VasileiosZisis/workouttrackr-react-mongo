@@ -39,7 +39,12 @@ app.use((req, res, next) => {
           'https://res.cloudinary.com/dmdbza74n/',
           'https://challenges.cloudflare.com',
         ],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+          'https://fonts.gstatic.com',
+        ],
       },
     },
   })(req, res, next);
