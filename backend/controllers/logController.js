@@ -14,8 +14,8 @@ const createLog = asyncHandler(async (req, res) => {
 });
 
 const getLogs = asyncHandler(async (req, res) => {
-  const limit = Number(req.query.limit) || 12;
-  const page = Number(req.query.page) || 1;
+  let limit = Number(req.query.limit) || 12;
+  let page = Number(req.query.page) || 1;
 
   limit = Math.max(1, Math.min(100, Math.floor(limit)));
   page = Math.max(1, Math.floor(page));
@@ -49,8 +49,8 @@ const getLogBySlug = asyncHandler(async (req, res) => {
   const log = await Log.findOne({ slugLog: req.params.slugLog });
 
   if (log) {
-    const limit = Number(req.query.limit) || 12;
-    const page = Number(req.query.page) || 1;
+    let limit = Number(req.query.limit) || 12;
+    let page = Number(req.query.page) || 1;
 
     limit = Math.max(1, Math.min(100, Math.floor(limit)));
     page = Math.max(1, Math.floor(page));

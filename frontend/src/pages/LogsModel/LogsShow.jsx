@@ -13,7 +13,7 @@ const LogsShow = () => {
   const navigate = useNavigate()
 
   const searchParams = new URLSearchParams(location.search)
-  const limit = Math.max(1, Number(searchParams.get('limit')) || 12)
+  const limit = Math.max(1, Number(searchParams.get('limit')) || 10)
   const page = Math.max(1, Number(searchParams.get('page')) || 1)
 
   const { data, isLoading, error } = useGetLogsQuery({
@@ -24,7 +24,7 @@ const LogsShow = () => {
   const { userInfo } = useSelector(state => state.auth)
 
   const handleLimitChange = e => {
-    const newLimit = Math.max(1, Number(e.target.value))
+    const newLimit = Number(e.target.value)
     searchParams.set('limit', newLimit)
     searchParams.set('page', 1)
     navigate(`?${searchParams.toString()}`, { replace: true })
