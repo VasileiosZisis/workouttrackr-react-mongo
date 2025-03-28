@@ -62,7 +62,11 @@ const ResetPassword = () => {
               {...register('password')}
             />
             <p className='form__error-text'>{errors?.password?.message}</p>
-            <button type='submit' disabled={isLoading}>
+            <button
+              className='form__button-submit'
+              type='submit'
+              disabled={isLoading}
+            >
               Submit
             </button>
             {isLoading && <Loader />}

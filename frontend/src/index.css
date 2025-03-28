@@ -46,6 +46,12 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  background-color: var(--jet);
+  color: var(--night);
+  cursor: default;
+}
+
 .mt {
   margin-top: 1rem;
 }

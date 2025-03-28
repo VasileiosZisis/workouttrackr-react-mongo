@@ -50,7 +50,6 @@ const Register = () => {
   const onFormSubmit = async data => {
     if (!turnstileToken) {
       toast.error('Please complete the CAPTCHA verification')
-      return
     }
     try {
       const res = await register({ ...data, turnstileToken }).unwrap()
@@ -117,7 +116,7 @@ const Register = () => {
             <button
               className='form__button-submit'
               type='submit'
-              disabled={isLoading || !turnstileToken}
+              disabled={isLoading}
             >
               Submit
             </button>

@@ -3,10 +3,10 @@ import User from '../models/users.js';
 import generateToken from '../utils/generateToken.js';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
-import sgMail from '@sendgrid/mail';
+import { ServerClient } from 'postmark';
 import axios from 'axios';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const postmarkClient = new ServerClient(process.env.POSTMARK_API_KEY);
 const url = process.env.CLIENT_URL;
 
 const verifyTurnstileToken = async (token) => {
@@ -20,8 +20,8 @@ const verifyTurnstileToken = async (token) => {
     );
     return response.data.success;
   } catch (error) {
-    console.error('Turnstile verification error:', error);
-    return false;
+    res.status(401);
+    throw new Error('Turnstile verification error');
   }
 };
 
@@ -130,26 +130,27 @@ const forgotPassword = asyncHandler(async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
-    const msg = {
-      to: email,
-      from: process.env.SENDER_EMAIL,
-      subject: 'Password Reset Request',
-      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
+    const message = {
+      From: process.env.SENDER_EMAIL,
+      To: email,
+      Subject: 'Password Reset Request',
+      TextBody: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
 
       Please click on the following link, or paste this into your browser to complete the process:
 
       ${url}/reset-password/${token} 
 
       If you did not request this, please ignore this email and your password will remain unchanged.`,
-      html: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
+      HtmlBody: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
 
       Please click on the following link, or paste this into your browser to complete the process:
 
       ${url}/reset-password/${token} 
 
       If you did not request this, please ignore this email and your password will remain unchanged.`,
+      MessageStream: 'outbound',
     };
-    await sgMail.send(msg);
+    await postmarkClient.sendEmail(message);
 
     res.status(200).json({
       message: `An e-mail has been sent to ${email} with further instructions.`,

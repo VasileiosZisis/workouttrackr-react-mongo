@@ -19,7 +19,6 @@
   "author": "vasilis zisis",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^8.1.4",
     "axios": "^1.8.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
@@ -29,6 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "mongoose-slug-updater": "^3.3.0",
+    "postmark": "^4.0.5",
     "sanitize-html": "^2.14.0"
   },
   "devDependencies": {

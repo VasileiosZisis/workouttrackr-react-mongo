@@ -96,11 +96,10 @@ const LogSlugShow = () => {
           <div className='model__contents'>
             <Label limit={limit} handleLimitChange={handleLimitChange} />
             <ul className='model__list'>
-              <li className='model__item'>
-                {data.logAggregate.length > 0 &&
-                  data.logAggregate.map(item => (
+              {data.logAggregate.length > 0 &&
+                data.logAggregate.map(item => (
+                  <li className='model__item' key={item.exercises._id}>
                     <ProtectedRoute
-                      key={item.exercises._id}
                       condition={userInfo._id === data.log.author}
                     >
                       <Link
@@ -110,8 +109,8 @@ const LogSlugShow = () => {
                         {item.exercises.title}
                       </Link>
                     </ProtectedRoute>
-                  ))}
-              </li>
+                  </li>
+                ))}
             </ul>
           </div>
           <Pagination

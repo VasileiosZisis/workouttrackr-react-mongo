@@ -51,19 +51,16 @@ const LogsShow = () => {
           <div className='model__contents'>
             <Label limit={limit} handleLimitChange={handleLimitChange} />
             <ul className='model__list'>
-              <li className='model__item'>
-                {data.logs.length > 0 &&
-                  data.logs.map(log => (
-                    <ProtectedRoute
-                      key={log._id}
-                      condition={userInfo._id === log.author}
-                    >
+              {data.logs.length > 0 &&
+                data.logs.map(log => (
+                  <li className='model__item' key={log._id}>
+                    <ProtectedRoute condition={userInfo._id === log.author}>
                       <Link className='model__link' to={`/logs/${log.slugLog}`}>
                         {log.title}
                       </Link>
                     </ProtectedRoute>
-                  ))}
-              </li>
+                  </li>
+                ))}
             </ul>
           </div>
           <Pagination
