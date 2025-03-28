@@ -18,8 +18,8 @@ const LogSlugShow = () => {
   const navigate = useNavigate()
 
   const searchParams = new URLSearchParams(location.search)
-  const limit = Number(searchParams.get('limit'))
-  const page = Number(searchParams.get('page'))
+  const limit = Math.max(1, Number(searchParams.get('limit')) || 12)
+  const page = Math.max(1, Number(searchParams.get('page')) || 1)
 
   const { data, isLoading, error, refetch } = useGetLogSlugQuery({
     slugLog,
@@ -32,7 +32,7 @@ const LogSlugShow = () => {
   const { userInfo } = useSelector(state => state.auth)
 
   const handleLimitChange = e => {
-    const newLimit = Number(e.target.value)
+    const newLimit = Math.max(1, Number(e.target.value))
     searchParams.set('limit', newLimit)
     searchParams.set('page', 1)
     navigate(`?${searchParams.toString()}`, { replace: true })

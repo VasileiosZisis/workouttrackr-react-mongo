@@ -17,11 +17,14 @@ const getLogs = asyncHandler(async (req, res) => {
   const limit = Number(req.query.limit) || 12;
   const page = Number(req.query.page) || 1;
 
+  limit = Math.max(1, Math.min(100, Math.floor(limit)));
+  page = Math.max(1, Math.floor(page));
+
   const totalDocuments = await Log.countDocuments({});
 
   const logs = await Log.find({})
     .sort({ updatedAt: -1, createdAt: -1 })
-    .skip(limit * page - limit)
+    .skip(limit * (page - 1))
     .limit(limit);
 
   let totalPages;
@@ -49,6 +52,9 @@ const getLogBySlug = asyncHandler(async (req, res) => {
     const limit = Number(req.query.limit) || 12;
     const page = Number(req.query.page) || 1;
 
+    limit = Math.max(1, Math.min(100, Math.floor(limit)));
+    page = Math.max(1, Math.floor(page));
+
     const logAggregate = await Log.aggregate([
       { $match: { _id: log._id } },
       {
@@ -66,7 +72,7 @@ const getLogBySlug = asyncHandler(async (req, res) => {
         $sort: { 'exercises._id': -1 },
       },
       {
-        $skip: limit * page - limit,
+        $skip: limit * (page - 1),
       },
       {
         $limit: limit,

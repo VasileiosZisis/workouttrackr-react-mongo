@@ -30,6 +30,9 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
     const limit = Number(req.query.limit) || 12;
     const page = Number(req.query.page) || 1;
 
+    limit = Math.max(1, Math.min(100, Math.floor(limit)));
+    page = Math.max(1, Math.floor(page));
+
     const exerciseAggregate = await Exercise.aggregate([
       { $match: { _id: exercise._id } },
       {
@@ -47,7 +50,7 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
         $sort: { 'wlsessions._id': -1 },
       },
       {
-        $skip: limit * page - limit,
+        $skip: limit * (page - 1),
       },
       {
         $limit: limit,
@@ -118,7 +121,7 @@ const getExerciseBySlug = asyncHandler(async (req, res) => {
         $sort: { 'pasessions._id': -1 },
       },
       {
-        $skip: limit * page - limit,
+        $skip: limit * (page - 1),
       },
       {
         $limit: limit,
