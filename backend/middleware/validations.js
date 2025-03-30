@@ -144,14 +144,14 @@ const userEditSchema = Joi.object({
 });
 
 const forgotPasswordSchema = Joi.object({
-  password: Joi.string().min(6).required().escapeHTML(),
-});
-
-const resetPasswordSchema = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .required()
     .escapeHTML(),
+});
+
+const resetPasswordSchema = Joi.object({
+  password: Joi.string().min(6).required().escapeHTML(),
 });
 
 const validateRegisterUser = (req, res, next) => {
