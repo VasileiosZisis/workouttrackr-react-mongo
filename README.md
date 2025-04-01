@@ -16,6 +16,7 @@ It includes the following:
 - JWT for authentication
 - Authorization
 - Captcha protection on registration with Cloudflare
+- Reset password functionality with Postmark email service
 - React-hook-form for the forms and JOI for frontend and backend validation
 - Data visualization with react-chartjs-2
 - Pagination with react-paginate

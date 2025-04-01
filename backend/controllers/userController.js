@@ -2,7 +2,6 @@ import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/users.js';
 import generateToken from '../utils/generateToken.js';
 import crypto from 'crypto';
-import bcrypt from 'bcryptjs';
 import { ServerClient } from 'postmark';
 import axios from 'axios';
 
@@ -169,7 +168,6 @@ const resetPassword = asyncHandler(async (req, res) => {
     resetPasswordExpires: { $gt: Date.now() },
   });
   if (user) {
-    // user.password = await bcrypt.hash(password, 10);
     user.password = password;
     user.resetPasswordToken = null;
     user.resetPasswordExpires = null;
