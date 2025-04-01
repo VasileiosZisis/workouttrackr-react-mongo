@@ -136,14 +136,14 @@ const forgotPassword = asyncHandler(async (req, res) => {
       Subject: 'Password Reset Request',
       TextBody: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
 
-      Please click on the following link, or paste this into your browser to complete the process:
+      Please paste this into your browser to complete the process:
 
       ${url}/reset-password/${token} 
 
       If you did not request this, please ignore this email and your password will remain unchanged.`,
       HtmlBody: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
 
-      Please click on the following link, or paste this into your browser to complete the process:
+      Please paste this into your browser to complete the process:
 
       ${url}/reset-password/${token} 
 
@@ -169,7 +169,8 @@ const resetPassword = asyncHandler(async (req, res) => {
     resetPasswordExpires: { $gt: Date.now() },
   });
   if (user) {
-    user.password = await bcrypt.hash(password, 10);
+    // user.password = await bcrypt.hash(password, 10);
+    user.password = password;
     user.resetPasswordToken = null;
     user.resetPasswordExpires = null;
     await user.save();
