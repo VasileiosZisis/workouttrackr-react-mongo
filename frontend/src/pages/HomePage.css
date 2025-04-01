@@ -1,11 +1,12 @@
 .homepage {
   max-width: 100vw;
+  margin-top: 1rem;
 }
 
 .hero {
   position: relative;
   text-align: center;
-  height: 95vh;
+  height: 100vh;
   width: 100%;
 }
 
@@ -16,8 +17,10 @@
 }
 
 .hero__title-container {
+  display: grid;
+  place-items: center;
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -127,10 +130,14 @@
   text-align: center;
 }
 
-.hSessions__img-container-left,
+.hSessions__img-container-left {
+  display: grid;
+  place-items: end;
+}
+
 .hSessions__img-container-right {
   display: grid;
-  place-items: center;
+  place-items: start;
 }
 
 .hSessions__img {
@@ -173,6 +180,11 @@
   .hSessions {
     grid-auto-flow: row;
     grid-auto-columns: 1fr;
+  }
+  .hSessions__img-container-left,
+  .hSessions__img-container-right {
+    display: grid;
+    place-items: center;
   }
 }
 /* 600px */

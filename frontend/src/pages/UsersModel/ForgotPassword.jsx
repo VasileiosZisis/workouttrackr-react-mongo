@@ -53,7 +53,7 @@ const ForgotPassword = () => {
       <main className='model'>
         <div className='model__container'>
           <button className='model__button-goback' onClick={submitHandler}>
-            Go Back
+            &#160;&#160;Go Back
           </button>
         </div>
         <div className='model__container'>

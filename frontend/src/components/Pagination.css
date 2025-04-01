@@ -17,31 +17,33 @@
 .pagination a {
   display: block;
   width: 25px;
+  border: 1px solid transparent;
 }
 
 .pagination__prev {
   margin-right: 0.5rem;
+  border: 1px solid transparent;
 }
 
 .pagination__next {
   margin-left: 0.5rem;
+  border: 1px solid transparent;
 }
 
 .pagination__active {
-  background-color: var(--eerie-black);
   color: var(--icterine);
   border: 1px solid var(--icterine);
 }
 
 .pagination__disabled {
-  background-color: var(--eerie-black);
-  border: 1px solid var(--eerie-black);
+  background-color: var(--jet);
+  color: var(--night);
+  cursor: default;
 }
 
 .pagination__page:where(:hover, :focus-visible),
 .pagination__prev:where(:hover, :focus-visible),
 .pagination__next:where(:hover, :focus-visible) {
-  background-color: var(--eerie-black);
   color: var(--icterine);
   border: 1px solid var(--icterine);
 }

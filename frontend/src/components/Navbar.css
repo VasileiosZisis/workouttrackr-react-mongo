@@ -1,65 +1,89 @@
+.navbar.show {
+  width: 175px;
+}
+
 .navbar {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
+  z-index: 99;
   background-color: var(--eerie-black);
-  min-height: 2.5rem;
-  font-size: 1.1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  width: 0;
+  height: 100%;
+  transition: 0.4s;
+}
+
+.navbar__icon {
+  display: flex;
+  justify-content: end;
+  padding: 1rem 0.5rem 0 0;
+  margin: auto;
+}
+
+.navbar__close-btn {
+  padding-top: 0.1rem;
+  background-color: transparent;
+  border-radius: 12px;
+}
+
+.navbar__close-btn:where(:hover, :focus-visible) {
+  background-color: var(--grey-light);
+  border-radius: 12px;
+}
+
+.navbar__bar {
+  display: block;
+  width: 45px;
+  height: 4px;
+  margin: 9px;
+  border-radius: 5px;
+  background-color: var(--textWhite);
+}
+
+.navbar__icon .navbar__bar:nth-child(2) {
+  opacity: 0;
+}
+.navbar__icon .navbar__bar:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+}
+.navbar__icon .navbar__bar:nth-child(3) {
+  transform: translateY(-15px) rotate(-45deg);
 }
 
 .navbar__list {
-  display: flex;
-  flex-direction: row;
-  height: inherit;
-  padding-inline: 1rem;
+  margin-top: 1rem;
+}
+
+.navbar__item {
+  width: 150px;
+  padding-left: 0.8rem;
 }
 
 .navbar__link,
 .navbar__button {
-  border-bottom: 1px solid transparent;
-  height: 100%;
-  display: grid;
-  place-items: center;
+  display: block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
   color: var(--textWhite);
-  padding: 0.5rem;
+  font-size: 1.1rem;
 }
 
 .navbar__button {
-  font-size: 1.1rem;
+  text-align: start;
   background-color: var(--eerie-black);
+  width: 100%;
 }
 
 .navbar__link:where(:hover, :focus-visible),
 .navbar__button:where(:hover, :focus-visible) {
-  border-bottom: 1px solid var(--icterine);
-  color: var(--icterine);
-}
-
-.navbar__link.active {
-  border-bottom: 1px solid var(--icterine);
-  color: var(--icterine);
+  background-color: var(--jet);
 }
 
 /* MOBILE */
 
 /* 600px */
 @media only screen and (max-width: 37.5em) {
-  .navbar__link,
-  .navbar__button {
-    font-size: 1rem;
-  }
-}
-
-/* 400px */
-@media only screen and (max-width: 25em) {
-  .navbar {
-    justify-content: center;
-  }
-  .navbar__list {
-    display: flex;
-    padding-inline: 0rem;
-  }
   .navbar__link,
   .navbar__button {
     font-size: 1rem;

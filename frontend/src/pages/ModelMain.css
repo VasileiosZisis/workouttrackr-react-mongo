@@ -1,5 +1,5 @@
 .model__container {
-  box-shadow: 0px 0px 1px 1px var(--border);
+  background-color: var(--eerie-black);
   padding: 1rem;
   border-radius: 10px;
   margin: 0.7rem;
@@ -175,8 +175,7 @@
 .title-container__link:where(:hover, :focus-visible),
 .title-container__button:where(:hover, :focus-visible),
 .sessions__link:where(:hover, :focus-visible) .sessions__table {
-  background-color: var(--eerie-black);
-  color: var(--icterine);
+  background-color: var(--grey-light);
 }
 
 .model__button {
