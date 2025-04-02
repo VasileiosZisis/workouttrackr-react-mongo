@@ -4,7 +4,6 @@ import {
 } from '../../../slices/wlsessionsApiSlice'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
-import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
@@ -18,20 +17,10 @@ import '../ModelForms.css'
 
 const WlsessionEdit = () => {
   const navigate = useNavigate()
-  const searchParams = new URLSearchParams(location.search)
-  const limit = Number(searchParams.get('limit'))
-  const page = Number(searchParams.get('page'))
   const { userInfo } = useSelector(state => state.auth)
   const { slugLog, slugExercise, wlsessionId } = useParams()
 
-  const { refetch } = useGetExerciseSlugQuery({
-    slugLog,
-    slugExercise,
-    limit,
-    page
-  })
-
-  const { data, isLoading, error } = useGetWlsessionByIdQuery({
+  const { data, isLoading, error, refetch } = useGetWlsessionByIdQuery({
     slugLog,
     slugExercise,
     wlsessionId

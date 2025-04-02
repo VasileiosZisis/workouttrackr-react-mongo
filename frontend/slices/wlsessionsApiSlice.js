@@ -9,7 +9,7 @@ export const wlsessionsApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Wlsessions'],
+      invalidatesTags: ['Exercises', 'Wlsessions'],
     }),
     getWlsessionSlug: builder.query({
       query: ({ slugLog, slugExercise, slugSession }) => ({
@@ -30,14 +30,14 @@ export const wlsessionsApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Wlsessions'],
+      invalidatesTags: ['Exercises', 'Wlsessions'],
     }),
     deleteWlsession: builder.mutation({
       query: ({ slugLog, slugExercise, slugSession }) => ({
         url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}/wlsessions/${slugSession}`,
         method: 'delete',
       }),
-      invalidatesTags: ['Wlsessions'],
+      invalidatesTags: ['Exercises', 'Wlsessions'],
     }),
   }),
 });

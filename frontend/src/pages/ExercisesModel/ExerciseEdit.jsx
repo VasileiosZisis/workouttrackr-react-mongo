@@ -4,7 +4,6 @@ import {
 } from '../../../slices/exercisesApiSlice'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import { useSelector } from 'react-redux'
-import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -20,9 +19,7 @@ const ExerciseEdit = () => {
   const { slugLog, exerciseId } = useParams()
   const { userInfo } = useSelector(state => state.auth)
 
-  const { refetch } = useGetLogSlugQuery({ slugLog })
-
-  const { data, isLoading, error } = useGetExerciseIdQuery({
+  const { data, isLoading, error, refetch } = useGetExerciseIdQuery({
     slugLog,
     exerciseId
   })

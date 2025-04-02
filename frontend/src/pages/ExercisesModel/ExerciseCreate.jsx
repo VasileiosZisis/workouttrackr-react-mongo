@@ -19,11 +19,7 @@ const ExerciseCreate = () => {
   const page = Number(searchParams.get('page'))
 
   const { slugLog } = useParams()
-  const {
-    isLoading: getLogLoading,
-    error,
-    refetch
-  } = useGetLogSlugQuery({
+  const { isLoading: getLogLoading, error } = useGetLogSlugQuery({
     slugLog,
     limit,
     page
@@ -59,7 +55,6 @@ const ExerciseCreate = () => {
   const onSubmit = async data => {
     try {
       await createExercise({ ...data, slugLog: slugLog }).unwrap()
-      refetch()
       navigate(`/logs/${slugLog}`)
       toast.success('Exercise created')
     } catch (err) {

@@ -52,13 +52,13 @@ label {
   padding: 0.3rem 0.3rem;
   font-size: 1rem;
   border-radius: 5px;
-  width: 75px;
+  width: 85px;
   height: 25px;
 }
 
 .form__input-checkbox {
-  width: 30px;
-  height: 25px;
+  width: 28px;
+  height: 22px;
 }
 
 .form_radio-input {

@@ -112,9 +112,16 @@ const WlsessionCreate = () => {
             &#160;&#160;Sessions
           </Link>
         </div>
+        <div className='model__container'>
+          <div className='title-container'>
+            <h1 className='title-container__title'>
+              {exerciseData.exercise.title}
+            </h1>
+          </div>
+        </div>
         <div className='model__grid'>
           <div className='model__left-side'>
-            <div className='model__container'>
+            <div className='model__container--center'>
               <div className='title-container'>
                 <h2 className='title-container__title'>Previous Session</h2>
               </div>

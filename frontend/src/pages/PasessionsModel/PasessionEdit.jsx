@@ -4,7 +4,6 @@ import {
 } from '../../../slices/pasessionsApiSlice'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
-import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -20,18 +19,8 @@ const PasessionEdit = () => {
   const navigate = useNavigate()
   const { userInfo } = useSelector(state => state.auth)
   const { slugLog, slugExercise, pasessionId } = useParams()
-  const searchParams = new URLSearchParams(location.search)
-  const limit = Number(searchParams.get('limit'))
-  const page = Number(searchParams.get('page'))
 
-  const { refetch } = useGetExerciseSlugQuery({
-    slugLog,
-    slugExercise,
-    limit,
-    page
-  })
-
-  const { data, isLoading, error } = useGetPasessionByIdQuery({
+  const { data, isLoading, error, refetch } = useGetPasessionByIdQuery({
     slugLog,
     slugExercise,
     pasessionId

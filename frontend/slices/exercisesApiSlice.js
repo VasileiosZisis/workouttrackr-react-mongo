@@ -9,7 +9,7 @@ export const exercisesApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Exercises'],
+      invalidatesTags: ['Exercises', 'Logs'],
     }),
     getExerciseSlug: builder.query({
       // query: ({ slugLog, slugExercise, limit, page }) => ({
@@ -40,14 +40,14 @@ export const exercisesApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Exercises'],
+      invalidatesTags: ['Exercises', 'Logs'],
     }),
     deleteExercise: builder.mutation({
       query: ({ slugLog, slugExercise }) => ({
         url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}`,
         method: 'delete',
       }),
-      invalidatesTags: ['Exercises'],
+      invalidatesTags: ['Exercises', 'Logs'],
     }),
   }),
 });

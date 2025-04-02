@@ -9,7 +9,7 @@ export const pasessionsApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Pasessions'],
+      invalidatesTags: ['Exercises', 'Pasessions'],
     }),
     getPasessionSlug: builder.query({
       query: ({ slugLog, slugExercise, slugSession }) => ({
@@ -30,14 +30,14 @@ export const pasessionsApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Pasessions'],
+      invalidatesTags: ['Exercises', 'Pasessions'],
     }),
     deletePasession: builder.mutation({
       query: ({ slugLog, slugExercise, slugSession }) => ({
         url: `${LOGS_URL}/${slugLog}/exercises/${slugExercise}/pasessions/${slugSession}`,
         method: 'delete',
       }),
-      invalidatesTags: ['Pasessions'],
+      invalidatesTags: ['Exercises', 'Pasessions'],
     }),
   }),
 });
