@@ -118,7 +118,7 @@ const WlsessionCreate = () => {
               <div className='title-container'>
                 <h2 className='title-container__title'>Previous Session</h2>
               </div>
-              {exerciseData.latestPasession.length > 0 && (
+              {exerciseData.latestWlsession.length > 0 && (
                 <table className='sessions__table'>
                   <tbody>
                     <tr>

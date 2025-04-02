@@ -31,7 +31,7 @@ const HomePage = () => {
         <meta property='og:url' content='https://www.workouttrackr.com/' />
         <meta
           property='og:image'
-          content='https://res.cloudinary.com/dmdbza74n/image/upload/v1690481966/training%20app/workouttrackr-h_rbls2r.png'
+          content='https://res.cloudinary.com/dmdbza74n/image/upload/v1743512104/portfolio/workout_znfosb.webp'
         />
         <meta property='og:image:type' content='image/png' />
         <meta property='og:image:width' content='900' />
