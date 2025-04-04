@@ -2,35 +2,31 @@ import {
   useGetWlsessionSlugQuery,
   useDeleteWlsessionMutation
 } from '../../../slices/wlsessionsApiSlice'
-import { useGetExerciseSlugQuery } from '../../../slices/exercisesApiSlice'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
 import { Helmet } from 'react-helmet-async'
+import { useState } from 'react'
 import '../ModelMain.css'
 import '../ModelForms.css'
 
 const WlsessionShow = () => {
   const navigate = useNavigate()
-  const searchParams = new URLSearchParams(location.search)
-  const limit = Number(searchParams.get('limit'))
-  const page = Number(searchParams.get('page'))
+
   const { slugLog, slugExercise, slugSession } = useParams()
 
-  const { refetch } = useGetExerciseSlugQuery({
-    slugLog,
-    slugExercise,
-    limit,
-    page
-  })
+  const [isDeleted, setIsDeleted] = useState(false)
 
-  const { data, isLoading, error } = useGetWlsessionSlugQuery({
-    slugLog,
-    slugExercise,
-    slugSession
-  })
+  const { data, isLoading, error } = useGetWlsessionSlugQuery(
+    {
+      slugLog,
+      slugExercise,
+      slugSession
+    },
+    { skip: isDeleted }
+  )
 
   const [deleteWlsession, { isLoading: loadingDelete }] =
     useDeleteWlsessionMutation()
@@ -40,11 +36,12 @@ const WlsessionShow = () => {
   const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
       try {
-        await deleteWlsession({ slugLog, slugExercise, slugSession })
-        refetch()
+        setIsDeleted(true)
+        await deleteWlsession({ slugLog, slugExercise, slugSession }).unwrap()
         navigate(`/logs/${slugLog}/${slugExercise}`)
         toast.success('Session deleted')
       } catch (err) {
+        setIsDeleted(false)
         toast.error(err?.data?.message || err.error)
       }
     }

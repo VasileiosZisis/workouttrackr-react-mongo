@@ -10,6 +10,7 @@ import Label from '../../components/Label'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
 import { Helmet } from 'react-helmet-async'
+import { useState } from 'react'
 import '../ModelMain.css'
 
 const LogSlugShow = () => {
@@ -21,11 +22,16 @@ const LogSlugShow = () => {
   const limit = Math.max(1, Number(searchParams.get('limit')) || 12)
   const page = Math.max(1, Number(searchParams.get('page')) || 1)
 
-  const { data, isLoading, error, refetch } = useGetLogSlugQuery({
-    slugLog,
-    limit,
-    page
-  })
+  const [isDeleted, setIsDeleted] = useState(false)
+
+  const { data, isLoading, error } = useGetLogSlugQuery(
+    {
+      slugLog,
+      limit,
+      page
+    },
+    { skip: isDeleted }
+  )
 
   const [deleteLog, { isLoading: loadingDelete }] = useDeleteLogMutation()
 
@@ -41,11 +47,12 @@ const LogSlugShow = () => {
   const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
       try {
-        await deleteLog(slugLog)
-        refetch()
-        navigate('/logs')
+        setIsDeleted(true)
+        await deleteLog(slugLog).unwrap()
         toast.success('Log deleted')
+        navigate('/logs', { replace: true })
       } catch (err) {
+        setIsDeleted(false)
         toast.error(err?.data?.message || err.error)
       }
     }

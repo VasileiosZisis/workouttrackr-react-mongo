@@ -2,7 +2,6 @@ import {
   useGetExerciseSlugQuery,
   useDeleteExerciseMutation
 } from '../../../slices/exercisesApiSlice'
-import { useGetLogSlugQuery } from '../../../slices/logsApiSlice'
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from '../../components/ProtectedRoute'
@@ -11,6 +10,7 @@ import PaSession from '../../components/PaSession'
 import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
 import { Helmet } from 'react-helmet-async'
+import { useState } from 'react'
 import '../ModelMain.css'
 
 const ExerciseSlugShow = () => {
@@ -22,18 +22,17 @@ const ExerciseSlugShow = () => {
   const limit = Math.max(1, Number(searchParams.get('limit')) || 12)
   const page = Math.max(1, Number(searchParams.get('page')) || 1)
 
-  const { refetch } = useGetLogSlugQuery({
-    slugLog,
-    limit,
-    page
-  })
+  const [isDeleted, setIsDeleted] = useState(false)
 
-  const { data, isLoading, error } = useGetExerciseSlugQuery({
-    slugLog,
-    slugExercise,
-    limit,
-    page
-  })
+  const { data, isLoading, error } = useGetExerciseSlugQuery(
+    {
+      slugLog,
+      slugExercise,
+      limit,
+      page
+    },
+    { skip: isDeleted }
+  )
 
   const [deleteExercise, { isLoading: loadingDelete }] =
     useDeleteExerciseMutation()
@@ -50,11 +49,12 @@ const ExerciseSlugShow = () => {
   const deleteHandler = async () => {
     if (window.confirm('Are you sure?')) {
       try {
-        await deleteExercise({ slugLog, slugExercise })
-        refetch()
-        navigate(`/logs/${slugLog}`)
+        setIsDeleted(true)
+        await deleteExercise({ slugLog, slugExercise }).unwrap()
+        navigate(`/logs/${slugLog}`, { replace: true })
         toast.success('Exercise deleted')
       } catch (err) {
+        setIsDeleted(false)
         toast.error(err?.data?.message || err.error)
       }
     }

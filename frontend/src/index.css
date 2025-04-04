@@ -21,7 +21,7 @@
   list-style-type: none;
   text-decoration: none;
   transition-property: color, background-color, border-bottom;
-  transition-duration: 0.2s;
+  transition-duration: 0.1s;
 }
 
 html,

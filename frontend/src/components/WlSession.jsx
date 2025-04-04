@@ -99,6 +99,9 @@ const WlSession = ({
               size: window.innerWidth < 800 ? '12px' : '16px'
             }
           }
+        },
+        grid: {
+          color: '#424949'
         }
       },
       y: {
@@ -121,6 +124,9 @@ const WlSession = ({
               size: window.innerWidth < 800 ? '12px' : '16px'
             }
           }
+        },
+        grid: {
+          color: '#424949'
         }
       }
     }

@@ -10,7 +10,7 @@
   text-align: center;
   padding: 0.1rem;
   cursor: pointer;
-  border: 1px solid var(--borderWhite);
+  border: 1px solid var(--textWhite);
   background-color: var(--jet);
 }
 
@@ -48,6 +48,10 @@
   border: 1px solid var(--icterine);
 }
 
+.pagination__disabled:where(:hover, :focus-visible) {
+  color: var(--night);
+  border: 1px solid transparent;
+}
 /* MOBILE */
 
 /* 600px */

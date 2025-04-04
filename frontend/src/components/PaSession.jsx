@@ -95,6 +95,9 @@ const PaSession = ({
               size: window.innerWidth < 800 ? '12px' : '16px'
             }
           }
+        },
+        grid: {
+          color: '#424949'
         }
       },
       y: {
@@ -117,6 +120,9 @@ const PaSession = ({
               size: window.innerWidth < 800 ? '12px' : '16px'
             }
           }
+        },
+        grid: {
+          color: '#424949'
         }
       }
     }
