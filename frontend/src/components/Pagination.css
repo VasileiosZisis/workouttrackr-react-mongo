@@ -10,7 +10,7 @@
   text-align: center;
   padding: 0.1rem;
   cursor: pointer;
-  border: 1px solid var(--textWhite);
+  border: 1px solid transparent;
   background-color: var(--jet);
 }
 
@@ -31,8 +31,7 @@
 }
 
 .pagination__active {
-  color: var(--icterine);
-  border: 1px solid var(--icterine);
+  border: 1px solid var(--textWhite);
 }
 
 .pagination__disabled {
@@ -44,8 +43,7 @@
 .pagination__page:where(:hover, :focus-visible),
 .pagination__prev:where(:hover, :focus-visible),
 .pagination__next:where(:hover, :focus-visible) {
-  color: var(--icterine);
-  border: 1px solid var(--icterine);
+  border: 1px solid var(--textWhite);
 }
 
 .pagination__disabled:where(:hover, :focus-visible) {

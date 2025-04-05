@@ -38,7 +38,7 @@ const WlsessionShow = () => {
       try {
         setIsDeleted(true)
         await deleteWlsession({ slugLog, slugExercise, slugSession }).unwrap()
-        navigate(`/logs/${slugLog}/${slugExercise}`)
+        navigate(`/logs/${slugLog}/${slugExercise}`, { replace: true })
         toast.success('Session deleted')
       } catch (err) {
         setIsDeleted(false)

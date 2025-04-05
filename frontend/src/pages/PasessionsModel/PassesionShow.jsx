@@ -38,7 +38,7 @@ const PasessionShow = () => {
         setIsDeleted(true)
         await deletePasession({ slugLog, slugExercise, slugSession }).unwrap()
         navigate(`/logs/${slugLog}/${slugExercise}`)
-        toast.success('Session deleted')
+        toast.success('Session deleted', { replace: true })
       } catch (err) {
         setIsDeleted(true)
         toast.error(err?.data?.message || err.error)

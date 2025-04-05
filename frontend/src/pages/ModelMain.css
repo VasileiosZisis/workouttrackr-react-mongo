@@ -97,7 +97,6 @@
   background-color: var(--jet);
   padding: 0.1rem;
   color: var(--textWhite);
-  border: 1px solid var(--textWhite);
   margin-bottom: 0.5rem;
 }
 
