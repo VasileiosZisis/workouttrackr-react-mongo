@@ -1,7 +1,12 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import ReactPaginate from 'react-paginate'
+import ReactPaginateModule from 'react-paginate'
 import './Pagination.css'
+
+const ReactPaginate =
+  ReactPaginateModule?.default ??
+  ReactPaginateModule?.ReactPaginate ??
+  ReactPaginateModule
 
 const Pagination = ({
   totalPages,
